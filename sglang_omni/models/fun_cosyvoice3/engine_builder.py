@@ -26,6 +26,7 @@ class FunCosyVoice3EngineBuilder(TtsEngineBuilder):
     model_name = "Fun-CosyVoice3"
     context_length = 4096
     model_arch_override = "FunCosyVoice3SGLangModel"
+    supports_breakable_prefill_cuda_graph = True
 
     def __init__(self) -> None:
         super().__init__()
