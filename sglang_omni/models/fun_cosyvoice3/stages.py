@@ -26,6 +26,11 @@ from sglang_omni.utils.device import resolve_device_spec
 
 logger = logging.getLogger(__name__)
 
+_AUTOCAST_DTYPES: dict[str, torch.dtype] = {
+    "float16": torch.float16,
+    "bfloat16": torch.bfloat16,
+}
+
 _COSYVOICE_INSTALL_HINT = (
     "Fun-CosyVoice3 support requires the `cosyvoice` package. "
     "Clone the official repository and set PYTHONPATH, or install it "
@@ -97,11 +102,11 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
         self,
         flow: Any,
         hift: Any,
-        fp16: bool = False,
+        autocast_dtype: torch.dtype | None = None,
     ) -> None:
         self._flow = flow
         self._hift = hift
-        self._fp16 = fp16
+        self._autocast_dtype = autocast_dtype
 
     def prepare_item(
         self, payload: StagePayload
@@ -158,8 +163,12 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
             )
         device = next(self._flow.parameters()).device
 
+        # Mirrors upstream CosyVoice3Model.token2wav, which wraps both the flow
+        # and hift calls in one autocast scope -- see cosyvoice/cli/model.py.
         with torch.autocast(
-            device_type=current_platform.device_type, enabled=self._fp16
+            device_type=current_platform.device_type,
+            dtype=self._autocast_dtype or torch.float16,
+            enabled=self._autocast_dtype is not None,
         ):
             tts_mel, _ = self._flow.inference(
                 token=token.to(device, dtype=torch.int32),
@@ -176,7 +185,7 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
                 streaming=False,
                 finalize=True,
             )
-        tts_speech, _ = self._hift.inference(speech_feat=tts_mel, finalize=True)
+            tts_speech, _ = self._hift.inference(speech_feat=tts_mel, finalize=True)
         return tts_speech.detach().cpu()
 
     def store_result(
@@ -214,13 +223,14 @@ def create_vocoder_executor(
 ) -> SimpleScheduler:
     device = resolve_device_spec(device, gpu_id)
     checkpoint_dir = resolve_checkpoint(model_path)
+    autocast_dtype = _AUTOCAST_DTYPES.get(dtype)
     flow, hift = _load_cosyvoice3_flow_hift(
         checkpoint_dir,
         device=device,
         fp16=(dtype == "float16"),
     )
 
-    return _CosyVoice3Vocoder(flow, hift, fp16=(dtype == "float16")).build_scheduler(
+    return _CosyVoice3Vocoder(flow, hift, autocast_dtype=autocast_dtype).build_scheduler(
         max_batch_size=max_batch_size,
         max_batch_wait_ms=max_batch_wait_ms,
     )
