@@ -1,0 +1,1059 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MOSS-TTS-Local &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cookbook/moss_tts_local';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dots.tts" href="dots_tts.html" />
+    <link rel="prev" title="MOSS-TTS" href="moss_tts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/moss_tts_local.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/cookbook/moss_tts_local.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fcookbook/moss_tts_local.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/cookbook/moss_tts_local.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MOSS-TTS-Local</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-speech">Basic Speech</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-audio-sources">Reference Audio Sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duration-control">Duration Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-markup-style-and-language">Text Markup, Style, and Language</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-parameters">Generation Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-reproducibility">Seed Reproducibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-benchmarks">Evaluation Benchmarks</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-tts-eval-reference-performance">Seed-TTS-Eval Reference Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-voice-clone">Multilingual Voice Clone</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="moss-tts-local">
+<h1>MOSS-TTS-Local<a class="headerlink" href="#moss-tts-local" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5">MOSS-TTS-Local-Transformer-v1.5</a> is a text-to-speech model from MOSI.AI and the OpenMOSS team. It generates native <strong>48 kHz stereo</strong> speech with <a class="reference external" href="https://huggingface.co/OpenMOSS-Team/MOSS-Audio-Tokenizer-v2">MOSS-Audio-Tokenizer-v2</a> and supports zero-shot voice cloning from reference audio, reference-less synthesis, long-form speech generation, streaming, token-level duration control, Pinyin/IPA pronunciation control, multilingual synthesis, and code-switching. The model supports <strong>31 languages</strong>, accepts language tags to guide multilingual generation, and supports inline pause markers such as <code class="docutils literal notranslate"><span class="pre">[pause</span> <span class="pre">3.2s]</span></code> for explicit prosody control.</p>
+<p><img alt="MOSS-TTS-Local architecture" src="../_images/moss-tts-arch-local.png" /></p>
+<p>Architecturally, MOSS-TTS-Local-Transformer-v1.5 is the <code class="docutils literal notranslate"><span class="pre">local-transformer</span></code> counterpart to the <code class="docutils literal notranslate"><span class="pre">delay-pattern</span></code> <a class="reference internal" href="moss_tts.html"><span class="std std-doc">MOSS-TTS-v1.5</span></a>. Instead of staggering RVQ streams across time, the Qwen3-4B backbone emits a global latent for each aligned audio frame, and a lightweight frame-local transformer expands that latent into a fixed 12-codebook RVQ block. In SGLang-Omni it runs as a <code class="docutils literal notranslate"><span class="pre">preprocessing</span> <span class="pre">→</span> <span class="pre">tts_engine</span> <span class="pre">→</span> <span class="pre">vocoder</span></code> pipeline served through the OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code> endpoint.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Spec</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Architecture</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MossTTSLocalModel</span></code> (<code class="docutils literal notranslate"><span class="pre">moss_tts_local</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Backbone</p></td>
+<td><p>Qwen3-4B autoregressive decoder (36 L, hidden=2560, GQA 32/8)</p></td>
+</tr>
+<tr class="row-even"><td><p>Audio tokenizer</p></td>
+<td><p>MOSS-Audio-Tokenizer-v2</p></td>
+</tr>
+<tr class="row-odd"><td><p>Audio tokens</p></td>
+<td><p>Fixed 12-codebook RVQ depth</p></td>
+</tr>
+<tr class="row-even"><td><p>Output audio</p></td>
+<td><p>48 kHz stereo</p></td>
+</tr>
+<tr class="row-odd"><td><p>Languages</p></td>
+<td><p>31 languages with optional language tags</p></td>
+</tr>
+<tr class="row-even"><td><p>Controls</p></td>
+<td><p>Voice reference, target duration tokens, Pinyin/IPA, pause markers, style instructions</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> by following <a class="reference internal" href="../get_started/installation.html"><span class="std std-doc">Installation</span></a>, then
+download the model (public, no token required):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5
+</pre></div>
+</div>
+<p>The processor ships with the checkpoint, so no extra TTS package is needed. Decoding base64
+(data-URI) reference audio additionally requires <code class="docutils literal notranslate"><span class="pre">soundfile</span></code> (<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">pip</span> <span class="pre">install</span> <span class="pre">soundfile</span></code>).</p>
+</section>
+<section id="server-configuration">
+<h2>Server Configuration<a class="headerlink" href="#server-configuration" title="Link to this heading">#</a></h2>
+<p>The default layout puts the AR backbone and the codec/vocoder on the same GPU:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>A matching config file is available at <code class="docutils literal notranslate"><span class="pre">examples/configs/moss_tts_local.yaml</span></code>.</p>
+</section>
+<section id="synthesizing-speech">
+<h2>Synthesizing Speech<a class="headerlink" href="#synthesizing-speech" title="Link to this heading">#</a></h2>
+<section id="basic-speech">
+<h3>Basic Speech<a class="headerlink" href="#basic-speech" title="Link to this heading">#</a></h3>
+<p>MOSS-TTS-Local can synthesize speech without a reference clip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "SGLang-Omni is a great project!"</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+</section>
+<section id="voice-cloning">
+<h3>Voice Cloning<a class="headerlink" href="#voice-cloning" title="Link to this heading">#</a></h3>
+<p>Provide a reference clip when you want voice cloning. The <code class="docutils literal notranslate"><span class="pre">references</span></code> field accepts <code class="docutils literal notranslate"><span class="pre">audio_path</span></code>
+(a local path, HTTP URL, or base64 data URI) and <code class="docutils literal notranslate"><span class="pre">text</span></code> (the transcript of that clip). Supplying
+the transcript materially improves cloning quality.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "SGLang-Omni is a great project!",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">      "text": "We asked over twenty different people, and they all said it was his."</span>
+<span class="s1">    }]</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_text</span></code> are accepted as shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> and
+<code class="docutils literal notranslate"><span class="pre">references[0].text</span></code>.</p>
+<section id="python">
+<h4>Python<a class="headerlink" href="#python" title="Link to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5"</span><span class="p">,</span>
+        <span class="s2">"voice"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Get the trust fund to the bank early."</span><span class="p">,</span>
+        <span class="s2">"ref_audio"</span><span class="p">:</span> <span class="s2">"https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav"</span><span class="p">,</span>
+        <span class="s2">"ref_text"</span><span class="p">:</span> <span class="s2">"We asked over twenty different people, and they all said it was his."</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="reference-audio-sources">
+<h3>Reference Audio Sources<a class="headerlink" href="#reference-audio-sources" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">audio_path</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> may be a local filesystem path readable by the server, an HTTP(S) URL, or a base64 <strong>data URI</strong> (<code class="docutils literal notranslate"><span class="pre">data:audio/wav;base64,&lt;...&gt;</span></code>, decoded with <code class="docutils literal notranslate"><span class="pre">soundfile</span></code>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">reference_url</span> <span class="o">=</span> <span class="s2">"https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav"</span>
+<span class="n">reference_resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reference_url</span><span class="p">)</span>
+<span class="n">reference_resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">ref_audio</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">"data:audio/wav;base64,"</span>
+    <span class="o">+</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">reference_resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5"</span><span class="p">,</span>
+        <span class="s2">"voice"</span><span class="p">:</span> <span class="s2">"default"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"SGLang-Omni is a great project!"</span><span class="p">,</span>
+        <span class="s2">"ref_audio"</span><span class="p">:</span> <span class="n">ref_audio</span><span class="p">,</span>
+        <span class="s2">"ref_text"</span><span class="p">:</span> <span class="s2">"Transcript of the reference clip."</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output_data_uri.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Reference encodes are cached (LRU) and coalesced into batched codec calls, so resending the same reference clip skips re-encoding.</p>
+</section>
+<section id="streaming">
+<h3>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
+<p>Set <code class="docutils literal notranslate"><span class="pre">&quot;stream&quot;:</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;response_format&quot;:</span> <span class="pre">&quot;pcm&quot;</span></code> to receive raw 48 kHz
+mono PCM chunks in real time. Pipe the stream through <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> when you want a
+playable WAV file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-N<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "Get the trust fund to the bank early.",</span>
+<span class="s1">    "ref_audio": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">    "ref_text": "We asked over twenty different people, and they all said it was his.",</span>
+<span class="s1">    "stream": true,</span>
+<span class="s1">    "response_format": "pcm"</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>ffmpeg<span class="w"> </span>-f<span class="w"> </span>s16le<span class="w"> </span>-ar<span class="w"> </span><span class="m">48000</span><span class="w"> </span>-ac<span class="w"> </span><span class="m">1</span><span class="w"> </span>-i<span class="w"> </span>pipe:0<span class="w"> </span>output_stream.wav
+</pre></div>
+</div>
+</section>
+<section id="duration-control">
+<h3>Duration Control<a class="headerlink" href="#duration-control" title="Link to this heading">#</a></h3>
+<p>MOSS-TTS-Local conditions on a target <strong>duration token count</strong> (codec frames; a larger count yields longer audio). Set it with an inline <code class="docutils literal notranslate"><span class="pre">${token:N}</span></code> prefix on <code class="docutils literal notranslate"><span class="pre">input</span></code> (stripped before synthesis), or with a <code class="docutils literal notranslate"><span class="pre">token_count</span></code> (alias <code class="docutils literal notranslate"><span class="pre">duration_tokens</span></code>) parameter. The count must be a positive integer.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"voice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${token:150}A sentence with an explicit duration target."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"ref_audio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "${token:150}A sentence with an explicit duration target.",</span>
+<span class="s1">    "ref_audio": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">    "ref_text": "We asked over twenty different people, and they all said it was his."</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output_duration_tokens.wav
+</pre></div>
+</div>
+<p>If omitted, the model picks the duration itself.</p>
+</section>
+<section id="text-markup-style-and-language">
+<h3>Text Markup, Style, and Language<a class="headerlink" href="#text-markup-style-and-language" title="Link to this heading">#</a></h3>
+<p>Inline text markup that the model understands (for example <code class="docutils literal notranslate"><span class="pre">[pause</span> <span class="pre">Xs]</span></code>, pinyin, and IPA) is passed through unchanged. An optional <code class="docutils literal notranslate"><span class="pre">instructions</span></code> field carries a
+free-text style directive, and an optional <code class="docutils literal notranslate"><span class="pre">language</span></code> hint biases the target language (omit it to let the model infer from the text):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"voice"</span><span class="p">:</span><span class="w"> </span><span class="s2">"default"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"今天天气不错 [pause 0.5s] 就该出去晒晒太阳。"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"ref_audio"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w"> </span><span class="nt">"ref_text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Chinese"</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",</span>
+<span class="s1">    "voice": "default",</span>
+<span class="s1">    "input": "今天天气不错 [pause 0.5s] 就该出去晒晒太阳。",</span>
+<span class="s1">    "ref_audio": "https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav",</span>
+<span class="s1">    "ref_text": "We asked over twenty different people, and they all said it was his.",</span>
+<span class="s1">    "language": "Chinese",</span>
+<span class="s1">    "instructions": "Use a natural conversational style."</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output_markup.wav
+</pre></div>
+</div>
+</section>
+</section>
+<section id="generation-parameters">
+<h2>Generation Parameters<a class="headerlink" href="#generation-parameters" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p>served model</p></td>
+<td><p>Served model identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input</span></code></p></td>
+<td><p>(required)</p></td>
+<td><p>Text to synthesize. It may carry a <code class="docutils literal notranslate"><span class="pre">${token:N}</span></code> duration prefix and inline markup</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">voice</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">default</span></code></p></td>
+<td><p>Voice identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">references</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Reference clip for cloning. Each item has <code class="docutils literal notranslate"><span class="pre">audio_path</span></code> and <code class="docutils literal notranslate"><span class="pre">text</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_text</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> / <code class="docutils literal notranslate"><span class="pre">references[0].text</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Stream raw PCM audio chunks (with <code class="docutils literal notranslate"><span class="pre">response_format:</span> <span class="pre">pcm</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">language</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Optional target-language hint. Omit to let the model infer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">instructions</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Optional free-text style directive</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">token_count</span></code> / <code class="docutils literal notranslate"><span class="pre">duration_tokens</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Target duration in codec frames. It must be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4096</span></code></p></td>
+<td><p>Maximum generated frames. An explicit value must be <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">0</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code> text / <code class="docutils literal notranslate"><span class="pre">1.7</span></code> audio</p></td>
+<td><p>Sampling temperature. A single <code class="docutils literal notranslate"><span class="pre">temperature</span></code> overrides both channels</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">top_p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code> text / <code class="docutils literal notranslate"><span class="pre">0.8</span></code> audio</p></td>
+<td><p>Top-p sampling. A single <code class="docutils literal notranslate"><span class="pre">top_p</span></code> overrides both channels</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">top_k</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">50</span></code> text / <code class="docutils literal notranslate"><span class="pre">25</span></code> audio</p></td>
+<td><p>Top-k sampling. A single <code class="docutils literal notranslate"><span class="pre">top_k</span></code> overrides both channels</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Audio repetition penalty</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Non-negative integer. See <a class="reference internal" href="#seed-reproducibility"><span class="std std-ref">Seed Reproducibility</span></a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The two default values reflect the model’s separate sampling channels: the <code class="docutils literal notranslate"><span class="pre">text</span></code> channel is the
+per-frame continue/stop head and the <code class="docutils literal notranslate"><span class="pre">audio</span></code> channel is the RVQ codebooks. A single <code class="docutils literal notranslate"><span class="pre">temperature</span></code>,
+<code class="docutils literal notranslate"><span class="pre">top_p</span></code>, or <code class="docutils literal notranslate"><span class="pre">top_k</span></code> in the request applies to both.</p>
+</section>
+<section id="seed-reproducibility">
+<h2>Seed Reproducibility<a class="headerlink" href="#seed-reproducibility" title="Link to this heading">#</a></h2>
+<p>A fixed <code class="docutils literal notranslate"><span class="pre">seed</span></code> is reproducible at <strong>any concurrency</strong>: each token’s sampling depends only on its
+own seed and position, never on its batch neighbours.</p>
+<ul class="simple">
+<li><p>Reproducibility holds for a <strong>fixed server configuration and hardware</strong> — backbone
+floating-point non-determinism (different batch shapes, GPUs, or kernels) can still shift the
+sampled tokens across deployments.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">seed</span></code> must be a non-negative integer; negative or non-integer values are rejected.</p></li>
+<li><p>Without a <code class="docutils literal notranslate"><span class="pre">seed</span></code>, each request draws a fresh random seed and is not reproducible across runs.</p></li>
+</ul>
+</section>
+<section id="benchmarking">
+<h2>Benchmarking<a class="headerlink" href="#benchmarking" title="Link to this heading">#</a></h2>
+<p>MOSS-TTS-Local clones from each prompt (<code class="docutils literal notranslate"><span class="pre">--ref-format</span> <span class="pre">references</span></code>) and estimates a per-sample
+duration with <code class="docutils literal notranslate"><span class="pre">--token-count</span> <span class="pre">auto</span></code>. Run at <code class="docutils literal notranslate"><span class="pre">--max-concurrency</span> <span class="pre">16</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_tts_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--meta<span class="w"> </span>zhaochenyang20/seed-tts-eval-arrow<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--model<span class="w"> </span>OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--ref-format<span class="w"> </span>references<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--token-count<span class="w"> </span>auto<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output-dir<span class="w"> </span>results/moss_tts_en<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--lang<span class="w"> </span>en<span class="w"> </span>--max-concurrency<span class="w"> </span><span class="m">16</span>
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--lang</span> <span class="pre">zh</span></code> for the Chinese split. See <code class="docutils literal notranslate"><span class="pre">benchmarks/README.md</span></code> for the full workflow.</p>
+</section>
+<section id="evaluation-benchmarks">
+<h2>Evaluation Benchmarks<a class="headerlink" href="#evaluation-benchmarks" title="Link to this heading">#</a></h2>
+<section id="seed-tts-eval-reference-performance">
+<h3>Seed-TTS-Eval Reference Performance<a class="headerlink" href="#seed-tts-eval-reference-performance" title="Link to this heading">#</a></h3>
+<p>Seed-TTS-Eval full set (EN = 1088, ZH = 2020) on 2× H100, concurrency 16,
+<code class="docutils literal notranslate"><span class="pre">--token-count</span> <span class="pre">auto</span></code>. These are reference inference-performance numbers reported
+in PR #728 — reproducible references, not CI thresholds.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Split</p></th>
+<th class="head text-right"><p>Latency mean / p95 (s)</p></th>
+<th class="head text-right"><p>RTF mean</p></th>
+<th class="head text-right"><p>Throughput (req/s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EN</p></td>
+<td class="text-right"><p>1.538 / 1.989</p></td>
+<td class="text-right"><p>0.3682</p></td>
+<td class="text-right"><p>10.355</p></td>
+</tr>
+<tr class="row-odd"><td><p>ZH</p></td>
+<td class="text-right"><p>—</p></td>
+<td class="text-right"><p>0.3306</p></td>
+<td class="text-right"><p>8.62</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="multilingual-voice-clone">
+<h3>Multilingual Voice Clone<a class="headerlink" href="#multilingual-voice-clone" title="Link to this heading">#</a></h3>
+<p>We evaluate MOSS-TTS-Local-Transformer-v1.5 on public multilingual TTS suites and
+internal voice-cloning stress sets, covering multilingual synthesis, speaker
+similarity, and hard speaker-stability cases.</p>
+<p>WER (↓) and SIM (↑) are macro-averaged and reported in percentage points. <code class="docutils literal notranslate"><span class="pre">N/A</span></code>
+means the benchmark is speaker-similarity only and does not report WER.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Benchmark</p></th>
+<th class="head text-right"><p>WER ↓</p></th>
+<th class="head text-right"><p>SIM ↑</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Seed-TTS-Eval</span></code> (excluding hard-zh)</p></td>
+<td class="text-right"><p>2.0350</p></td>
+<td class="text-right"><p>68.9850</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CV3-Eval</span></code></p></td>
+<td class="text-right"><p>7.4800</p></td>
+<td class="text-right"><p>61.5871</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MiniMax</span> <span class="pre">Multilingual</span></code></p></td>
+<td class="text-right"><p>6.3692</p></td>
+<td class="text-right"><p>75.3121</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">Voice</span></code></p></td>
+<td class="text-right"><p>20.4787</p></td>
+<td class="text-right"><p>63.0023</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>These results were measured with audio sampling parameters <code class="docutils literal notranslate"><span class="pre">temperature=1.7</span></code>,
+<code class="docutils literal notranslate"><span class="pre">top_p=0.8</span></code>, and <code class="docutils literal notranslate"><span class="pre">top_k=25</span></code>. In tests from MOSI.AI, <code class="docutils literal notranslate"><span class="pre">temperature=0.6</span></code>, <code class="docutils literal notranslate"><span class="pre">top_p=0.95</span></code>,
+<code class="docutils literal notranslate"><span class="pre">top_k=25</span></code>, and <code class="docutils literal notranslate"><span class="pre">audio_repetition_penalty=1.2</span></code> may produce better quality.</p>
+</section>
+</section>
+<section id="known-limitations">
+<h2>Known Limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Voice cloning depends on the reference.</strong> Omit the reference for non-cloned speech; provide
+the transcript (<code class="docutils literal notranslate"><span class="pre">text</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_text</span></code>) for the best speaker similarity when cloning.</p></li>
+<li><p><strong>Rare runaway generation.</strong> A small fraction of utterances can loop and generate up to
+<code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>; setting a <code class="docutils literal notranslate"><span class="pre">token_count</span></code> (or lowering <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>) bounds the output.</p></li>
+<li><p><strong>Duration is a hint.</strong> <code class="docutils literal notranslate"><span class="pre">${token:N}</span></code> / <code class="docutils literal notranslate"><span class="pre">token_count</span></code> steers length but is not an exact clip
+duration.</p></li>
+<li><p><strong>Reproducibility is hardware-bound.</strong> A fixed <code class="docutils literal notranslate"><span class="pre">seed</span></code> reproduces only on the same server
+configuration and GPU; see <a class="reference internal" href="#seed-reproducibility"><span class="std std-ref">Seed Reproducibility</span></a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="moss_tts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MOSS-TTS</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dots_tts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">dots.tts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-speech">Basic Speech</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#python">Python</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-audio-sources">Reference Audio Sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#duration-control">Duration Control</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-markup-style-and-language">Text Markup, Style, and Language</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generation-parameters">Generation Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-reproducibility">Seed Reproducibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmarking">Benchmarking</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-benchmarks">Evaluation Benchmarks</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#seed-tts-eval-reference-performance">Seed-TTS-Eval Reference Performance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multilingual-voice-clone">Multilingual Voice Clone</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

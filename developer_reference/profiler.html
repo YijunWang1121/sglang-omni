@@ -1,0 +1,990 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Request-level profiler &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/profiler';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile" href="qwen3_asr_concurrency_profile.html" />
+    <link rel="prev" title="Reference Encode Service" href="reference_encode_service.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/profiler.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/profiler.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/profiler.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/profiler.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Request-level profiler</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-model">Event model</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-event-names">Standard event names</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#active-stage-attribution">Active-stage attribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lifecycle">Lifecycle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-reports">Generating reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torch-profiler">Torch profiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-surface">HTTP surface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discipline">Discipline</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="request-level-profiler">
+<h1>Request-level profiler<a class="headerlink" href="#request-level-profiler" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> ships two complementary profilers that share the same <code class="docutils literal notranslate"><span class="pre">run_id</span></code>
+and are controlled by the same HTTP surface:</p>
+<ul class="simple">
+<li><p>a <strong>request-level event recorder</strong> that writes a JSONL stream of
+per-request milestones (admission, preprocess, encoder, prefill, first
+token / first code chunk, hops, terminal response) — used to reconstruct
+a single request’s end-to-end timeline and to aggregate stage / hop costs
+across a batch;</p></li>
+<li><p>a <strong>torch profiler</strong> that produces a Chrome trace of kernel-level CPU /
+CUDA activity — used to drill into a specific window once the event
+recorder has identified where the time is going.</p></li>
+</ul>
+<p>Most diagnostics use the event recorder. The torch profiler is opt-in for
+deeper kernel investigation.</p>
+<section id="event-model">
+<h2>Event model<a class="headerlink" href="#event-model" title="Link to this heading">#</a></h2>
+<p>Every instrumentation point appends a single line of JSON to a per-process
+JSONL file. The shape:</p>
+<div class="highlight-jsonc notranslate"><div class="highlight"><pre><span></span>{
+  "request_id": "req-123",
+  "stage": "thinker",
+  "event_name": "scheduler_first_emit",
+  "timestamp_ns": 1717000000123456789,
+  "run_id": "demo-run",
+  "pid": 42,
+  "metadata": {"chunk_id": 0}
+}
+</pre></div>
+</div>
+<p>Files are written under <code class="docutils literal notranslate"><span class="pre">&lt;event_dir&gt;/events_&lt;stage&gt;_&lt;pid&gt;.jsonl</span></code>. Multiple
+co-located stages in the same OS process share <strong>one</strong> JSONL file — the
+filename uses the first stage to start, and the per-event <code class="docutils literal notranslate"><span class="pre">stage</span></code> field
+identifies the owner. The views layer merges files from every process by
+<code class="docutils literal notranslate"><span class="pre">request_id</span></code>.</p>
+<section id="standard-event-names">
+<h3>Standard event names<a class="headerlink" href="#standard-event-names" title="Link to this heading">#</a></h3>
+<p>The recorder always attaches the active <code class="docutils literal notranslate"><span class="pre">stage</span></code> name to every event, so the
+same <code class="docutils literal notranslate"><span class="pre">scheduler_prefill_start</span></code> becomes “thinker prefill start” when emitted
+from the thinker process and “talker prefill start” when emitted from the
+talker process. <code class="docutils literal notranslate"><span class="pre">scheduler_queue_enter</span></code> marks a built request entering the
+scheduler queue; <code class="docutils literal notranslate"><span class="pre">scheduler_prefill_start</span></code> is emitted later, when the request’s
+first executable prefill / extend batch is selected.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Pipeline milestone</p></th>
+<th class="head"><p>Concrete event</p></th>
+<th class="head"><p>Source</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Request admission</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">request_admission</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Coordinator._submit_request</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Preprocessing start / end</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">preprocess_start</span></code> / <code class="docutils literal notranslate"><span class="pre">preprocess_end</span></code></p></td>
+<td><p>model preprocessor <code class="docutils literal notranslate"><span class="pre">__call__</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Encoder start / end</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">encoder_start</span></code> / <code class="docutils literal notranslate"><span class="pre">encoder_end</span></code> (metadata <code class="docutils literal notranslate"><span class="pre">modality</span></code>, <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>)</p></td>
+<td><p>image / audio encoder executors</p></td>
+</tr>
+<tr class="row-odd"><td><p>Aggregate ready</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_aggregate_ready</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Stage._on_data_ready</span></code> after <code class="docutils literal notranslate"><span class="pre">InputHandler.receive</span></code> returns a merged payload</p></td>
+</tr>
+<tr class="row-even"><td><p>Thinker prefill start</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_prefill_start</span></code> (stage = thinker)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OmniScheduler.run_batch</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Thinker first token</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_first_stream_chunk_sent</span></code> (stage = thinker)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Stage._send_stream_to_target</span></code> / <code class="docutils literal notranslate"><span class="pre">_send_stream_to_coordinator</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>First stream chunk to client</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_first_stream_chunk_sent</span></code> (terminal stage → coordinator)</p></td>
+<td><p>same</p></td>
+</tr>
+<tr class="row-odd"><td><p>Talker request build execution start / end</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_request_build_start</span></code> / <code class="docutils literal notranslate"><span class="pre">_end</span></code> (stage = talker)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OmniScheduler._run_request_builder</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Talker prefill start</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_prefill_start</span></code> (stage = talker)</p></td>
+<td><p>same</p></td>
+</tr>
+<tr class="row-odd"><td><p>First code chunk</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_first_stream_chunk_sent</span></code> (stage = talker)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Stage._send_stream_to_target</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Code2Wav first audio</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_first_audio</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Code2WavScheduler.decode_delta</span></code> / <code class="docutils literal notranslate"><span class="pre">_flush_pending</span></code> / <code class="docutils literal notranslate"><span class="pre">run_step</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Terminal response</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">terminal_response</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Coordinator._handle_completion</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Supporting events used for finer-grained breakdown:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Event</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Coordinator</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">coordinator_stream_received</span></code></p></td>
+<td><p>Each <code class="docutils literal notranslate"><span class="pre">StreamMessage</span></code> received on the coordinator</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_input_received</span></code></p></td>
+<td><p>Submit or relay payload accepted (metadata <code class="docutils literal notranslate"><span class="pre">from_stage</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_dispatch</span></code></p></td>
+<td><p>Scheduler inbox put</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_complete</span></code></p></td>
+<td><p>Scheduler result routed onward (metadata <code class="docutils literal notranslate"><span class="pre">terminal</span></code>, <code class="docutils literal notranslate"><span class="pre">next</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_hop_sent</span></code></p></td>
+<td><p>Payload <code class="docutils literal notranslate"><span class="pre">DataReadyMessage</span></code> sent to next stage</p></td>
+</tr>
+<tr class="row-odd"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_stream_chunk_sent</span></code></p></td>
+<td><p>Each stream chunk (metadata <code class="docutils literal notranslate"><span class="pre">to_stage</span></code>, <code class="docutils literal notranslate"><span class="pre">chunk_id</span></code>, <code class="docutils literal notranslate"><span class="pre">modality</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Stage</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">stage_stream_chunk_received</span></code></p></td>
+<td><p>Each stream chunk materialized and ready for the receiver scheduler, including coordinator terminal chunks</p></td>
+</tr>
+<tr class="row-odd"><td><p>AR scheduler</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_queue_enter</span></code></p></td>
+<td><p>Built request entered the scheduler queue</p></td>
+</tr>
+<tr class="row-even"><td><p>AR scheduler</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">scheduler_first_emit</span></code></p></td>
+<td><p>First <code class="docutils literal notranslate"><span class="pre">stream_output_builder</span></code> emission per request</p></td>
+</tr>
+<tr class="row-odd"><td><p>Code2Wav</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_decode_start</span></code></p></td>
+<td><p>Serial decode start: trigger, start/end/new/context/window frames, active and threshold-ready requests, inbox depth</p></td>
+</tr>
+<tr class="row-even"><td><p>Code2Wav</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_decode_launched</span></code></p></td>
+<td><p>Pipelined serial window whose vocoder work and asynchronous D2H copy have been enqueued; includes execution mode and window/new-frame counts</p></td>
+</tr>
+<tr class="row-odd"><td><p>Code2Wav</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_decode_end</span></code></p></td>
+<td><p>Repeats start metadata and adds the current decode’s <code class="docutils literal notranslate"><span class="pre">audio_samples</span></code> plus execution metadata; output-overlap runs also include <code class="docutils literal notranslate"><span class="pre">pipelined</span></code> and the previous window’s post-EOS-scan <code class="docutils literal notranslate"><span class="pre">d2h_wait_ns</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Code2Wav</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_batch_start</span></code></p></td>
+<td><p>Coalesced step start: batch and bucket shape, new/window frames, active requests, inbox depth, oldest wait, fire reason, due-bucket count, and sub-batch decomposition</p></td>
+</tr>
+<tr class="row-odd"><td><p>Code2Wav</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">code2wav_batch_end</span></code></p></td>
+<td><p>Repeats the start metadata and adds audio samples, execution mode, graph key, and fallback reason</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Read <code class="docutils literal notranslate"><span class="pre">d2h_wait_ns</span></code> narrowly. With output overlap on, the lazy codec-EOS scan
+calls <code class="docutils literal notranslate"><span class="pre">.tolist()</span></code> on the staged frame heads, which is itself a host
+synchronization point, and it runs before <code class="docutils literal notranslate"><span class="pre">code2wav_decode_start</span></code>. So
+<code class="docutils literal notranslate"><span class="pre">d2h_wait_ns</span></code> measures only the residual wait left after that scan, not the
+whole overlap interval. Use the process-wide CUDA API trace as the load-bearing
+measurement of whether blocking synchronization was actually removed.</p>
+<p>Custom callsites can call <code class="docutils literal notranslate"><span class="pre">sglang_omni.profiler.event_recorder.emit(...)</span></code> to
+add domain-specific events. Events from inactive recorders are no-ops, so
+instrumentation sites do not need to guard against the disabled case.</p>
+</section>
+<section id="active-stage-attribution">
+<h3>Active-stage attribution<a class="headerlink" href="#active-stage-attribution" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">emit(...)</span></code> accepts an explicit <code class="docutils literal notranslate"><span class="pre">stage=...</span></code> parameter; when the caller can’t
+plumb the stage name down (preprocessor <code class="docutils literal notranslate"><span class="pre">__call__</span></code>, encoder callables,
+<code class="docutils literal notranslate"><span class="pre">OmniScheduler</span></code> / <code class="docutils literal notranslate"><span class="pre">Code2WavScheduler</span></code> internals), it can pass <code class="docutils literal notranslate"><span class="pre">stage=None</span></code>
+and the recorder fills it in from the <strong>per-thread / per-task active
+stage</strong>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Stage._run_scheduler</span></code> binds <code class="docutils literal notranslate"><span class="pre">set_active_stage(self.name)</span></code> on the scheduler
+thread before invoking the scheduler. The binding uses both a
+<code class="docutils literal notranslate"><span class="pre">threading.local</span></code> slot (for plain <code class="docutils literal notranslate"><span class="pre">threading.Thread</span></code> workers) and a
+<code class="docutils literal notranslate"><span class="pre">contextvars.ContextVar</span></code> (so it propagates through <code class="docutils literal notranslate"><span class="pre">asyncio.to_thread</span></code> /
+<code class="docutils literal notranslate"><span class="pre">loop.run_in_executor</span></code>, which copy contextvars but not thread-local).
+Explicit <code class="docutils literal notranslate"><span class="pre">stage=...</span></code> on emit always wins; the active-stage binding is only
+consulted when the caller passes <code class="docutils literal notranslate"><span class="pre">stage=None</span></code>.</p>
+<p>To bind / unbind manually from your own thread:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang_omni.profiler.event_recorder</span><span class="w"> </span><span class="kn">import</span> <span class="n">set_active_stage</span><span class="p">,</span> <span class="n">reset_active_stage</span>
+
+<span class="n">token</span> <span class="o">=</span> <span class="n">set_active_stage</span><span class="p">(</span><span class="s2">"my_stage"</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="o">...</span>
+<span class="k">finally</span><span class="p">:</span>
+    <span class="n">reset_active_stage</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">reset_active_stage(None)</span></code> is the “scrub” form (used by test fixtures) and
+clears both the thread-local slot and the contextvar.</p>
+</section>
+</section>
+<section id="lifecycle">
+<h2>Lifecycle<a class="headerlink" href="#lifecycle" title="Link to this heading">#</a></h2>
+<p>The recorder is process-local. It is started on every stage and on the
+coordinator when <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/start_profile</span></code> (or <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/start_request_profile</span></code>)
+is hit:</p>
+<ol class="arabic simple">
+<li><p>Launcher receives the HTTP request.</p></li>
+<li><p>Coordinator starts its local recorder pointed at <code class="docutils literal notranslate"><span class="pre">&lt;event_dir&gt;</span></code>.</p></li>
+<li><p>Launcher broadcasts <code class="docutils literal notranslate"><span class="pre">ProfilerStartMessage</span></code> over ZMQ to every stage,
+carrying both the torch trace template and the <code class="docutils literal notranslate"><span class="pre">event_dir</span></code>.</p></li>
+<li><p>Each stage joins the per-process recorder. In a shared-process topology
+the first stage to call <code class="docutils literal notranslate"><span class="pre">start()</span></code> wins the filename; every subsequent
+stage in the same process writes to the same file and the per-event
+<code class="docutils literal notranslate"><span class="pre">stage</span></code> field disambiguates.</p></li>
+<li><p>On <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/stop_profile</span></code>, the recorder is closed everywhere; files
+remain on disk under <code class="docutils literal notranslate"><span class="pre">&lt;event_dir&gt;</span></code>.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/stop_profile</span></code> and <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/stop_request_profile</span></code> accept an optional
+<code class="docutils literal notranslate"><span class="pre">run_id</span></code> field. When <strong>omitted</strong>, the request is a wildcard: every stage
+stops whatever profiler session is currently active. When <strong>set</strong>, only
+stages whose active run matches stop. This makes the common case (caller
+didn’t specify a run_id on either start or stop) work without ceremony.</p>
+<p>The torch profiler and the event recorder share a <code class="docutils literal notranslate"><span class="pre">run_id</span></code>. Setting
+<code class="docutils literal notranslate"><span class="pre">enable_torch=false</span></code> on the start request records JSONL events without
+paying for a kernel trace.</p>
+</section>
+<section id="generating-reports">
+<h2>Generating reports<a class="headerlink" href="#generating-reports" title="Link to this heading">#</a></h2>
+<p>Use the views module directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sglang_omni.profiler.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_report</span>
+<span class="n">report</span> <span class="o">=</span> <span class="n">build_report</span><span class="p">(</span><span class="s2">"/tmp/profiles/demo-run/events"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"request_count"</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">"stage_breakdown"</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>…or via the CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_omni.profiler<span class="w"> </span>/tmp/profiles/demo-run/events<span class="w"> </span>--format<span class="w"> </span>table
+python<span class="w"> </span>-m<span class="w"> </span>sglang_omni.profiler<span class="w"> </span>/tmp/profiles/demo-run/events<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span>--out<span class="w"> </span>report.json
+</pre></div>
+</div>
+<p>The CLI / <code class="docutils literal notranslate"><span class="pre">build_report</span></code> returns three views derived from the same event
+stream:</p>
+<ol class="arabic simple">
+<li><p><strong>Timeline</strong> — per-request event list with <code class="docutils literal notranslate"><span class="pre">t_rel_ms</span></code> anchored at
+admission.</p></li>
+<li><p><strong>Stage breakdown</strong> — <code class="docutils literal notranslate"><span class="pre">(open_event,</span> <span class="pre">close_event)</span></code> interval durations
+aggregated per stage (count, total, avg, p50, p95, max). The same opener
+can participate in multiple pairs (e.g. <code class="docutils literal notranslate"><span class="pre">scheduler_prefill_start</span></code> closes
+against both <code class="docutils literal notranslate"><span class="pre">scheduler_first_emit</span></code> AND <code class="docutils literal notranslate"><span class="pre">stage_first_stream_chunk_sent</span></code>);
+every pair gets its own pending stack so a close event for pair A does
+not consume the opener of pair B.</p></li>
+<li><p><strong>Hop breakdown</strong> — <code class="docutils literal notranslate"><span class="pre">stage_hop_sent</span></code> / <code class="docutils literal notranslate"><span class="pre">stage_input_received</span></code> and
+<code class="docutils literal notranslate"><span class="pre">stage_stream_chunk_sent</span></code> / <code class="docutils literal notranslate"><span class="pre">stage_stream_chunk_received</span></code> durations per
+(source, destination, kind). Terminal stage stream chunks are paired the
+same way with destination <code class="docutils literal notranslate"><span class="pre">coordinator</span></code>.</p></li>
+</ol>
+<p>Hop pairs match across processes by <code class="docutils literal notranslate"><span class="pre">(request_id,</span> <span class="pre">source_stage,</span> <span class="pre">dest_stage,</span> <span class="pre">chunk_id?)</span></code>, so a single request’s path through subprocesses can be
+reconstructed even when each stage runs in its own process.</p>
+</section>
+<section id="torch-profiler">
+<h2>Torch profiler<a class="headerlink" href="#torch-profiler" title="Link to this heading">#</a></h2>
+<p>The torch profiler runs alongside the event recorder when
+<code class="docutils literal notranslate"><span class="pre">enable_torch=true</span></code> (the default for <code class="docutils literal notranslate"><span class="pre">/start_profile</span></code>). It records
+continuously between <code class="docutils literal notranslate"><span class="pre">start()</span></code> and <code class="docutils literal notranslate"><span class="pre">stop()</span></code> — no <code class="docutils literal notranslate"><span class="pre">schedule(...)</span></code>, no
+<code class="docutils literal notranslate"><span class="pre">step()</span></code> requirement — and exports a Chrome trace <code class="docutils literal notranslate"><span class="pre">*.trace.json.gz</span></code> on stop.</p>
+<p>The expensive introspection flags are opt-in via env vars so the default
+trace stays small enough to load in <code class="docutils literal notranslate"><span class="pre">chrome://tracing</span></code> or
+<a class="reference external" href="https://ui.perfetto.dev"><code class="docutils literal notranslate"><span class="pre">ui.perfetto.dev</span></code></a>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Env var</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_TORCH_PROFILER_RECORD_SHAPES=1</span></code></p></td>
+<td><p>Record input tensor shapes per op</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_TORCH_PROFILER_PROFILE_MEMORY=1</span></code></p></td>
+<td><p>Track every CUDA caching-allocator alloc / free</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_TORCH_PROFILER_WITH_STACK=1</span></code></p></td>
+<td><p>Record the Python (and C++) call stack per op</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SGLANG_TORCH_PROFILER_WITH_FLOPS=1</span></code></p></td>
+<td><p>Estimate FLOPs per op</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>With all four off (the default), a typical 10-sample MMMU run produces a
+trace in the tens of MB. With all four on, the same workload can produce a
+multi-GB trace — only opt in when you need that specific information.</p>
+</section>
+<section id="http-surface">
+<h2>HTTP surface<a class="headerlink" href="#http-surface" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Path</p></th>
+<th class="head"><p>Body</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/start_profile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;run_id&quot;:</span> <span class="pre">?,</span> <span class="pre">&quot;trace_path_template&quot;:</span> <span class="pre">?,</span> <span class="pre">&quot;event_dir&quot;:</span> <span class="pre">?,</span> <span class="pre">&quot;enable_torch&quot;:</span> <span class="pre">true</span> <span class="pre">|</span> <span class="pre">false,</span> <span class="pre">&quot;config&quot;:</span> <span class="pre">?}</span></code></p></td>
+<td><p>Starts torch trace + event recorder. <code class="docutils literal notranslate"><span class="pre">run_id</span></code> auto-generated if omitted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/stop_profile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;run_id&quot;:</span> <span class="pre">?}</span></code></p></td>
+<td><p>Stops torch trace + event recorder. Omitting <code class="docutils literal notranslate"><span class="pre">run_id</span></code> is a wildcard (“stop whatever’s active”).</p></td>
+</tr>
+<tr class="row-even"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/start_request_profile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;run_id&quot;:</span> <span class="pre">?,</span> <span class="pre">&quot;event_dir&quot;:</span> <span class="pre">?}</span></code></p></td>
+<td><p>Event recorder only — no torch trace. Lower overhead; safer to leave on.</p></td>
+</tr>
+<tr class="row-odd"><td><p>POST</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/stop_request_profile</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{&quot;run_id&quot;:</span> <span class="pre">?}</span></code></p></td>
+<td><p>Same wildcard semantics as <code class="docutils literal notranslate"><span class="pre">/stop_profile</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Example: record cheap events on every request without a kernel trace:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/start_request_profile<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-d<span class="w"> </span><span class="s1">'{"run_id":"demo","event_dir":"/tmp/profiles/demo/events"}'</span>
+<span class="c1"># … run traffic …</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/stop_request_profile<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{}'</span>
+python<span class="w"> </span>-m<span class="w"> </span>sglang_omni.profiler<span class="w"> </span>/tmp/profiles/demo/events<span class="w"> </span>--format<span class="w"> </span>table
+</pre></div>
+</div>
+</section>
+<section id="discipline">
+<h2>Discipline<a class="headerlink" href="#discipline" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Profiling must never break serving.</strong> The emitter swallows write
+errors and counts drops; the first failure is logged once.</p></li>
+<li><p><strong>Tensors and large blobs stay out of event metadata.</strong> Keep metadata
+to small scalars (ids, counts, durations, modality, error strings). The
+recorder enforces this defensively: if a tensor / numpy array ends up
+in metadata, <code class="docutils literal notranslate"><span class="pre">_json_default</span></code> serializes a summary
+(<code class="docutils literal notranslate"><span class="pre">{&quot;__tensor_summary__&quot;:</span> <span class="pre">true,</span> <span class="pre">&quot;type&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;shape&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;dtype&quot;:</span> <span class="pre">&quot;...&quot;,</span> <span class="pre">&quot;device&quot;:</span> <span class="pre">&quot;...&quot;}</span></code>) instead of materializing the contents. 0-D
+tensors / numpy scalars still serialize as plain scalars.</p></li>
+<li><p><strong>Event naming.</strong> Lowercase snake_case, prefix with the layer that
+owns the event (<code class="docutils literal notranslate"><span class="pre">stage_*</span></code>, <code class="docutils literal notranslate"><span class="pre">scheduler_*</span></code>, <code class="docutils literal notranslate"><span class="pre">encoder_*</span></code>, etc.). Use the
+stage name (not the event name) to distinguish “thinker prefill start”
+from “talker prefill start”.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="reference_encode_service.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Reference Encode Service</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="qwen3_asr_concurrency_profile.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#event-model">Event model</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-event-names">Standard event names</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#active-stage-attribution">Active-stage attribution</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lifecycle">Lifecycle</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-reports">Generating reports</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#torch-profiler">Torch profiler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#http-surface">HTTP surface</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discipline">Discipline</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

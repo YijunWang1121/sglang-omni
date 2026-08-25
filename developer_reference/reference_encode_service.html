@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reference Encode Service &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/reference_encode_service';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Request-level profiler" href="profiler.html" />
+    <link rel="prev" title="Communication" href="communication.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/reference_encode_service.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/reference_encode_service.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/reference_encode_service.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/reference_encode_service.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Reference Encode Service</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-shape">API Shape</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#responsibility-split">Responsibility Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-key-contract">Cache-Key Contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#artifact-policy">Artifact Policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-and-waiters">Failure And Waiters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#m4a-and-m4b-boundary">M4a And M4b Boundary</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="reference-encode-service">
+<h1>Reference Encode Service<a class="headerlink" href="#reference-encode-service" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">ReferenceEncodeService</span></code> owns reusable mechanics for ad-hoc TTS reference
+encoding:</p>
+<ul class="simple">
+<li><p>cache-keyed lookup;</p></li>
+<li><p>byte-bounded LRU storage;</p></li>
+<li><p>same-key single-flight while an encode is in progress;</p></li>
+<li><p>failure propagation to waiters without caching failures;</p></li>
+<li><p>artifact store/load conversion and caller-owned return values;</p></li>
+<li><p>basic cache statistics.</p></li>
+</ul>
+<p>The service is for ad-hoc request references. Registered or uploaded voices
+continue to use <code class="docutils literal notranslate"><span class="pre">SpeakerArtifactCache</span></code>, because they have a different lifetime,
+key space, and invalidation path.</p>
+<section id="api-shape">
+<h2>API Shape<a class="headerlink" href="#api-shape" title="Link to this heading">#</a></h2>
+<p>The implementation lives in <code class="docutils literal notranslate"><span class="pre">sglang_omni/scheduling/reference_encoder.py</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReferenceEncodeKey</span><span class="p">:</span>
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">model_revision</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">encoder_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">encoder_config_hash</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">artifact_kind</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">input_key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">options_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReferenceEncodeHook</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">InputT</span><span class="p">,</span> <span class="n">ArtifactT</span><span class="p">,</span> <span class="n">StoredT</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">normalize_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_input</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">InputT</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cache_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ReferenceEncodeKey</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">encode_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactT</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">store_artifact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">artifact</span><span class="p">:</span> <span class="n">ArtifactT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StoredT</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_artifact</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stored</span><span class="p">:</span> <span class="n">StoredT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactT</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">revalidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputT</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">ReferenceEncodeKey</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span> <span class="o">...</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">KeyedReferenceEncodeHook</span><span class="p">(</span><span class="n">ReferenceEncodeHook</span><span class="p">[</span><span class="n">InputT</span><span class="p">,</span> <span class="n">ArtifactT</span><span class="p">,</span> <span class="n">StoredT</span><span class="p">]):</span>
+    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">model_revision</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">encoder_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">encoder_config_hash</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">artifact_kind</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">input_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">options_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">:</span> <span class="n">InputT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TensorReferenceEncodeHook</span><span class="p">(</span>
+    <span class="n">KeyedReferenceEncodeHook</span><span class="p">[</span><span class="n">InputT</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]</span>
+<span class="p">):</span>
+    <span class="n">storage_dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">output_dtype</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">dtype</span> <span class="o">|</span> <span class="kc">None</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ReferenceEncodeService</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">InputT</span><span class="p">,</span> <span class="n">ArtifactT</span><span class="p">,</span> <span class="n">StoredT</span><span class="p">]):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_or_encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_input</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">desc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArtifactT</span><span class="p">:</span> <span class="o">...</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ReferenceEncodeService</span></code> is synchronous and thread-first. Existing TTS
+preprocessing and encoder stages already run synchronous model code inside
+<code class="docutils literal notranslate"><span class="pre">SimpleScheduler</span></code> or <code class="docutils literal notranslate"><span class="pre">ThreadedSimpleScheduler</span></code>, so adding an async surface would
+force nested event-loop management without changing the underlying work.</p>
+</section>
+<section id="responsibility-split">
+<h2>Responsibility Split<a class="headerlink" href="#responsibility-split" title="Link to this heading">#</a></h2>
+<p>The service owns mechanics:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">_inflight</span></code> single-flight map;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">StageOutputCache</span></code> access under a service-owned lock;</p></li>
+<li><p>cache insertion, byte budget, and LRU eviction;</p></li>
+<li><p>follower waits, timeout handling, and exception fanout;</p></li>
+<li><p>no-poison-on-failure behavior;</p></li>
+<li><p>stats for hits, misses, merges, failures, uncacheable inputs, entries, bytes,
+and evictions.</p></li>
+</ul>
+<p>The hook owns model semantics:</p>
+<ul class="simple">
+<li><p>request-specific input normalization;</p></li>
+<li><p>cacheability;</p></li>
+<li><p>model/checkpoint/config key parts;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encode_one</span></code>;</p></li>
+<li><p>artifact device and dtype policy;</p></li>
+<li><p>store/load conversion;</p></li>
+<li><p>revalidation for mutable local files.</p></li>
+</ul>
+<p>Hooks with structured identity should inherit <code class="docutils literal notranslate"><span class="pre">KeyedReferenceEncodeHook</span></code>. They
+provide key metadata, <code class="docutils literal notranslate"><span class="pre">input_key</span></code>, and <code class="docutils literal notranslate"><span class="pre">encode_one</span></code>, plus input normalization
+when the service does not already receive the typed item. The default builds
+<code class="docutils literal notranslate"><span class="pre">ReferenceEncodeKey</span></code> and rechecks input and option keys before insertion.
+Tensor-producing encoders should inherit <code class="docutils literal notranslate"><span class="pre">TensorReferenceEncodeHook</span></code>, which
+also stores a cache-owned CPU clone and returns a caller-owned clone in
+<code class="docutils literal notranslate"><span class="pre">output_dtype</span></code>. Structured artifacts such as nested prompt dictionaries keep
+their own store/load policy on top of <code class="docutils literal notranslate"><span class="pre">KeyedReferenceEncodeHook</span></code>.</p>
+</section>
+<section id="cache-key-contract">
+<h2>Cache-Key Contract<a class="headerlink" href="#cache-key-contract" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ReferenceEncodeKey</span></code> must include every input that can change the encoded
+artifact identity:</p>
+<ul class="simple">
+<li><p>model family or checkpoint identity;</p></li>
+<li><p>model or encoder revision;</p></li>
+<li><p>encoder implementation and config hash;</p></li>
+<li><p>artifact kind;</p></li>
+<li><p>normalized reference content identity;</p></li>
+<li><p>encode options that affect the artifact.</p></li>
+</ul>
+<p>Local reference files should use
+<code class="docutils literal notranslate"><span class="pre">reference_path_cache_key(path,</span> <span class="pre">trust_stat=False)</span></code> and revalidate before cache
+insert. Bytes and data-URI payloads should key by the bytes or original payload
+actually consumed by the model hook. Remote URLs should not be cached by URL
+string alone unless an upstream fetch layer has already materialized immutable
+content identity.</p>
+</section>
+<section id="artifact-policy">
+<h2>Artifact Policy<a class="headerlink" href="#artifact-policy" title="Link to this heading">#</a></h2>
+<p>Hooks should store cache-owned artifacts, usually detached CPU tensors or a
+small CPU dictionary of detached tensors. <code class="docutils literal notranslate"><span class="pre">load_artifact</span></code> must return a
+caller-owned object, commonly by cloning and moving to the expected dtype or
+device. <code class="docutils literal notranslate"><span class="pre">TensorReferenceEncodeHook</span></code> provides this policy through
+<code class="docutils literal notranslate"><span class="pre">storage_dtype</span></code> and <code class="docutils literal notranslate"><span class="pre">output_dtype</span></code>. The service enforces the byte budget on the
+stored representation.</p>
+<p>If a stored artifact is larger than <code class="docutils literal notranslate"><span class="pre">max_bytes</span></code>, the leader request and all
+same-key followers still receive a result, but the artifact is not inserted into
+the LRU.</p>
+</section>
+<section id="failure-and-waiters">
+<h2>Failure And Waiters<a class="headerlink" href="#failure-and-waiters" title="Link to this heading">#</a></h2>
+<p>For a cacheable key:</p>
+<ol class="arabic simple">
+<li><p>Cache hits return <code class="docutils literal notranslate"><span class="pre">hook.load_artifact(stored)</span></code>.</p></li>
+<li><p>If another request is already encoding the same key, followers wait on the
+leader future.</p></li>
+<li><p>The leader encodes once, stores the artifact representation, optionally
+inserts it into the LRU, resolves waiters, and removes the in-flight entry.</p></li>
+</ol>
+<p>Leader failures are propagated to waiters and are not cached. The next request
+can retry as a new leader. A follower timeout does not remove the leader’s
+in-flight entry.</p>
+</section>
+<section id="m4a-and-m4b-boundary">
+<h2>M4a And M4b Boundary<a class="headerlink" href="#m4a-and-m4b-boundary" title="Link to this heading">#</a></h2>
+<p>This document covers <strong>M4a only</strong>: the ad-hoc reference cache and same-key
+single-flight that ships today.</p>
+<p><strong>M4b (different-key batch coalescing) is not implemented and is a non-goal
+here</strong>; it is described only to mark the scope boundary. Do not add M4b runtime
+code until profiling proves it is worth the extra scheduling surface.</p>
+<p>Before building M4b, run cold-cache workloads with different reference audio per
+request at concurrency 8 and 16 for FishAudio S2-Pro, Qwen3-TTS, and
+MOSS-TTS Local. Track preprocessing/reference-encode p50/p95, end-to-end TTFA
+and latency, throughput, cache hit/miss/merge counts, and GPU/CPU utilization.
+Build M4b for a model only if different-key reference encode remains a top
+bottleneck and batching gives at least 15% p95 latency reduction or 20%
+throughput improvement versus M4a.</p>
+<p>If M4b is built later, it should be an opt-in extension of
+<code class="docutils literal notranslate"><span class="pre">ReferenceEncodeService</span></code>, not the default path:</p>
+<ul class="simple">
+<li><p>add explicit hook capability, for example <code class="docutils literal notranslate"><span class="pre">can_encode_batch()</span></code> defaulting to
+<code class="docutils literal notranslate"><span class="pre">False</span></code>, and call <code class="docutils literal notranslate"><span class="pre">encode_batch(items)</span></code> only for hooks that opt in;</p></li>
+<li><p>add service knobs such as <code class="docutils literal notranslate"><span class="pre">max_batch_size=1</span></code> and <code class="docutils literal notranslate"><span class="pre">max_batch_wait_ms=0</span></code>;</p></li>
+<li><p>preserve M4a ordering: normalize input, compute cache key, check cache,
+merge same-key inflight work, and only then enqueue distinct cache-miss
+leaders for different-key batching;</p></li>
+<li><p>use an internal queue that drains up to <code class="docutils literal notranslate"><span class="pre">max_batch_size</span></code> or
+<code class="docutils literal notranslate"><span class="pre">max_batch_wait_ms</span></code>, calls one hook batch encode, and then stores,
+revalidates, cache-inserts, and resolves each item independently;</p></li>
+<li><p>on a batch failure, retry per item so one bad reference does not fail the
+whole batch.</p></li>
+</ul>
+<p>Model rollout should stay evidence-driven. MOSS-TTS Local already has its own
+batched reference encoder and should not be migrated just to fit this generic
+surface. FishAudio S2-Pro is the first plausible candidate only if profiling
+shows real benefit; its batched path would decode/resample each reference, pad
+waveforms, call the codec once, and split outputs while preserving parity with
+<code class="docutils literal notranslate"><span class="pre">encode_one</span></code>. Qwen3-TTS should remain M4a-only unless the upstream wrapper
+exposes a safe batch primitive for <code class="docutils literal notranslate"><span class="pre">create_voice_clone_prompt</span></code>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="communication.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Communication</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="profiler.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Request-level profiler</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#api-shape">API Shape</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#responsibility-split">Responsibility Split</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cache-key-contract">Cache-Key Contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#artifact-policy">Artifact Policy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-and-waiters">Failure And Waiters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#m4a-and-m4b-boundary">M4a And M4b Boundary</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

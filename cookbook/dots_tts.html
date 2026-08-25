@@ -1,0 +1,1028 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>dots.tts &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cookbook/dots_tts';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MiniMax Music 3" href="minimax_music3.html" />
+    <link rel="prev" title="MOSS-TTS-Local" href="moss_tts_local.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/dots_tts.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/cookbook/dots_tts.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fcookbook/dots_tts.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/cookbook/dots_tts.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>dots.tts</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-checkpoints">Supported checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-and-capacity">Memory and capacity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance">Performance</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="dots-tts">
+<h1>dots.tts<a class="headerlink" href="#dots-tts" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/dots-studio/dots.tts-mf">dots.tts</a> is a text-to-speech model from rednote-hilab. It outputs 48 kHz speech and clones a speaker from a short reference clip plus its transcript.</p>
+<p>dots.tts is a continuous-latent model, not a codec model. The backbone emits no audio tokens. Each AR step gives a hidden state; a MeanFlow DiT uses it to sample one latent patch (4 frames × 128 dims); a semantic encoder turns the patch back into the next backbone input; an AudioVAE decodes latents to waveform. No codebook, no token sampler. So <code class="docutils literal notranslate"><span class="pre">temperature</span></code> and <code class="docutils literal notranslate"><span class="pre">top_k</span></code> do nothing here — use the solver knobs (<code class="docutils literal notranslate"><span class="pre">num_steps</span></code>, <code class="docutils literal notranslate"><span class="pre">guidance_scale</span></code>) instead.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Spec</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Backbone</p></td>
+<td><p>Qwen2 1.5B decoder (28 L, hidden=1536, GQA 12/2)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Acoustic tail</p></td>
+<td><p>MeanFlow DiT (18 L, hidden=1024, 16 heads) + VAE semantic encoder</p></td>
+</tr>
+<tr class="row-even"><td><p>Latent patch</p></td>
+<td><p>4 frames × 128 dims (one patch ≈ 160 ms of audio)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Context length</p></td>
+<td><p>2,048 tokens</p></td>
+</tr>
+<tr class="row-even"><td><p>Sample rate</p></td>
+<td><p>48 kHz</p></td>
+</tr>
+<tr class="row-odd"><td><p>Solver</p></td>
+<td><p>MeanFlow + Euler, engine-wide <code class="docutils literal notranslate"><span class="pre">num_steps=4</span></code> (SOAR: flow matching + CFG, <code class="docutils literal notranslate"><span class="pre">num_steps=10</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="supported-checkpoints">
+<h2>Supported checkpoints<a class="headerlink" href="#supported-checkpoints" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Checkpoint</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/dots-studio/dots.tts-mf"><code class="docutils literal notranslate"><span class="pre">dots-studio/dots.tts-mf</span></code></a></p></td>
+<td><p>MeanFlow. Continuous batching, <code class="docutils literal notranslate"><span class="pre">num_steps=4</span></code>. <code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts.yaml</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="https://huggingface.co/dots-studio/dots.tts-soar"><code class="docutils literal notranslate"><span class="pre">dots-studio/dots.tts-soar</span></code></a></p></td>
+<td><p>Flow matching. Single request at a time (<code class="docutils literal notranslate"><span class="pre">max_running_requests=1</span></code>) with CFG, <code class="docutils literal notranslate"><span class="pre">num_steps=10</span></code>. <code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts_soar.yaml</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://huggingface.co/dots-studio/dots.tts-base"><code class="docutils literal notranslate"><span class="pre">dots-studio/dots.tts-base</span></code></a></p></td>
+<td><p>Flow matching, same as SOAR. Serve it with <code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts_soar.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">--model-path</span> <span class="pre">dots-studio/dots.tts-base</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> by following <a class="reference internal" href="../get_started/installation.html"><span class="std std-doc">Installation</span></a>, then download and launch the server:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>dots-studio/dots.tts-mf
+
+sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>dots-studio/dots.tts-mf<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/dots_tts.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--allowed-local-media-path<span class="w"> </span>docs/_static/audio<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>To serve SOAR instead, swap both the checkpoint and the config:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>dots-studio/dots.tts-soar
+
+sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>dots-studio/dots.tts-soar<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/dots_tts_soar.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--allowed-local-media-path<span class="w"> </span>docs/_static/audio<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>SOAR is a flow-matching checkpoint. It runs the single-request solver with classifier-free guidance, so its config pins <code class="docutils literal notranslate"><span class="pre">max_running_requests:</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">num_steps:</span> <span class="pre">10</span></code>; continuous batching is MeanFlow-only. Every request example below works on either checkpoint — only the <code class="docutils literal notranslate"><span class="pre">model</span></code> field changes.</p>
+<p><code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts.yaml</span></code> is the canonical MeanFlow deployment. It is already tuned; compiled acoustic tail and vocoder (<code class="docutils literal notranslate"><span class="pre">optimize:</span> <span class="pre">true</span></code>, on by default); continuous batching at <code class="docutils literal notranslate"><span class="pre">max_running_requests=16</span></code>; and the backbone decode CUDA graph. <code class="docutils literal notranslate"><span class="pre">--model-path</span></code> alone keeps the compiled tail and batching but leaves backbone decode eager, which is slower per request (see <a class="reference internal" href="#performance"><span class="std std-ref">Performance</span></a>). Use the config file.</p>
+<p>If startup fails with <code class="docutils literal notranslate"><span class="pre">dots.tts</span> <span class="pre">acoustic-tail</span> <span class="pre">admission</span> <span class="pre">failed</span> <span class="pre">at</span> <span class="pre">startup</span></code>, the GPU cannot hold <code class="docutils literal notranslate"><span class="pre">max_running_requests</span> <span class="pre">×</span> <span class="pre">max_generate_length</span></code> full-length acoustic pools — lower those knobs yourself. The engine never silently shrinks them.</p>
+<p>The examples below read local clips from <code class="docutils literal notranslate"><span class="pre">docs/_static/audio</span></code>. To fetch reference audio over HTTP instead, allow the domains you need, e.g. <code class="docutils literal notranslate"><span class="pre">--allowed-media-domain</span> <span class="pre">huggingface.co</span></code>.</p>
+</section>
+<section id="memory-and-capacity">
+<h2>Memory and capacity<a class="headerlink" href="#memory-and-capacity" title="Link to this heading">#</a></h2>
+<p>Continuous batching eagerly allocates acoustic-tail state for every slot at the full generate length:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>patch_capacity = max_generate_length + 1
+dit_cache_tokens = patch_capacity × (hidden_patch_size + latent_patch_size)   # MF: ×5
+</pre></div>
+</div>
+<p>Pool bytes scale roughly as <code class="docutils literal notranslate"><span class="pre">max_running_requests</span> <span class="pre">×</span> <span class="pre">patch_capacity</span></code> and include DiT KV (per NFE), semantic-encoder KV, scratch K/V, masks, window, and AdaLN mods. Startup logs the estimated breakdown and free CUDA memory, then refuses to allocate when free VRAM is below the estimate plus a 15% headroom for graphs and workspace.</p>
+<p><code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code> (default <code class="docutils literal notranslate"><span class="pre">0.20</span></code> in <code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts.yaml</span></code>) only budgets the <strong>SGLang backbone</strong> KV cache. Acoustic-tail pools are separate and are <strong>not</strong> covered by that fraction.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Knob</p></th>
+<th class="head"><p>Effect on pool size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code></p></td>
+<td><p>Number of full-length slots</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_generate_length</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">patch_capacity</span></code> (and therefore DiT / encoder sequence length)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_steps</span></code></p></td>
+<td><p>DiT KV is replicated per NFE step</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>On a full GPU the default <code class="docutils literal notranslate"><span class="pre">16</span> <span class="pre">×</span> <span class="pre">500</span></code> layout is intended. On tighter cards, lower <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code> and/or <code class="docutils literal notranslate"><span class="pre">max_generate_length</span></code> explicitly rather than hoping for automatic downsizing. A live request that needs a free slot when all are busy fails with <code class="docutils literal notranslate"><span class="pre">dots.tts</span> <span class="pre">acoustic</span> <span class="pre">tail</span> <span class="pre">admission</span> <span class="pre">failed:</span> <span class="pre">ran</span> <span class="pre">out</span> <span class="pre">of</span> <span class="pre">slots</span></code> — lower client concurrency or raise <code class="docutils literal notranslate"><span class="pre">max_running_requests</span></code> (if memory allows).</p>
+<p>Incremental / bucketed tail-KV allocation is not implemented yet; capacity is still the eager full-length pool.</p>
+</section>
+<section id="synthesizing-speech">
+<h2>Synthesizing Speech<a class="headerlink" href="#synthesizing-speech" title="Link to this heading">#</a></h2>
+<p>dots.tts needs a reference clip and its transcript. The speaker comes entirely from the reference (x-vector plus prompt latents), so there is no zero-shot <code class="docutils literal notranslate"><span class="pre">voice</span></code> preset. Under the default continuous-batching deployment, a request without <code class="docutils literal notranslate"><span class="pre">references</span></code> is rejected.</p>
+<section id="voice-cloning">
+<h3>Voice Cloning<a class="headerlink" href="#voice-cloning" title="Link to this heading">#</a></h3>
+<p>The reference transcript matters. It is prefixed to your input text so the model can align prompt audio with prompt text. A wrong transcript hurts cloning quality.</p>
+<ol class="arabic simple">
+<li><p>Use curl:</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "dots-studio/dots.tts-mf",</span>
+<span class="s1">    "input": "Have a nice day and enjoy south california sunshine.",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "docs/_static/audio/male-voice.wav",</span>
+<span class="s1">      "text": "Hey, Adam here. Let'</span><span class="se">\'</span><span class="s1">'s create something that feels real, sounds human, and connects every time."</span>
+<span class="s1">    }],</span>
+<span class="s1">    "seed": 42</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Use Python</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"dots-studio/dots.tts-mf"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Have a nice day and enjoy south california sunshine."</span><span class="p">,</span>
+        <span class="s2">"references"</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">"audio_path"</span><span class="p">:</span> <span class="s2">"docs/_static/audio/male-voice.wav"</span><span class="p">,</span>
+            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Hey, Adam here. Let's create something that feels real, sounds human, and connects every time."</span><span class="p">,</span>
+        <span class="p">}],</span>
+        <span class="s2">"seed"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"output.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_text</span></code> are accepted as a shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> / <code class="docutils literal notranslate"><span class="pre">references[0].text</span></code>.</p>
+</section>
+<section id="streaming">
+<h3>Streaming<a class="headerlink" href="#streaming" title="Link to this heading">#</a></h3>
+<p>Streaming lets you play audio while generation is still running, which cuts time-to-first-audio. dots.tts streams raw 48 kHz PCM: the AudioVAE decoder emits a waveform chunk every few latent patches instead of waiting for the whole utterance.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">&quot;stream&quot;:</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;response_format&quot;:</span> <span class="pre">&quot;pcm&quot;</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-N<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "dots-studio/dots.tts-mf",</span>
+<span class="s1">    "input": "Get the trust fund to the bank early.",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "docs/_static/audio/female-voice.wav",</span>
+<span class="s1">      "text": "By repeating what students say, teachers can demonstrate that they are listening. By extending what students say."</span>
+<span class="s1">    }],</span>
+<span class="s1">    "stream": true,</span>
+<span class="s1">    "response_format": "pcm",</span>
+<span class="s1">    "seed": 42</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.pcm
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">-N</span></code> flag disables curl’s output buffering so chunks are written as they arrive. The response is 16-bit mono PCM at 48 kHz with no in-band JSON framing; convert it with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ffmpeg<span class="w"> </span>-f<span class="w"> </span>s16le<span class="w"> </span>-ar<span class="w"> </span><span class="m">48000</span><span class="w"> </span>-ac<span class="w"> </span><span class="m">1</span><span class="w"> </span>-i<span class="w"> </span>output.pcm<span class="w"> </span>output.wav
+</pre></div>
+</div>
+</section>
+<section id="request-parameters">
+<h3>Request parameters<a class="headerlink" href="#request-parameters" title="Link to this heading">#</a></h3>
+<p>Top-level fields:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p>string</p></td>
+<td><p>served model</p></td>
+<td><p>Served dots.tts model identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input</span></code></p></td>
+<td><p>string</p></td>
+<td><p>(required)</p></td>
+<td><p>Text to synthesize</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">references</span></code></p></td>
+<td><p>list</p></td>
+<td><p>(required)</p></td>
+<td><p>Reference audio for cloning. Each item has <code class="docutils literal notranslate"><span class="pre">audio_path</span></code> (local path, file URL, data URL, or HTTP URL) and <code class="docutils literal notranslate"><span class="pre">text</span></code> (transcript). Exactly one reference is accepted</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> / <code class="docutils literal notranslate"><span class="pre">ref_text</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Shorthand for <code class="docutils literal notranslate"><span class="pre">references[0].audio_path</span></code> / <code class="docutils literal notranslate"><span class="pre">references[0].text</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">response_format</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;wav&quot;</span></code></p></td>
+<td><p>Output audio format (<code class="docutils literal notranslate"><span class="pre">wav</span></code>, <code class="docutils literal notranslate"><span class="pre">mp3</span></code>, <code class="docutils literal notranslate"><span class="pre">flac</span></code>, <code class="docutils literal notranslate"><span class="pre">opus</span></code>, <code class="docutils literal notranslate"><span class="pre">aac</span></code>, <code class="docutils literal notranslate"><span class="pre">pcm</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Enable raw PCM streaming</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Seed for the flow sampler. Fixes the output for a given request</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">language</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Language tag for the prompt text; <code class="docutils literal notranslate"><span class="pre">auto</span></code> or <code class="docutils literal notranslate"><span class="pre">auto_detect</span></code> detects it from the input</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">instructions</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Style instructions; switches the prompt template to <code class="docutils literal notranslate"><span class="pre">instruction_tts</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Solver knobs go under <code class="docutils literal notranslate"><span class="pre">stage_params.latent_engine</span></code>. They are <strong>not</strong> top-level fields:
+<code class="docutils literal notranslate"><span class="pre">CreateSpeechRequest</span></code> drops unknown top-level keys, so sending <code class="docutils literal notranslate"><span class="pre">num_steps</span></code> next to
+<code class="docutils literal notranslate"><span class="pre">input</span></code> changes nothing and reports no error.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">speaker_scale</span></code></p></td>
+<td><p>float</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.5</span></code></p></td>
+<td><p>Scales the speaker x-vector before conditioning. Higher values push harder toward the reference timbre</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">guidance_scale</span></code></p></td>
+<td><p>float</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2</span></code></p></td>
+<td><p>Classifier-free guidance strength for the flow sampler</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eos_threshold</span></code></p></td>
+<td><p>float</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.8</span></code></p></td>
+<td><p>Probability above which the EOS head ends generation. Lower values cut utterances earlier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_steps</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">4</span></code> (MF), <code class="docutils literal notranslate"><span class="pre">10</span></code> (SOAR)</p></td>
+<td><p>Flow solver steps. MeanFlow fixes this engine-wide: another value fails the request. SOAR and base run one request at a time and honour it</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ode_method</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;euler&quot;</span></code></p></td>
+<td><p>Flow solver. MeanFlow accepts only <code class="docutils literal notranslate"><span class="pre">euler</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_generate_length</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">500</span></code></p></td>
+<td><p>Cap on generated latent patches (≈ 160 ms each), bounded by the engine’s <code class="docutils literal notranslate"><span class="pre">max_generate_length</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">normalize_text</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Run the upstream text normalizer (numbers, symbols) before tokenizing</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "dots-studio/dots.tts-mf",</span>
+<span class="s1">    "input": "Have a nice day and enjoy south california sunshine.",</span>
+<span class="s1">    "references": [{</span>
+<span class="s1">      "audio_path": "docs/_static/audio/male-voice.wav",</span>
+<span class="s1">      "text": "Hey, Adam here. Let'</span><span class="se">\'</span><span class="s1">'s create something that feels real, sounds human, and connects every time."</span>
+<span class="s1">    }],</span>
+<span class="s1">    "seed": 42,</span>
+<span class="s1">    "stage_params": {"latent_engine": {"speaker_scale": 2.0, "eos_threshold": 0.6}}</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>output.wav
+</pre></div>
+</div>
+<p>A rejected solver value comes back as HTTP 500 with the engine’s message, for example <code class="docutils literal notranslate"><span class="pre">dots.tts</span> <span class="pre">num_steps</span> <span class="pre">is</span> <span class="pre">fixed</span> <span class="pre">for</span> <span class="pre">continuous</span> <span class="pre">batching</span></code>. It is a validation failure, not a server fault.</p>
+<p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">top_p</span></code>, and <code class="docutils literal notranslate"><span class="pre">top_k</span></code> do not apply. The backbone token logits are unused; the acoustic tail is a deterministic flow solve once the seed is fixed.</p>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Link to this heading">#</a></h3>
+<p>Seed-TTS EN benchmark at main commit <code class="docutils literal notranslate"><span class="pre">2b45073c</span></code>, seed 42, with 10 warmup requests. Throughput and latency were measured on <strong>1x H100</strong>. The server used <code class="docutils literal notranslate"><span class="pre">examples/configs/dots_tts.yaml</span></code>, which enables the optimized acoustic tail, vocoder, and backbone CUDA Graph. Every row uses all 1,088 samples.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Concurrency</p></th>
+<th class="head text-right"><p>Throughput (req/s)</p></th>
+<th class="head text-right"><p>Mean latency</p></th>
+<th class="head text-right"><p>RTF (per-req)</p></th>
+<th class="head text-right"><p>audio_s/s</p></th>
+<th class="head text-right"><p>WER</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>0.935</p></td>
+<td class="text-right"><p>1.070 s</p></td>
+<td class="text-right"><p>0.275</p></td>
+<td class="text-right"><p>3.726</p></td>
+<td class="text-right"><p>1.241%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>2</p></td>
+<td class="text-right"><p>1.556</p></td>
+<td class="text-right"><p>1.286 s</p></td>
+<td class="text-right"><p>0.314</p></td>
+<td class="text-right"><p>6.493</p></td>
+<td class="text-right"><p>1.256%</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-right"><p>2.493</p></td>
+<td class="text-right"><p>1.603 s</p></td>
+<td class="text-right"><p>0.390</p></td>
+<td class="text-right"><p>10.407</p></td>
+<td class="text-right"><p>1.264%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>3.875</p></td>
+<td class="text-right"><p>2.062 s</p></td>
+<td class="text-right"><p>0.502</p></td>
+<td class="text-right"><p>16.173</p></td>
+<td class="text-right"><p>1.323%</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>4.760</p></td>
+<td class="text-right"><p>3.344 s</p></td>
+<td class="text-right"><p>0.812</p></td>
+<td class="text-right"><p>19.859</p></td>
+<td class="text-right"><p>1.348%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>4.988</p></td>
+<td class="text-right"><p>6.344 s</p></td>
+<td class="text-right"><p>1.596</p></td>
+<td class="text-right"><p>20.818</p></td>
+<td class="text-right"><p>1.331%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>All requests completed successfully.</p>
+<ul class="simple">
+<li><p><strong>Concurrency</strong> — Maximum number of in-flight client requests (<code class="docutils literal notranslate"><span class="pre">--max-concurrency</span></code>).</p></li>
+<li><p><strong>Throughput (req/s)</strong> — Completed requests divided by total benchmark wall-clock time.</p></li>
+<li><p><strong>Mean latency</strong> — Average end-to-end time per request (send to full response received).</p></li>
+<li><p><strong>RTF (per-req)</strong> — Average ratio of processing time to generated audio duration per request. <code class="docutils literal notranslate"><span class="pre">&lt;1</span></code> is faster than real time.</p></li>
+<li><p><strong>audio_s/s</strong> — Total seconds of audio produced divided by total benchmark wall-clock time.</p></li>
+<li><p><strong>WER</strong> — Corpus word error rate of the generated speech, transcribed with <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-ASR-1.7B</span></code>.</p></li>
+</ul>
+<p>To reproduce, start the server as in <a class="reference internal" href="#prerequisites"><span class="std std-ref">Prerequisites</span></a> and run the benchmark against it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_tts_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--meta<span class="w"> </span>zhaochenyang20/seed-tts-eval-arrow<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>dots-studio/dots.tts-mf<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ref-format<span class="w"> </span>references<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--base-url<span class="w"> </span>http://127.0.0.1:8000<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--lang<span class="w"> </span>en<span class="w"> </span>--max-concurrency<span class="w"> </span><span class="m">16</span><span class="w"> </span>--max-samples<span class="w"> </span><span class="m">1088</span><span class="w"> </span>--warmup<span class="w"> </span><span class="m">10</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--generate-only<span class="w"> </span>--use-existing-server<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="w"> </span>results/dots-seedtts-en-c16
+
+python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_tts_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--meta<span class="w"> </span>zhaochenyang20/seed-tts-eval-arrow<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>dots-studio/dots.tts-mf<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--ref-format<span class="w"> </span>references<span class="w"> </span>--lang<span class="w"> </span>en<span class="w"> </span>--seed<span class="w"> </span><span class="m">42</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--transcribe-only<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="w"> </span>results/dots-seedtts-en-c16
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="moss_tts_local.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MOSS-TTS-Local</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="minimax_music3.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MiniMax Music 3</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#supported-checkpoints">Supported checkpoints</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#memory-and-capacity">Memory and capacity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthesizing-speech">Synthesizing Speech</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#voice-cloning">Voice Cloning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming">Streaming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance">Performance</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

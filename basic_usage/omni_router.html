@@ -1,0 +1,1498 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Omni Router Usage &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/omni_router';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Same-GPU Data Parallelism with CUDA MPS" href="mps_dp.html" />
+    <link rel="prev" title="Process Topology Migration" href="process_topology_migration.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/basic_usage/omni_router.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/basic_usage/omni_router.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/omni_router.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/omni_router.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Omni Router Usage</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-topology">Router Topology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-workers-and-router-from-yaml">Launch Workers and Router From YAML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-worker-servers-manually">Launch Worker Servers Manually</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-the-router">Launch the Router</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-arguments">Router Arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-router-and-worker-state">Check Router and Worker State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#send-requests-through-the-router">Send Requests Through the Router</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manage-workers">Manage Workers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#routing-behavior">Routing Behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-diagnostics">Request Diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overload-behavior">Overload Behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-handling">Failure Handling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#durable-router-state">Durable Router State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-process-router-control-data-plane-split">Multi-Process Router (Control/Data-Plane Split)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguish-502-responses">Distinguish <code class="docutils literal notranslate"><span class="pre">502</span></code> Responses</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-worker-state">Inspect Worker State</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#drain-and-remove-a-worker">Drain and Remove a Worker</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="omni-router-usage">
+<h1>Omni Router Usage<a class="headerlink" href="#omni-router-usage" title="Link to this heading">#</a></h1>
+<p>The SGLang-Omni Router is an external HTTP router for Omni V1 deployments. It
+fronts multiple complete Omni V1 API servers and exposes one OpenAI-compatible
+endpoint to clients.</p>
+<p>Use the router when you launch more than one <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span></code> process and want
+one stable endpoint for request distribution, health tracking, and worker-pool
+control.</p>
+<section id="router-topology">
+<h2>Router Topology<a class="headerlink" href="#router-topology" title="Link to this heading">#</a></h2>
+<p>The router is an external HTTP process:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>client
+  |
+  v
+sgl-omni-router
+  |
+  +-- sgl-omni serve worker A
+  +-- sgl-omni serve worker B
+</pre></div>
+</div>
+<p>Each worker is a complete Omni V1 HTTP server. The router does not load model
+weights or split a single request across workers. It selects one routable worker
+for each request, forwards the original request bytes, and returns the worker
+response with router diagnostic headers.</p>
+</section>
+<section id="launch-workers-and-router-from-yaml">
+<h2>Launch Workers and Router From YAML<a class="headerlink" href="#launch-workers-and-router-from-yaml" title="Link to this heading">#</a></h2>
+<p>For a local homogeneous pool, <code class="docutils literal notranslate"><span class="pre">sgl-omni-router</span></code> can start the worker replicas
+and then start the router after all managed workers pass <code class="docutils literal notranslate"><span class="pre">/health</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni-router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8008</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--launcher-config<span class="w"> </span>examples/configs/qwen3_omni_router.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>round_robin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-failure-threshold<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-success-threshold<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-check-interval-secs<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-level<span class="w"> </span>info
+</pre></div>
+</div>
+<p>Example launcher config:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">launcher</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qwen/Qwen3-Omni-30B-A3B-Instruct</span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qwen3-omni</span>
+<span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">num_gpus_per_worker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">worker_host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">127.0.0.1</span>
+<span class="w">  </span><span class="nt">worker_base_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8011</span>
+<span class="w">  </span><span class="nt">worker_extra_args</span><span class="p">:</span><span class="w"> </span><span class="s">"--config</span><span class="nv"> </span><span class="s">examples/configs/qwen3_omni_colocated_h20.yaml</span><span class="nv"> </span><span class="s">--colocate"</span>
+<span class="w">  </span><span class="nt">wait_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">backend:</span> <span class="pre">local</span></code> means the router process starts and manages worker
+subprocesses on the same machine. The launched workers are complete Omni V1
+servers started with <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span></code>; they are not partial
+pipeline stages. The router waits for every managed worker to pass <code class="docutils literal notranslate"><span class="pre">/health</span></code>
+before it starts accepting client traffic, and it stops those managed workers
+when the router exits.</p>
+<p><code class="docutils literal notranslate"><span class="pre">num_gpus_per_worker</span></code> controls automatic GPU grouping. The default Qwen3-Omni
+router example uses colocated workers: each complete speech worker runs on one
+GPU through <code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_omni_colocated_h20.yaml</span></code>. With
+<code class="docutils literal notranslate"><span class="pre">num_workers:</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">num_gpus_per_worker:</span> <span class="pre">1</span></code>, the launcher assigns GPU <code class="docutils literal notranslate"><span class="pre">0</span></code> to
+the first worker and GPU <code class="docutils literal notranslate"><span class="pre">1</span></code> to the second worker when two CUDA devices are
+visible.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">examples/configs/qwen3_omni_colocated_h200.yaml</span></code> instead for single-H200
+workers.</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">worker_gpu_ids</span></code> only when you need explicit placement. Each entry maps one
+<code class="docutils literal notranslate"><span class="pre">CUDA_VISIBLE_DEVICES</span></code> value to one worker, for example
+<code class="docutils literal notranslate"><span class="pre">worker_gpu_ids:</span> <span class="pre">[&quot;0&quot;,</span> <span class="pre">&quot;1&quot;]</span></code> for two one-GPU colocated Qwen3-Omni workers. Use
+<code class="docutils literal notranslate"><span class="pre">worker_extra_args:</span> <span class="pre">&quot;--text-only&quot;</span></code> only if you intentionally want text-output
+workers instead of speech-output workers.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">worker_extra_args</span></code> for public Omni V1 serve options that are specific to
+the worker process, such as <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>, <code class="docutils literal notranslate"><span class="pre">--thinker-tp-size</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">--text-only</span></code>. These arguments are passed to <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span></code>
+after the launcher-owned flags. When no memory flags are provided, Omni V1 uses
+its normal auto-sizing path.</p>
+<p>Use <code class="docutils literal notranslate"><span class="pre">worker_capabilities</span></code> when managed workers intentionally expose only part
+of the Omni API surface. For example, text-only workers should not advertise
+speech or audio-output support:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">launcher</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qwen/Qwen3-Omni-30B-A3B-Instruct</span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qwen3-omni</span>
+<span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">num_gpus_per_worker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">worker_extra_args</span><span class="p">:</span><span class="w"> </span><span class="s">"--text-only"</span>
+<span class="w">  </span><span class="nt">worker_capabilities</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">chat</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">streaming</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">image_input</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">audio_input</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">video_input</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">worker_capabilities</span></code> is omitted and <code class="docutils literal notranslate"><span class="pre">worker_extra_args</span></code> contains
+<code class="docutils literal notranslate"><span class="pre">--text-only</span></code>, the router registers the managed workers with the same text-only
+capability set shown above.</p>
+<p>For short audio-input / text-output MMSU-style workloads, use the fused
+text-path Qwen3-Omni config instead of the default speech-colocated worker:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">launcher</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local</span>
+<span class="w">  </span><span class="nt">model_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Qwen/Qwen3-Omni-30B-A3B-Instruct</span>
+<span class="w">  </span><span class="nt">model_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">qwen3-omni</span>
+<span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">  </span><span class="nt">num_gpus_per_worker</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">worker_extra_args</span><span class="p">:</span><span class="w"> </span><span class="s">"--config</span><span class="nv"> </span><span class="s">examples/configs/qwen3_omni_mmsu.yaml</span><span class="nv"> </span><span class="s">--text-only"</span>
+</pre></div>
+</div>
+<p>This keeps preprocessing, encoders, aggregation, thinker, and decode in one
+worker process while leaving the general speech-colocated topology unchanged.</p>
+</section>
+<section id="launch-worker-servers-manually">
+<h2>Launch Worker Servers Manually<a class="headerlink" href="#launch-worker-servers-manually" title="Link to this heading">#</a></h2>
+<p>Start each Omni V1 worker separately. The example below launches two colocated
+Qwen3-Omni speech workers on different GPUs and ports:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-Omni-30B-A3B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-name<span class="w"> </span>qwen3-omni<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_omni_colocated_h20.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--colocate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8011</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>Qwen/Qwen3-Omni-30B-A3B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-name<span class="w"> </span>qwen3-omni<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--config<span class="w"> </span>examples/configs/qwen3_omni_colocated_h20.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--colocate<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8012</span>
+</pre></div>
+</div>
+<p>Worker URLs passed to the router must be base URLs such as
+<code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8011</span></code>. Do not include endpoint paths, query strings, or
+fragments.</p>
+</section>
+<section id="launch-the-router">
+<h2>Launch the Router<a class="headerlink" href="#launch-the-router" title="Link to this heading">#</a></h2>
+<p>Start the router with the worker URLs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni-router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8008</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-urls<span class="w"> </span>http://127.0.0.1:8011<span class="w"> </span>http://127.0.0.1:8012<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>round_robin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-failure-threshold<span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-success-threshold<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--health-check-interval-secs<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--log-level<span class="w"> </span>info
+</pre></div>
+</div>
+</section>
+<section id="router-arguments">
+<h2>Router Arguments<a class="headerlink" href="#router-arguments" title="Link to this heading">#</a></h2>
+<p>The table below lists the router command-line arguments.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--host</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code></p></td>
+<td><p>Host interface for the router HTTP server.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--port</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">8000</span></code></p></td>
+<td><p>Port for the router HTTP server.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code></p></td>
+<td><p>not set</p></td>
+<td><p>Space-separated Omni V1 worker base URLs for a homogeneous worker pool.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--worker-config</span></code></p></td>
+<td><p>not set</p></td>
+<td><p>JSON file that defines workers and optional per-worker model/capability metadata.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--launcher-config</span></code></p></td>
+<td><p>not set</p></td>
+<td><p>YAML file for a managed local worker pool. Do not use with <code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code> or <code class="docutils literal notranslate"><span class="pre">--worker-config</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--policy</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">round_robin</span></code></p></td>
+<td><p>Routing policy: <code class="docutils literal notranslate"><span class="pre">round_robin</span></code>, <code class="docutils literal notranslate"><span class="pre">least_request</span></code>, or <code class="docutils literal notranslate"><span class="pre">random</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--model</span></code></p></td>
+<td><p>not set</p></td>
+<td><p>Model name assigned to every worker when using <code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code>. Do not use with <code class="docutils literal notranslate"><span class="pre">--worker-config</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--request-timeout-secs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1800</span></code></p></td>
+<td><p>Timeout for proxied worker requests.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-payload-size</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">536870912</span></code></p></td>
+<td><p>Maximum request body size accepted by the router, in bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--max-connections</span></code></p></td>
+<td><p>auto: <code class="docutils literal notranslate"><span class="pre">128</span> <span class="pre">x</span> <span class="pre">workers</span></code>, capped at <code class="docutils literal notranslate"><span class="pre">4096</span></code></p></td>
+<td><p>Admission bound: maximum concurrent in-flight model requests before the router fast-rejects with <code class="docutils literal notranslate"><span class="pre">503</span></code>. The upstream connection pool is sized to at least this value. Explicit values below <code class="docutils literal notranslate"><span class="pre">64</span> <span class="pre">x</span> <span class="pre">workers</span></code> log an under-feed warning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--max-inflight</span></code></p></td>
+<td><p>equal to <code class="docutils literal notranslate"><span class="pre">--max-connections</span></code></p></td>
+<td><p>Advanced override that decouples the admission bound from <code class="docutils literal notranslate"><span class="pre">--max-connections</span></code>. The upstream pool is sized to the larger of the two.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--health-failure-threshold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+<td><p>Consecutive failed health checks or routed request failures before a worker becomes unhealthy.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--health-success-threshold</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>Consecutive successful health checks before an unhealthy or unknown worker becomes healthy.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--health-check-timeout-secs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">5</span></code></p></td>
+<td><p>Timeout for one worker health-check request.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--health-check-interval-secs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">10</span></code></p></td>
+<td><p>Interval between background worker health checks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--health-check-endpoint</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/health</span></code></p></td>
+<td><p>Worker endpoint used by background health checks.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--voice-owner-worker-url</span></code></p></td>
+<td><p>first worker with <code class="docutils literal notranslate"><span class="pre">speech</span></code> and <code class="docutils literal notranslate"><span class="pre">audio_input</span></code></p></td>
+<td><p>Single-process mode only. Worker that owns uploaded TTS voices. Voice management and synthesis requests that use uploaded voices stay on this worker. Without such an owner, built-in voices can still route to eligible speech workers, but voice management is unavailable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--router-state-dir</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">$SGLANG_OMNI_ROUTER_STATE_DIR</span></code>, else <code class="docutils literal notranslate"><span class="pre">$XDG_STATE_HOME/sglang-omni-router</span></code>, else <code class="docutils literal notranslate"><span class="pre">~/.local/state/sglang-omni-router</span></code></p></td>
+<td><p>Directory for <a class="reference internal" href="#durable-router-state"><span class="std std-ref">durable router state</span></a> (the weight-update journal), which must survive a host reboot. Mount it on a persistent volume in a container.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--log-level</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">info</span></code></p></td>
+<td><p>Router and Uvicorn log level.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--strict-limits</span></code></p></td>
+<td><p>off</p></td>
+<td><p>Fail startup instead of warning when the <code class="docutils literal notranslate"><span class="pre">nofile</span></code> soft limit is too low for the resolved upstream pool size (<code class="docutils literal notranslate"><span class="pre">max(--max-connections,</span> <span class="pre">--max-inflight)</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--router-processes</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Number of data-plane relay processes. <code class="docutils literal notranslate"><span class="pre">1</span></code> keeps the single-process router below; <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> enables the multi-process router (x86-64 Linux only, and rejected at startup together with an explicit <code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">least_request</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--shutdown-drain-secs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">--request-timeout-secs</span></code></p></td>
+<td><p>Multi-process only: how long a stopping data-plane process waits for in-flight requests before cancelling them. The default matches the request timeout, so a routine shutdown never truncates a request its own timeout would have allowed.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Routing policies:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">round_robin</span></code>: rotates through routable workers in order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">least_request</span></code>: selects a routable worker with the fewest active data-plane
+requests, then round-robins among ties.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">random</span></code>: selects a random routable worker.</p></li>
+</ul>
+<p>Pass exactly one of <code class="docutils literal notranslate"><span class="pre">--launcher-config</span></code>, <code class="docutils literal notranslate"><span class="pre">--worker-urls</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">--worker-config</span></code>. Use <code class="docutils literal notranslate"><span class="pre">--worker-config</span></code> when workers serve different models or
+only a subset of Omni capabilities:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">"workers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:8011"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3-omni"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"capabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"chat"</span><span class="p">,</span><span class="w"> </span><span class="s2">"image_input"</span><span class="p">,</span><span class="w"> </span><span class="s2">"video_input"</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://127.0.0.1:8012"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"qwen3-omni"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"capabilities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"chat"</span><span class="p">,</span><span class="w"> </span><span class="s2">"audio_input"</span><span class="p">,</span><span class="w"> </span><span class="s2">"audio_output"</span><span class="p">,</span><span class="w"> </span><span class="s2">"speech"</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then launch with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni-router<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8008</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--worker-config<span class="w"> </span>workers.json<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--policy<span class="w"> </span>least_request
+</pre></div>
+</div>
+</section>
+<section id="check-router-and-worker-state">
+<h2>Check Router and Worker State<a class="headerlink" href="#check-router-and-worker-state" title="Link to this heading">#</a></h2>
+<p>The router exposes separate process and worker-pool health surfaces:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8008/live
+curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8008/ready
+curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8008/health
+curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:8008/workers
+curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:8008/v1/models
+</pre></div>
+</div>
+<p>The endpoints have different meanings:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/live</span></code>: the router process is running. This does not wait for workers to
+become healthy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/ready</span></code>: at least one worker is routable. This returns <code class="docutils literal notranslate"><span class="pre">503</span></code> when all
+workers are unhealthy, dead, disabled, or still unknown.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/health</span></code>: worker-pool health summary plus admission stats (<code class="docutils literal notranslate"><span class="pre">inflight</span></code>,
+<code class="docutils literal notranslate"><span class="pre">max_inflight</span></code>, <code class="docutils literal notranslate"><span class="pre">peak_inflight</span></code>, <code class="docutils literal notranslate"><span class="pre">rejected_total</span></code>). This returns <code class="docutils literal notranslate"><span class="pre">503</span></code> when no
+worker is routable.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/workers</span></code>: detailed worker state, including <code class="docutils literal notranslate"><span class="pre">health_state</span></code>, <code class="docutils literal notranslate"><span class="pre">disabled</span></code>,
+<code class="docutils literal notranslate"><span class="pre">routable</span></code>, <code class="docutils literal notranslate"><span class="pre">active_requests</span></code>, aggregate and per-service-class request
+counters, and last error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/models</span></code>: merged model list from routable workers.</p></li>
+</ul>
+</section>
+<section id="send-requests-through-the-router">
+<h2>Send Requests Through the Router<a class="headerlink" href="#send-requests-through-the-router" title="Link to this heading">#</a></h2>
+<p>Point clients at the router port instead of the worker ports. The request schema
+is the same OpenAI-compatible schema used by each worker server.</p>
+<p>Image input with text output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8008/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"x-request-id: router-image-1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3-omni",</span>
+<span class="s1">    "messages": [</span>
+<span class="s1">      {"role": "user", "content": "How many cars are there in the image? Answer briefly."}</span>
+<span class="s1">    ],</span>
+<span class="s1">    "images": ["tests/data/cars.jpg"],</span>
+<span class="s1">    "modalities": ["text"],</span>
+<span class="s1">    "max_tokens": 16</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Streaming text:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-N<span class="w"> </span>http://127.0.0.1:8008/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"x-request-id: router-stream-1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "qwen3-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Say hello briefly."}],</span>
+<span class="s1">    "stream": true,</span>
+<span class="s1">    "max_tokens": 16</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>The router preserves the original request body. For ordinary JSON requests, it
+parses a bounded amount of request metadata for worker selection and forwards
+the original bytes to the selected worker.</p>
+</section>
+<section id="manage-workers">
+<h2>Manage Workers<a class="headerlink" href="#manage-workers" title="Link to this heading">#</a></h2>
+<p>Add a worker at runtime:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:8008/workers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"url":"http://127.0.0.1:8013","model":"qwen3-omni"}'</span>
+</pre></div>
+</div>
+<p>Disable a worker without deleting it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>http://127.0.0.1:8008/workers/http%3A%2F%2F127.0.0.1%3A8013<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"disabled":true}'</span>
+</pre></div>
+</div>
+<p>Mark a worker dead for manual quarantine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>http://127.0.0.1:8008/workers/http%3A%2F%2F127.0.0.1%3A8013<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"is_dead":true}'</span>
+</pre></div>
+</div>
+<p>Recover a manually dead worker:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>http://127.0.0.1:8008/workers/http%3A%2F%2F127.0.0.1%3A8013<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"is_dead":false}'</span>
+</pre></div>
+</div>
+<p>Delete a worker:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>http://127.0.0.1:8008/workers/http%3A%2F%2F127.0.0.1%3A8013
+</pre></div>
+</div>
+<p>Worker update requests are atomic. If an update returns <code class="docutils literal notranslate"><span class="pre">400</span></code>, the live worker
+state is not partially changed.</p>
+</section>
+<section id="routing-behavior">
+<h2>Routing Behavior<a class="headerlink" href="#routing-behavior" title="Link to this heading">#</a></h2>
+<p>The router only selects workers that are healthy, not disabled, and capable of
+serving the request.</p>
+<p>The default worker capability set represents a complete Omni V1 replica:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">speech</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">streaming</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">image_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">video_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audio_output</span></code></p></li>
+</ul>
+<p>The router infers required capabilities from each request:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> requires <code class="docutils literal notranslate"><span class="pre">chat</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stream:</span> <span class="pre">true</span></code> requires <code class="docutils literal notranslate"><span class="pre">streaming</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">images</span></code>, <code class="docutils literal notranslate"><span class="pre">image</span></code>, or image message parts require <code class="docutils literal notranslate"><span class="pre">image_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">audios</span></code>, <code class="docutils literal notranslate"><span class="pre">audio_inputs</span></code>, or audio message parts require <code class="docutils literal notranslate"><span class="pre">audio_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">videos</span></code>, <code class="docutils literal notranslate"><span class="pre">video</span></code>, or video message parts require <code class="docutils literal notranslate"><span class="pre">video_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">modalities:</span> <span class="pre">[&quot;audio&quot;]</span></code> or <code class="docutils literal notranslate"><span class="pre">audio</span></code> output fields require <code class="docutils literal notranslate"><span class="pre">audio_output</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code> and <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech/batch</span></code> require <code class="docutils literal notranslate"><span class="pre">speech</span></code>;
+<code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code> also requires <code class="docutils literal notranslate"><span class="pre">streaming</span></code> when <code class="docutils literal notranslate"><span class="pre">stream:</span> <span class="pre">true</span></code> (batch speech
+does not support streaming)</p></li>
+<li><p>speech requests using <code class="docutils literal notranslate"><span class="pre">ref_audio</span></code> or audio-bearing <code class="docutils literal notranslate"><span class="pre">references</span></code> also require
+<code class="docutils literal notranslate"><span class="pre">audio_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/audio/speech/stream</span></code> WebSocket sessions require <code class="docutils literal notranslate"><span class="pre">speech</span></code> and <code class="docutils literal notranslate"><span class="pre">streaming</span></code>,
+plus <code class="docutils literal notranslate"><span class="pre">audio_input</span></code> when configured with reference audio</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/audio/voices</span></code> management and synthesis using an uploaded voice require
+the owner worker, which has both <code class="docutils literal notranslate"><span class="pre">speech</span></code> and <code class="docutils literal notranslate"><span class="pre">audio_input</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v1/audio/transcriptions</span></code> and <code class="docutils literal notranslate"><span class="pre">/v1/audio/translations</span></code> require
+<code class="docutils literal notranslate"><span class="pre">audio_input</span></code> (also for <code class="docutils literal notranslate"><span class="pre">streaming</span></code> when the <code class="docutils literal notranslate"><span class="pre">stream</span></code> form field is true.) are multipart uploads, so the router reads the <code class="docutils literal notranslate"><span class="pre">model</span></code> and <code class="docutils literal notranslate"><span class="pre">stream</span></code> form
+fields with a single linear pass that skips the uploaded file to avoid cpu
+overhead, so in a pool that mixes ASR models the request lands on a worker
+registered with that model name. When the router cannot read a field it
+falls back to <code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Model</span></code> and <code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Stream</span></code>;
+when a field and its header are both present they must agree or the router
+answers <code class="docutils literal notranslate"><span class="pre">400</span></code>. Translation support is per model, and a worker that does not
+support it answers <code class="docutils literal notranslate"><span class="pre">400</span></code>.</p></li>
+</ul>
+<p>Register narrower worker capabilities only when a worker cannot serve one of
+those request classes.</p>
+<p>The complete TTS route set described below is currently supported by the
+single-process router (<code class="docutils literal notranslate"><span class="pre">--router-processes</span> <span class="pre">1</span></code>). Multi-process router data
+planes retain the route surface documented in
+Multi-Process Router.</p>
+<p>Uploaded TTS voices are mutable worker-local state. The Router sends voice
+list, upload, and delete operations to <code class="docutils literal notranslate"><span class="pre">--voice-owner-worker-url</span></code>, and pins
+speech, batch, and WebSocket requests that name an uploaded voice to the same
+worker. It returns <code class="docutils literal notranslate"><span class="pre">503</span></code> if that owner is unavailable instead of silently
+routing the request to a worker without the voice. Once the uploaded-voice
+registry is available, built-in voices remain balanced by the configured
+routing policy. By default, the first routable worker with both <code class="docutils literal notranslate"><span class="pre">speech</span></code> and
+<code class="docutils literal notranslate"><span class="pre">audio_input</span></code> capabilities becomes the owner and remains the owner for that
+router process. Configure
+<code class="docutils literal notranslate"><span class="pre">--voice-owner-worker-url</span></code> when the owner must remain stable across router
+restarts. Pools without such an owner can still route built-in TTS to eligible
+speech workers, but voice management returns <code class="docutils literal notranslate"><span class="pre">503</span></code>.
+The owner cannot be removed or have either required capability removed through
+the router’s worker API while the router is running.</p>
+<p>Voice ownership assumes one router is the writer for the pool, clients perform
+voice mutations through that router, and the owner keeps its speaker directory
+across restarts. Multiple independent routers or direct mutations against a
+worker are not coordinated and are unsupported for uploaded voices.
+The router loads its uploaded-voice registry in the background after voice
+traffic begins and reconciles it after voice mutations. Until the initial load
+succeeds, or while a mutation outcome is unresolved, every non-default voice
+name is pinned to the owner because the router cannot safely distinguish a
+built-in name from an uploaded name. <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/health</span></code> reports the selected owner,
+owner routability, registry state, and uploaded-voice count under
+<code class="docutils literal notranslate"><span class="pre">voice_routing</span></code>.
+The router hydrates this registry through the compact
+<code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/v1/audio/voices?names_only=true</span></code> response rather than transferring stored
+reference metadata.</p>
+<p>Large JSON requests are not fully parsed by the router. With a homogeneous pool
+of complete Omni V1 replicas, no extra headers are needed. With mixed models,
+provide a model hint. With mixed worker capabilities, provide a capability hint
+when the router cannot infer a single safe worker set:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Model</span></code>: requested model for mixed-model pools</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Capabilities</span></code>: comma-separated capabilities such as
+<code class="docutils literal notranslate"><span class="pre">image_input</span></code>, <code class="docutils literal notranslate"><span class="pre">audio_input</span></code>, <code class="docutils literal notranslate"><span class="pre">video_input</span></code>, <code class="docutils literal notranslate"><span class="pre">audio_output</span></code>, or <code class="docutils literal notranslate"><span class="pre">streaming</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Stream</span></code>: <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code> for large streaming requests</p></li>
+</ul>
+<p>Speech and speech-batch JSON bodies larger than 1 MiB are conservatively pinned
+to the voice owner because the router cannot fully inspect them to rule out an
+uploaded voice reference. Without an eligible owner, the router conservatively
+requires <code class="docutils literal notranslate"><span class="pre">audio_input</span></code>; it never weakens capability selection at the size
+boundary. Route-hint headers do not override voice ownership.</p>
+<p>These headers are router-only hints and are not forwarded to workers.</p>
+</section>
+<section id="request-diagnostics">
+<h2>Request Diagnostics<a class="headerlink" href="#request-diagnostics" title="Link to this heading">#</a></h2>
+<p>Routed HTTP responses include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Worker</span></code>: selected worker ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Request-ID</span></code>: request ID from the request headers or body, or a
+router-generated ID</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Route-Attempt</span></code>: currently <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+<p>HTTP routes emit <code class="docutils literal notranslate"><span class="pre">route_completed</span></code> after worker selection and <code class="docutils literal notranslate"><span class="pre">route_rejected</span></code>
+before selection. Completion records contain the request ID, selected worker,
+path, stream flag, inferred capabilities, status code, duration, and terminal
+outcome.</p>
+<p>WebSocket sessions cannot add HTTP response headers after the upgrade. Router
+rejections are sent as a TTS <code class="docutils literal notranslate"><span class="pre">error</span></code> event followed by a protocol-appropriate
+close code. Every accepted WebSocket emits one <code class="docutils literal notranslate"><span class="pre">tts_websocket_completed</span></code> record,
+including rejections before worker selection; those records use <code class="docutils literal notranslate"><span class="pre">worker=-</span></code>.</p>
+</section>
+<section id="overload-behavior">
+<h2>Overload Behavior<a class="headerlink" href="#overload-behavior" title="Link to this heading">#</a></h2>
+<p>The router bounds its concurrent work. Once <code class="docutils literal notranslate"><span class="pre">--max-connections</span></code> in-flight model
+requests are being relayed, additional model requests are rejected immediately,
+before the request body is read:</p>
+<ul class="simple">
+<li><p>HTTP requests receive status <code class="docutils literal notranslate"><span class="pre">503</span></code>, an OpenAI-style error envelope
+(<code class="docutils literal notranslate"><span class="pre">&quot;type&quot;:</span> <span class="pre">&quot;overloaded_error&quot;</span></code>), a <code class="docutils literal notranslate"><span class="pre">Retry-After:</span> <span class="pre">1</span></code> header, and a
+<code class="docutils literal notranslate"><span class="pre">route_rejected</span></code> log with <code class="docutils literal notranslate"><span class="pre">reason=router_overloaded</span></code></p></li>
+<li><p>WebSocket requests receive a TTS <code class="docutils literal notranslate"><span class="pre">error</span></code> event with
+<code class="docutils literal notranslate"><span class="pre">error_type=overloaded_error</span></code>, close code <code class="docutils literal notranslate"><span class="pre">1013</span></code>, and a terminal log with
+<code class="docutils literal notranslate"><span class="pre">outcome=router_overloaded</span></code></p></li>
+</ul>
+<p>Health and management endpoints (<code class="docutils literal notranslate"><span class="pre">/live</span></code>, <code class="docutils literal notranslate"><span class="pre">/ready</span></code>, <code class="docutils literal notranslate"><span class="pre">/health</span></code>, <code class="docutils literal notranslate"><span class="pre">/workers</span></code>, admin
+routes) are never gated. <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/health</span></code> reports the current in-flight level, the
+peak since startup, and the total rejected count.</p>
+<p>Sizing guidance:</p>
+<ul class="simple">
+<li><p>The auto default (<code class="docutils literal notranslate"><span class="pre">128</span> <span class="pre">x</span> <span class="pre">workers</span></code>) is a divergence backstop, not a latency
+target. For large responses on a single-core router, an oversized bound
+degrades service itself; size <code class="docutils literal notranslate"><span class="pre">--max-connections</span></code> toward
+<code class="docutils literal notranslate"><span class="pre">capacity</span> <span class="pre">x</span> <span class="pre">acceptable</span> <span class="pre">latency</span></code> for your payload shape.</p></li>
+<li><p>Each in-flight request holds two file descriptors (client plus upstream). The
+router warns at startup when the <code class="docutils literal notranslate"><span class="pre">nofile</span></code> soft limit is below
+<code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">x</span> <span class="pre">upstream</span> <span class="pre">pool</span> <span class="pre">size</span> <span class="pre">+</span> <span class="pre">headroom</span></code>, where the pool size is
+<code class="docutils literal notranslate"><span class="pre">max(--max-connections,</span> <span class="pre">--max-inflight)</span></code>. Raise the limit, or lower whichever
+of the two flags binds the pool (the warning names it); <code class="docutils literal notranslate"><span class="pre">--strict-limits</span></code>
+turns the warning into a startup error.</p></li>
+<li><p>A rejected request costs the client its keep-alive connection (the router
+responds before reading the body), so clients should back off on <code class="docutils literal notranslate"><span class="pre">503</span></code> rather
+than immediately retrying on a fresh connection.</p></li>
+</ul>
+</section>
+<section id="failure-handling">
+<h2>Failure Handling<a class="headerlink" href="#failure-handling" title="Link to this heading">#</a></h2>
+<p>Worker liveness is owned by the background <code class="docutils literal notranslate"><span class="pre">/health</span></code> probes. A relayed request
+only marks a worker unhealthy when the router cannot get a usable response from
+it: a transport-level failure (connection error or read timeout, with no HTTP
+response) or a gateway status the worker returns, <code class="docutils literal notranslate"><span class="pre">502</span> <span class="pre">Bad</span> <span class="pre">Gateway</span></code> or <code class="docutils literal notranslate"><span class="pre">504</span> <span class="pre">Gateway</span> <span class="pre">Timeout</span></code>. Capacity backpressure and application statuses the worker
+answers with itself, <code class="docutils literal notranslate"><span class="pre">429</span> <span class="pre">Too</span> <span class="pre">Many</span> <span class="pre">Requests</span></code>, <code class="docutils literal notranslate"><span class="pre">503</span> <span class="pre">Service</span> <span class="pre">Unavailable</span></code>, <code class="docutils literal notranslate"><span class="pre">408</span> <span class="pre">Request</span> <span class="pre">Timeout</span></code>, and <code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Server</span> <span class="pre">Error</span></code>, are counted as per-request
+failures in the worker statistics but never evict a reachable worker, so one
+overloaded worker or a stream of bad-input requests cannot cascade the pool into
+unavailability. A worker that leaves the pool can return to healthy after the
+configured number of successful health checks.</p>
+<p>To inspect failover behavior:</p>
+<ol class="arabic simple">
+<li><p>Stop one worker.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/workers</span></code> and check its <code class="docutils literal notranslate"><span class="pre">consecutive_failures</span></code>, <code class="docutils literal notranslate"><span class="pre">health_state</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">routable</span></code> fields.</p></li>
+<li><p>Send another request through the router and verify that it uses a remaining
+routable worker.</p></li>
+<li><p>Restart the stopped worker and wait for it to become healthy again.</p></li>
+</ol>
+<p>For a source checkout without installed console scripts, verify the module entry
+point with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>sglang_omni_router.serve<span class="w"> </span>--help
+</pre></div>
+</div>
+</section>
+<section id="durable-router-state">
+<h2>Durable Router State<a class="headerlink" href="#durable-router-state" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">--router-state-dir</span></code> holds the control-plane state that must outlive both a
+router restart and a reboot of the router host. Today that is the weight-update
+journal: when an update is interrupted after some workers were already updated,
+the journal keeps the affected workers disabled until an operator verifies
+their weight versions and re-enables them
+(<code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">/workers/{worker_id}</span> <span class="pre">{&quot;disabled&quot;:</span> <span class="pre">false}</span></code>). Workers run on their own
+hosts and outlive the router, so losing the journal would let a fresh router
+re-enable a pool whose weights no longer match.</p>
+<p>Resolution order:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--router-state-dir</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SGLANG_OMNI_ROUTER_STATE_DIR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">$XDG_STATE_HOME/sglang-omni-router</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">~/.local/state/sglang-omni-router</span></code></p></li>
+</ol>
+<p>The directory is created owner-only (<code class="docutils literal notranslate"><span class="pre">0700</span></code>, journal file <code class="docutils literal notranslate"><span class="pre">0600</span></code>) and is keyed
+by the router’s <code class="docutils literal notranslate"><span class="pre">host:port</span></code>, so several routers on one machine keep separate
+journals. If the directory cannot be created or written, the failure mode
+depends on the mode: with <code class="docutils literal notranslate"><span class="pre">--router-processes</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> startup fails; the
+single-process default still starts, logs a warning, and refuses weight
+updates (<code class="docutils literal notranslate"><span class="pre">503</span></code>) until <code class="docutils literal notranslate"><span class="pre">--router-state-dir</span></code> points at a writable persistent
+path. In neither mode is there a temp-directory fallback, which would look
+durable while a reboot silently dropped the record.</p>
+<p>If the journal itself becomes unreadable, re-enabling cannot resolve it and
+every weight update stays blocked with <code class="docutils literal notranslate"><span class="pre">409</span></code>. Verify the pool’s weight
+versions, then drop the record explicitly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://127.0.0.1:8000/weight_update_journal/resolve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Authorization: Bearer </span><span class="nv">$SGLANG_OMNI_ADMIN_KEY</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"acknowledge": true}'</span>
+</pre></div>
+</div>
+<p>The call is admin-authenticated, requires <code class="docutils literal notranslate"><span class="pre">acknowledge</span></code> so the record cannot be
+dropped by accident, reports the worker ids it dropped, and fails with <code class="docutils literal notranslate"><span class="pre">503</span></code> if
+the file could not be removed. The affected workers stay disabled until they
+are re-enabled one by one.</p>
+<p>In a container, mount it on a persistent volume:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-v<span class="w"> </span>/srv/sglang-omni-router:/var/lib/sglang-omni-router<span class="w"> </span>...<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>python<span class="w"> </span>-m<span class="w"> </span>sglang_omni_router.serve<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--router-state-dir<span class="w"> </span>/var/lib/sglang-omni-router<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--worker-urls<span class="w"> </span>http://127.0.0.1:8011
+</pre></div>
+</div>
+<p>What this directory does <strong>not</strong> manage:</p>
+<ul class="simple">
+<li><p>Per-run runtime files (serialized config, internal socket, worker snapshot,
+admission shared memory) stay in a temporary per-run workdir. They are
+rebuilt at startup and are meant to disappear with the process tree.</p></li>
+<li><p>Logs. The router writes to stdout/stderr; persist them with your container
+runtime, systemd, or log collector.</p></li>
+</ul>
+</section>
+<section id="multi-process-router-control-data-plane-split">
+<h2>Multi-Process Router (Control/Data-Plane Split)<a class="headerlink" href="#multi-process-router-control-data-plane-split" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><p>x86-64 Linux only: the shared admission seqlock relies on x86-64 store
+ordering, and any other machine is refused at startup. Enabled with
+<code class="docutils literal notranslate"><span class="pre">--router-processes</span> <span class="pre">N</span></code>; the default <code class="docutils literal notranslate"><span class="pre">1</span></code> keeps the
+single-process router described above. The one behavioral addition at
+<code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">=</span> <span class="pre">1</span></code> is the weight-update journal: recovery at startup can keep workers
+from an earlier interrupted update disabled until an operator re-enables
+them.</p>
+</div></blockquote>
+<p>At <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> the router runs as a small process tree:</p>
+<ul class="simple">
+<li><p>A <strong>supervisor</strong> binds the public port once and passes the listening socket
+to <code class="docutils literal notranslate"><span class="pre">N</span></code> <strong>data-plane (DP)</strong> processes, which accept from the shared queue and
+relay the model routes (<code class="docutils literal notranslate"><span class="pre">/generate</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code>,
+<code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/audio/transcriptions</span></code>, <code class="docutils literal notranslate"><span class="pre">/v1/audio/translations</span></code>).</p></li>
+<li><p>One <strong>control plane (CP)</strong> owns the worker registry, health checks, and the
+admin surface. DPs learn the routable-worker set from a snapshot file the CP
+republishes on every state change and on a fixed keepalive cadence. Admin
+requests sent to the public port are forwarded to the CP, which enforces the
+admin key; <code class="docutils literal notranslate"><span class="pre">/v1/models</span></code>, <code class="docutils literal notranslate"><span class="pre">/live</span></code>, and <code class="docutils literal notranslate"><span class="pre">/ready</span></code> are answered by the DP
+itself, <code class="docutils literal notranslate"><span class="pre">/health</span></code> is the CP’s aggregate view.</p></li>
+<li><p>The supervisor restarts crashed children (with a fail-closed budget for
+rapid crash loops), fences replaced processes by generation, and tears the
+tree down in order on SIGTERM. A stopping DP drains in-flight requests for
+up to <code class="docutils literal notranslate"><span class="pre">--shutdown-drain-secs</span></code> (default: <code class="docutils literal notranslate"><span class="pre">--request-timeout-secs</span></code>) before
+remaining tasks are cancelled, and the supervisor waits out that drain
+before escalating to SIGKILL.</p></li>
+</ul>
+<p>Behavior differences to know about:</p>
+<ul class="simple">
+<li><p><strong>The admission bound is shared and soft.</strong> The in-flight bound spans all
+DPs through a shared-memory counter array. Concurrent admission checks can
+overshoot the bound by at most <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">-</span> <span class="pre">1</span></code> requests. In <code class="docutils literal notranslate"><span class="pre">/health</span></code>, <code class="docutils literal notranslate"><span class="pre">inflight</span></code> is
+an instantaneous sum (not a linearizable value) and <code class="docutils literal notranslate"><span class="pre">peak_inflight</span></code> is
+best-effort. <code class="docutils literal notranslate"><span class="pre">rejected_total</span></code> is exact while every live slot stays readable;
+a DP killed mid-write loses the counters it had not yet published, so the
+total is best-effort across a crash and reclaim window.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">least_request</span></code> requires a single process.</strong> It reads per-process
+counters, so <code class="docutils literal notranslate"><span class="pre">--router-processes</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code> combined with an explicit
+<code class="docutils literal notranslate"><span class="pre">--policy</span> <span class="pre">least_request</span></code> fails at startup; use <code class="docutils literal notranslate"><span class="pre">round_robin</span></code> (DPs stagger
+their starting offsets to avoid herding) or <code class="docutils literal notranslate"><span class="pre">random</span></code>.</p></li>
+<li><p><strong>CP unavailability degrades before it fails.</strong> DPs keep serving from their
+last snapshot for the stale timeout, then shed new requests with fast <code class="docutils literal notranslate"><span class="pre">503</span></code>s
+and flip <code class="docutils literal notranslate"><span class="pre">/ready</span></code>; one republish restores service. <code class="docutils literal notranslate"><span class="pre">/health</span></code> reports
+<code class="docutils literal notranslate"><span class="pre">degraded</span></code> while some DPs are missing and <code class="docutils literal notranslate"><span class="pre">503</span></code> only when nothing can serve.</p></li>
+<li><p><strong>Worker weight updates wait for the data planes.</strong> Before broadcasting, the
+CP publishes the disabled-worker snapshot and waits until every live DP has
+acknowledged it; on timeout the update fails closed and nothing is sent.</p></li>
+<li><p><strong>Counters are aggregated.</strong> <code class="docutils literal notranslate"><span class="pre">/workers</span></code> aggregate totals and
+<code class="docutils literal notranslate"><span class="pre">*_requests_by_class</span></code> maps are summed across DPs and stay monotonic across DP
+restarts; <code class="docutils literal notranslate"><span class="pre">active_requests</span></code> is a best-effort gauge over live DPs. Counters
+reset with the CP, matching single-process restarts.</p></li>
+<li><p><strong>File descriptors scale with <code class="docutils literal notranslate"><span class="pre">N</span></code>.</strong> Each DP holds a full-size upstream pool
+(a skewed keep-alive client mix can pin the whole bound onto one DP, which
+must still carry it) with keep-alives split <code class="docutils literal notranslate"><span class="pre">pool</span> <span class="pre">/</span> <span class="pre">N</span></code>; the startup log
+prints the per-process and cluster fd budget for the nofile check.</p></li>
+</ul>
+<p>CPU affinity guidance for dense deployments: pin the <code class="docutils literal notranslate"><span class="pre">N</span></code> DP processes to <code class="docutils literal notranslate"><span class="pre">N</span></code>
+dedicated cores on one NUMA node; the CP and supervisor are near-idle and can
+share one core; keep model workers and benchmark clients on other cores (or
+the other NUMA node) so relay throughput is not contended.</p>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Link to this heading">#</a></h2>
+<p>Check the Router and worker pool before restarting any process — see
+<a class="reference internal" href="#check-router-and-worker-state"><span class="std std-ref">Check Router and Worker State</span></a> for the endpoint
+commands and their meanings.</p>
+<p>Use the response and health signals to choose the next step:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Signal</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">/live</span></code> fails</p></td>
+<td><p>The Router process is not reachable.</p></td>
+<td><p>Check the process, bind address, port, and startup logs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/live</span></code> is <code class="docutils literal notranslate"><span class="pre">200</span></code>, <code class="docutils literal notranslate"><span class="pre">/ready</span></code> is <code class="docutils literal notranslate"><span class="pre">503</span></code></p></td>
+<td><p>No worker is routable.</p></td>
+<td><p>Inspect the worker states in <code class="docutils literal notranslate"><span class="pre">/workers</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Model request: <code class="docutils literal notranslate"><span class="pre">413</span></code>, <code class="docutils literal notranslate"><span class="pre">message=payload</span> <span class="pre">too</span> <span class="pre">large</span></code></p></td>
+<td><p>The request body exceeds <code class="docutils literal notranslate"><span class="pre">--max-payload-size</span></code>.</p></td>
+<td><p>Reduce the request size or, after checking memory and concurrency impact, raise the configured limit.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Large JSON model request: <code class="docutils literal notranslate"><span class="pre">400</span></code> requiring a route-hint header</p></td>
+<td><p>JSON bodies larger than 1 MiB are not fully parsed, so the Router cannot infer the model or capabilities needed to select from a mixed worker pool.</p></td>
+<td><p>Set the header named in the error message, such as <code class="docutils literal notranslate"><span class="pre">x-sglang-omni-route-model</span></code> or <code class="docutils literal notranslate"><span class="pre">x-sglang-omni-route-capabilities</span></code>; see <a class="reference internal" href="#routing-behavior"><span class="std std-ref">Routing Behavior</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Model request: <code class="docutils literal notranslate"><span class="pre">400</span></code>, <code class="docutils literal notranslate"><span class="pre">message</span></code> names a route-hint header</p></td>
+<td><p>A route-hint header is malformed or disagrees with the JSON body: an empty value, an unsupported capability, or a value that conflicts with the body’s <code class="docutils literal notranslate"><span class="pre">model</span></code> or <code class="docutils literal notranslate"><span class="pre">stream</span></code>.</p></td>
+<td><p>Read the message; it names the offending header. The rejection log records the same message in <code class="docutils literal notranslate"><span class="pre">reason=</span></code>, with spaces replaced by underscores.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Model request: <code class="docutils literal notranslate"><span class="pre">503</span></code>, <code class="docutils literal notranslate"><span class="pre">type=overloaded_error</span></code>, <code class="docutils literal notranslate"><span class="pre">Retry-After:</span> <span class="pre">1</span></code></p></td>
+<td><p>Router admission is full.</p></td>
+<td><p>Back off and inspect <code class="docutils literal notranslate"><span class="pre">inflight</span></code>, <code class="docutils literal notranslate"><span class="pre">max_inflight</span></code>, and <code class="docutils literal notranslate"><span class="pre">rejected_total</span></code> in <code class="docutils literal notranslate"><span class="pre">/health</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Model request: <code class="docutils literal notranslate"><span class="pre">503</span></code>, <code class="docutils literal notranslate"><span class="pre">message=no</span> <span class="pre">eligible</span> <span class="pre">upstream</span></code></p></td>
+<td><p>No routable worker matches the request.</p></td>
+<td><p>Check worker routability, model, and capabilities.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Model request: <code class="docutils literal notranslate"><span class="pre">503</span></code> with <code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Worker</span></code></p></td>
+<td><p>The selected worker returned <code class="docutils literal notranslate"><span class="pre">503</span></code>.</p></td>
+<td><p>Inspect that worker’s logs and <code class="docutils literal notranslate"><span class="pre">/health</span></code> endpoint.</p></td>
+</tr>
+<tr class="row-even"><td><p>Streaming response starts with <code class="docutils literal notranslate"><span class="pre">200</span></code> but ends early</p></td>
+<td><p>The upstream stream failed after the HTTP status was sent. SSE responses end with an <code class="docutils literal notranslate"><span class="pre">upstream</span> <span class="pre">stream</span> <span class="pre">failed</span> <span class="pre">before</span> <span class="pre">completion</span></code> event whose body carries <code class="docutils literal notranslate"><span class="pre">&quot;code&quot;:</span> <span class="pre">502</span></code>; non-SSE streaming bodies truncate without an error frame.</p></td>
+<td><p>Check the route-completion log for <code class="docutils literal notranslate"><span class="pre">outcome=stream_error</span></code> (a client disconnect logs <code class="docutils literal notranslate"><span class="pre">stream_cancelled</span></code> instead), then inspect the selected worker.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For admission limits, rejection logs, and capacity guidance, see
+<a class="reference internal" href="#overload-behavior"><span class="std std-ref">Overload Behavior</span></a>.</p>
+<p>Selection failures contain <code class="docutils literal notranslate"><span class="pre">reason=no_eligible_upstream</span></code> plus the inferred model
+and capabilities. They occur before a worker is chosen and therefore have no
+<code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Worker</span></code> header.</p>
+<p>A worker-returned <code class="docutils literal notranslate"><span class="pre">503</span></code> does not by itself evict the worker.</p>
+<section id="distinguish-502-responses">
+<h3>Distinguish <code class="docutils literal notranslate"><span class="pre">502</span></code> Responses<a class="headerlink" href="#distinguish-502-responses" title="Link to this heading">#</a></h3>
+<p>For model requests that select a single worker, a <code class="docutils literal notranslate"><span class="pre">502</span></code> with
+<code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Worker</span></code> can come from either the Router or the selected worker.
+Use the body to distinguish them:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{&quot;error&quot;:</span> <span class="pre">{&quot;message&quot;:</span> <span class="pre">&quot;upstream</span> <span class="pre">request</span> <span class="pre">failed&quot;}}</span></code>: the Router selected a
+worker, but a connection error or timeout prevented it from obtaining a
+response. Check the selected worker process, its port, and its <code class="docutils literal notranslate"><span class="pre">/health</span></code>
+endpoint.</p></li>
+<li><p>Any other body: the selected worker returned its own <code class="docutils literal notranslate"><span class="pre">502</span></code>, which the Router
+relayed. Investigate that worker’s upstream dependencies.</p></li>
+</ul>
+<p>This distinction does not apply to <code class="docutils literal notranslate"><span class="pre">/v1/models</span></code> or administrative broadcast
+routes. Those routes may return a Router-generated <code class="docutils literal notranslate"><span class="pre">502</span></code> without selecting a
+single worker and therefore without <code class="docutils literal notranslate"><span class="pre">X-SGLang-Omni-Worker</span></code>.</p>
+<p>For how transport failures and worker-returned <code class="docutils literal notranslate"><span class="pre">502</span></code> or <code class="docutils literal notranslate"><span class="pre">504</span></code> responses affect
+worker health, see <a class="reference internal" href="#failure-handling"><span class="std std-ref">Failure Handling</span></a>.</p>
+</section>
+<section id="inspect-worker-state">
+<h3>Inspect Worker State<a class="headerlink" href="#inspect-worker-state" title="Link to this heading">#</a></h3>
+<p>Print the fields used to determine routability. <code class="docutils literal notranslate"><span class="pre">worker_id</span></code> is the
+percent-encoded identifier the admin routes expect; <code class="docutils literal notranslate"><span class="pre">display_id</span></code> is the
+host and port shown in logs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>http://127.0.0.1:8008/workers<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">import json, sys</span>
+<span class="s1">for worker in json.load(sys.stdin)["workers"]:</span>
+<span class="s1">    print(</span>
+<span class="s1">        "worker_id=" + worker["worker_id"],</span>
+<span class="s1">        "display_id=" + worker["display_id"],</span>
+<span class="s1">        "state=" + worker["health_state"],</span>
+<span class="s1">        "disabled=" + str(worker["disabled"]),</span>
+<span class="s1">        "routable=" + str(worker["routable"]),</span>
+<span class="s1">        "failures=" + str(worker["consecutive_failures"]),</span>
+<span class="s1">        "last_error=" + str(worker["last_error"]),</span>
+<span class="s1">    )</span>
+<span class="s1">'</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>State</p></th>
+<th class="head"><p>Meaning and action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">unknown</span></code></p></td>
+<td><p>The worker has not passed <code class="docutils literal notranslate"><span class="pre">--health-success-threshold</span></code> checks. Confirm its <code class="docutils literal notranslate"><span class="pre">/health</span></code> endpoint is reachable and wait for startup checks.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">unhealthy</span></code></p></td>
+<td><p>Failures reached <code class="docutils literal notranslate"><span class="pre">--health-failure-threshold</span></code>. Inspect <code class="docutils literal notranslate"><span class="pre">last_status_code</span></code>, <code class="docutils literal notranslate"><span class="pre">last_error</span></code>, and worker logs. Successful checks restore it automatically.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dead</span></code></p></td>
+<td><p>The worker was manually quarantined and health probes skip it. Resolve the problem before clearing <code class="docutils literal notranslate"><span class="pre">is_dead</span></code>; the Router checks health before routing to it again.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">disabled:</span> <span class="pre">true</span></code></p></td>
+<td><p>The worker is administratively excluded even if healthy. Re-enable it only when it is ready for new requests.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Also verify that <code class="docutils literal notranslate"><span class="pre">--health-check-endpoint</span></code> matches the endpoint exposed by the
+worker.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">no</span> <span class="pre">eligible</span> <span class="pre">upstream</span></code>, compare the request with each routable worker’s
+<code class="docutils literal notranslate"><span class="pre">model</span></code> and <code class="docutils literal notranslate"><span class="pre">capabilities</span></code> in <code class="docutils literal notranslate"><span class="pre">/workers</span></code>; see
+<a class="reference internal" href="#routing-behavior"><span class="std std-ref">Routing Behavior</span></a> for the capability mapping and route-hint
+headers.</p>
+<p>Model filtering applies only when at least one candidate worker advertises a
+<code class="docutils literal notranslate"><span class="pre">model</span></code>. Do not clear model metadata to work around a mismatch: if no candidate
+advertises a model, the Router stops filtering by model.</p>
+</section>
+<section id="drain-and-remove-a-worker">
+<h3>Drain and Remove a Worker<a class="headerlink" href="#drain-and-remove-a-worker" title="Link to this heading">#</a></h3>
+<p>Disable the worker first so it receives no new requests, wait for
+<code class="docutils literal notranslate"><span class="pre">active_requests</span></code> to reach zero, and then delete it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">(</span><span class="w">  </span><span class="c1"># subshell: a failed step exits the procedure, not your shell</span>
+<span class="nv">worker_id</span><span class="o">=</span><span class="s1">'http%3A%2F%2F127.0.0.1%3A8013'</span>
+<span class="nv">max_wait_secs</span><span class="o">=</span><span class="m">1800</span>
+<span class="nv">deadline</span><span class="o">=</span><span class="k">$((</span><span class="nv">SECONDS</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">max_wait_secs</span><span class="k">))</span>
+
+curl<span class="w"> </span>-fsS<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span><span class="s2">"http://127.0.0.1:8008/workers/</span><span class="si">${</span><span class="nv">worker_id</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"disabled":true}'</span><span class="w"> </span><span class="o">||</span>
+<span class="w">  </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+
+<span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nv">active_requests</span><span class="o">=</span><span class="k">$(</span>
+<span class="w">    </span>curl<span class="w"> </span>-fsS<span class="w"> </span>http://127.0.0.1:8008/workers<span class="w"> </span><span class="p">|</span>
+<span class="w">      </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'</span>
+<span class="s1">import json, sys</span>
+<span class="s1">target = sys.argv[1]</span>
+<span class="s1">workers = json.load(sys.stdin)["workers"]</span>
+<span class="s1">worker = next((item for item in workers if item["worker_id"] == target), None)</span>
+<span class="s1">print(worker["active_requests"] if worker else "missing")</span>
+<span class="s1">'</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">worker_id</span><span class="si">}</span><span class="s2">"</span>
+<span class="w">  </span><span class="k">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="k">case</span><span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">active_requests</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="k">in</span>
+<span class="w">    </span><span class="m">0</span><span class="o">)</span><span class="w"> </span><span class="k">break</span><span class="w"> </span><span class="p">;;</span>
+<span class="w">    </span>missing<span class="o">)</span>
+<span class="w">      </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"worker </span><span class="si">${</span><span class="nv">worker_id</span><span class="si">}</span><span class="s2"> is not registered; check /workers"</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<span class="w">      </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">      </span><span class="p">;;</span>
+<span class="w">  </span><span class="k">esac</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="o">((</span><span class="w"> </span>SECONDS<span class="w"> </span>&gt;<span class="o">=</span><span class="w"> </span>deadline<span class="w"> </span><span class="o">))</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"timed out waiting for </span><span class="si">${</span><span class="nv">worker_id</span><span class="si">}</span><span class="s2"> to drain"</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="w">  </span>sleep<span class="w"> </span><span class="m">2</span>
+<span class="k">done</span>
+
+curl<span class="w"> </span>-fsS<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="s2">"http://127.0.0.1:8008/workers/</span><span class="si">${</span><span class="nv">worker_id</span><span class="si">}</span><span class="s2">"</span>
+<span class="o">)</span>
+</pre></div>
+</div>
+<p>Copy <code class="docutils literal notranslate"><span class="pre">worker_id</span></code> from <code class="docutils literal notranslate"><span class="pre">/workers</span></code> rather than constructing it manually; the
+snippet in <a class="reference internal" href="#inspect-worker-state"><span class="std std-ref">Inspect Worker State</span></a> prints it in a form you
+can paste directly. Raise <code class="docutils literal notranslate"><span class="pre">max_wait_secs</span></code> for workloads whose responses can
+legitimately exceed the default 30-minute drain window.</p>
+<p>Deleting a worker removes only its Router registration. Stop the worker process
+separately after the drain completes.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="process_topology_migration.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Process Topology Migration</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="mps_dp.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Same-GPU Data Parallelism with CUDA MPS</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-topology">Router Topology</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-workers-and-router-from-yaml">Launch Workers and Router From YAML</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-worker-servers-manually">Launch Worker Servers Manually</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#launch-the-router">Launch the Router</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#router-arguments">Router Arguments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-router-and-worker-state">Check Router and Worker State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#send-requests-through-the-router">Send Requests Through the Router</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manage-workers">Manage Workers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#routing-behavior">Routing Behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-diagnostics">Request Diagnostics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overload-behavior">Overload Behavior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#failure-handling">Failure Handling</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#durable-router-state">Durable Router State</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-process-router-control-data-plane-split">Multi-Process Router (Control/Data-Plane Split)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting">Troubleshooting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distinguish-502-responses">Distinguish <code class="docutils literal notranslate"><span class="pre">502</span></code> Responses</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-worker-state">Inspect Worker State</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#drain-and-remove-a-worker">Drain and Remove a Worker</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

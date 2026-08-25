@@ -1,0 +1,1060 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'developer_reference/qwen3_asr_concurrency_profile';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RL Admin Control" href="rl_admin_control.html" />
+    <link rel="prev" title="Request-level profiler" href="profiler.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/developer_reference/qwen3_asr_concurrency_profile.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/developer_reference/qwen3_asr_concurrency_profile.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fdeveloper_reference/qwen3_asr_concurrency_profile.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/developer_reference/qwen3_asr_concurrency_profile.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce">Reproduce</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-host-variance">Shared-host variance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-current-quiet-host">Results — current (quiet host)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-current-vs-baseline-back-to-back-same-host-window">Results — current vs baseline (back-to-back, same host window)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottleneck-decomposition-profiled-passes-en">Bottleneck decomposition (profiled passes, EN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">Environment</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="qwen3-asr-high-concurrency-benchmark-and-bottleneck-profile">
+<h1>Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile<a class="headerlink" href="#qwen3-asr-high-concurrency-benchmark-and-bottleneck-profile" title="Link to this heading">#</a></h1>
+<p>This is the issue #1324 Q-PR2 deliverable: a reproducible current-main
+benchmark of Qwen3-ASR serving at concurrency 1–64, compared against a fixed
+serving baseline on identical pre-segmented audio, with enough internal
+telemetry to attribute where request time goes. The numbers below are the
+before-baseline for Q-PR3 (#1326, merged), Q-PR4, and Q-PR5.</p>
+<section id="method">
+<h2>Method<a class="headerlink" href="#method" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Model: <code class="docutils literal notranslate"><span class="pre">Qwen/Qwen3-ASR-1.7B</span></code>, bf16, one 80 GB GPU per server (DP=1).</p></li>
+<li><p>Data: full SeedTTS reference sets — EN 1088 clips, ZH 2020 clips — staged by
+<code class="docutils literal notranslate"><span class="pre">benchmarks.dataset.seedtts</span></code>; both systems receive the same files through
+the same client (<code class="docutils literal notranslate"><span class="pre">benchmarks/eval/benchmark_asr_seedtts.py</span></code>).</p></li>
+<li><p>Sweep: concurrency <code class="docutils literal notranslate"><span class="pre">1,</span> <span class="pre">8,</span> <span class="pre">16,</span> <span class="pre">32,</span> <span class="pre">64</span></code>, one discarded warmup pass plus three
+measured repeats per level; closed-loop client.</p></li>
+<li><p>Current is SGLang-Omni at the commit under review, served with the default
+Qwen3-ASR pipeline (<code class="docutils literal notranslate"><span class="pre">max_running_requests=32</span></code>,
+<code class="docutils literal notranslate"><span class="pre">request_build_max_workers=2</span></code>, <code class="docutils literal notranslate"><span class="pre">request_build_max_pending=16</span></code>, async decode
+on). Baseline is a fixed OpenAI-compatible serving stack for the same
+checkpoint with its stock configuration, on an identical GPU of the same
+host. Neither side was tuned.</p></li>
+<li><p>Telemetry: per-request profiler events (request build, admission queue,
+first forward, decode tail), host CPU and per-GPU utilization sampling, raw
+per-request JSONL, and an environment fingerprint are captured by the
+benchmark’s <code class="docutils literal notranslate"><span class="pre">--profile-events</span> <span class="pre">--sample-util</span> <span class="pre">--fingerprint</span> <span class="pre">--save-raw-dir</span></code>
+flags added in this PR.</p></li>
+</ul>
+<section id="reproduce">
+<h3>Reproduce<a class="headerlink" href="#reproduce" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># current</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>Qwen/Qwen3-ASR-1.7B<span class="w"> </span>--port<span class="w"> </span><span class="m">8511</span>
+
+python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_asr_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8511</span><span class="w"> </span>--concurrencies<span class="w"> </span><span class="m">1</span>,8,16,32,64<span class="w"> </span>--repeats<span class="w"> </span><span class="m">3</span><span class="w"> </span>--warmup<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--profile-events<span class="w"> </span>--profile-event-dir<span class="w"> </span>/tmp/asr_profile<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--sample-util<span class="w"> </span>--util-gpu-ids<span class="w"> </span>&lt;gpu&gt;<span class="w"> </span>--fingerprint<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--save-raw-dir<span class="w"> </span>raw-current<span class="w"> </span>--output<span class="w"> </span>asr_en_current.json
+
+<span class="c1"># baseline: point the same client at the baseline server's port</span>
+python<span class="w"> </span>-m<span class="w"> </span>benchmarks.eval.benchmark_asr_seedtts<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span>&lt;baseline-port&gt;<span class="w"> </span>--concurrencies<span class="w"> </span><span class="m">1</span>,8,16,32,64<span class="w"> </span>--repeats<span class="w"> </span><span class="m">3</span><span class="w"> </span>--warmup<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--sample-util<span class="w"> </span>--util-gpu-ids<span class="w"> </span>&lt;gpu&gt;<span class="w"> </span>--fingerprint<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>asr_en_baseline.json
+</pre></div>
+</div>
+</section>
+</section>
+<section id="shared-host-variance">
+<h2>Shared-host variance<a class="headerlink" href="#shared-host-variance" title="Link to this heading">#</a></h2>
+<p>The measurement host is shared; co-tenant load shifts between runs and shows
+up directly in these host-bound workloads (see #907). Runs on a quiet host
+and a loaded host are both reported: the absolute peaks move, but the
+structural findings — the concurrency knee, its cause, and the stage
+decomposition — are identical in every run. Current-vs-baseline comparisons
+were taken back-to-back so both sides see similar external load.</p>
+</section>
+<section id="results-current-quiet-host">
+<h2>Results — current (quiet host)<a class="headerlink" href="#results-current-quiet-host" title="Link to this heading">#</a></h2>
+<p>SeedTTS EN, 1088 clips, mean over three repeats:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>conc</p></th>
+<th class="head text-right"><p>req/s</p></th>
+<th class="head text-right"><p>RTFx</p></th>
+<th class="head text-right"><p>lat mean</p></th>
+<th class="head text-right"><p>lat p95</p></th>
+<th class="head text-right"><p>corpus WER</p></th>
+<th class="head text-right"><p>completed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>11.6</p></td>
+<td class="text-right"><p>54.8</p></td>
+<td class="text-right"><p>0.088 s</p></td>
+<td class="text-right"><p>0.129 s</p></td>
+<td class="text-right"><p>0.0122</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>27.5</p></td>
+<td class="text-right"><p>130.4</p></td>
+<td class="text-right"><p>0.289 s</p></td>
+<td class="text-right"><p>0.437 s</p></td>
+<td class="text-right"><p>0.0122</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>53.0</p></td>
+<td class="text-right"><p>251.2</p></td>
+<td class="text-right"><p>0.304 s</p></td>
+<td class="text-right"><p>0.458 s</p></td>
+<td class="text-right"><p>0.0122</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>108.0</p></td>
+<td class="text-right"><p>511.4</p></td>
+<td class="text-right"><p>0.295 s</p></td>
+<td class="text-right"><p>0.399 s</p></td>
+<td class="text-right"><p>0.0122</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>64</p></td>
+<td class="text-right"><p>103.0</p></td>
+<td class="text-right"><p>486.8</p></td>
+<td class="text-right"><p>0.610 s</p></td>
+<td class="text-right"><p>0.741 s</p></td>
+<td class="text-right"><p>0.0125</p></td>
+<td class="text-right"><p>3165/3264</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>SeedTTS ZH, 2020 clips, mean over three repeats:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>conc</p></th>
+<th class="head text-right"><p>req/s</p></th>
+<th class="head text-right"><p>RTFx</p></th>
+<th class="head text-right"><p>lat mean</p></th>
+<th class="head text-right"><p>lat p95</p></th>
+<th class="head text-right"><p>corpus CER</p></th>
+<th class="head text-right"><p>completed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>14.3</p></td>
+<td class="text-right"><p>66.9</p></td>
+<td class="text-right"><p>0.070 s</p></td>
+<td class="text-right"><p>0.088 s</p></td>
+<td class="text-right"><p>0.0062</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>64.2</p></td>
+<td class="text-right"><p>300.8</p></td>
+<td class="text-right"><p>0.124 s</p></td>
+<td class="text-right"><p>0.175 s</p></td>
+<td class="text-right"><p>0.0064</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>96.5</p></td>
+<td class="text-right"><p>451.9</p></td>
+<td class="text-right"><p>0.165 s</p></td>
+<td class="text-right"><p>0.231 s</p></td>
+<td class="text-right"><p>0.0062</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>126.4</p></td>
+<td class="text-right"><p>591.6</p></td>
+<td class="text-right"><p>0.252 s</p></td>
+<td class="text-right"><p>0.353 s</p></td>
+<td class="text-right"><p>0.0062</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>64</p></td>
+<td class="text-right"><p>129.2</p></td>
+<td class="text-right"><p>604.3</p></td>
+<td class="text-right"><p>0.489 s</p></td>
+<td class="text-right"><p>0.613 s</p></td>
+<td class="text-right"><p>0.0062</p></td>
+<td class="text-right"><p>5993/6060</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Reading:</p>
+<ul class="simple">
+<li><p>Throughput saturates at concurrency 32 and stops scaling to 64 on both
+languages while mean latency roughly doubles.</p></li>
+<li><p>At concurrency 64 both languages shed 1–4 % of requests with HTTP 500: a
+single worker admits at most <code class="docutils literal notranslate"><span class="pre">request_build_max_pending=16</span></code> request builds
+and <code class="docutils literal notranslate"><span class="pre">max_running_requests=32</span></code> running requests, so the 64-deep closed loop
+overflows the build backlog.</p></li>
+<li><p>WER/CER stay in band at every level (the concurrency-64 uptick is the
+shed-request denominator, not transcription regressions).</p></li>
+<li><p>Relative to the pre-#1326 reference (97.9 req/s at concurrency 32 on the
+same EN set and hardware class), async decode lifted saturation throughput
+by about 10 %.</p></li>
+</ul>
+</section>
+<section id="results-current-vs-baseline-back-to-back-same-host-window">
+<h2>Results — current vs baseline (back-to-back, same host window)<a class="headerlink" href="#results-current-vs-baseline-back-to-back-same-host-window" title="Link to this heading">#</a></h2>
+<p>SeedTTS EN, 1088 clips, mean over three repeats; the two sweeps ran
+back-to-back on identical neighboring GPUs so both saw the same co-tenant
+load. One baseline concurrency-1 repeat was hit by a co-tenant burst
+(7.3 req/s against 22.6/21.4); the mean below includes it.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>conc</p></th>
+<th class="head text-right"><p>current req/s</p></th>
+<th class="head text-right"><p>baseline req/s</p></th>
+<th class="head text-right"><p>ratio</p></th>
+<th class="head text-right"><p>current lat mean/p95</p></th>
+<th class="head text-right"><p>baseline lat mean/p95</p></th>
+<th class="head text-right"><p>current completed</p></th>
+<th class="head text-right"><p>baseline completed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>12.0</p></td>
+<td class="text-right"><p>17.1</p></td>
+<td class="text-right"><p>1.42×</p></td>
+<td class="text-right"><p>0.083 / 0.102 s</p></td>
+<td class="text-right"><p>0.076 / 0.149 s</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>41.9</p></td>
+<td class="text-right"><p>70.3</p></td>
+<td class="text-right"><p>1.68×</p></td>
+<td class="text-right"><p>0.191 / 0.256 s</p></td>
+<td class="text-right"><p>0.117 / 0.174 s</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>62.6</p></td>
+<td class="text-right"><p>120.6</p></td>
+<td class="text-right"><p>1.93×</p></td>
+<td class="text-right"><p>0.255 / 0.346 s</p></td>
+<td class="text-right"><p>0.132 / 0.171 s</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>79.5</p></td>
+<td class="text-right"><p>183.8</p></td>
+<td class="text-right"><p>2.31×</p></td>
+<td class="text-right"><p>0.401 / 0.549 s</p></td>
+<td class="text-right"><p>0.175 / 0.242 s</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>64</p></td>
+<td class="text-right"><p>80.9</p></td>
+<td class="text-right"><p>264.6</p></td>
+<td class="text-right"><p>3.27×</p></td>
+<td class="text-right"><p>0.777 / 0.947 s</p></td>
+<td class="text-right"><p>0.238 / 0.291 s</p></td>
+<td class="text-right"><p>3208/3264</p></td>
+<td class="text-right"><p>3264/3264</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Corpus WER stayed 0.0122–0.0125 (current) and 0.0123–0.0124 (baseline) at
+every level. Reading:</p>
+<ul class="simple">
+<li><p>The gap is a scaling gap, not a single-request model-forward gap: baseline
+keeps scaling past current’s concurrency-32 saturation and completes every
+request at 64 while current sheds 1–2 % there.</p></li>
+<li><p>Excluding the contended repeat, baseline is ~1.8× faster even at
+concurrency 1 (0.044 s vs 0.083 s mean), so part of the gap is fixed
+per-request serving overhead, and the rest grows with concurrency —
+consistent with the admission cap and host-dispatch costs quantified
+below.</p></li>
+<li><p>This reproduces the external report’s direction with a wider magnitude on
+this hardware/window; the concurrency knee the roadmap describes is
+confirmed on current main.</p></li>
+</ul>
+<p>SeedTTS ZH, 2020 clips, mean over three repeats, same back-to-back pairing
+(current concurrency-1 repeats were partially contended in this window):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>conc</p></th>
+<th class="head text-right"><p>current req/s</p></th>
+<th class="head text-right"><p>baseline req/s</p></th>
+<th class="head text-right"><p>ratio</p></th>
+<th class="head text-right"><p>current lat mean/p95</p></th>
+<th class="head text-right"><p>baseline lat mean/p95</p></th>
+<th class="head text-right"><p>current completed</p></th>
+<th class="head text-right"><p>baseline completed</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>9.1</p></td>
+<td class="text-right"><p>25.2</p></td>
+<td class="text-right"><p>2.78×</p></td>
+<td class="text-right"><p>0.116 / 0.178 s</p></td>
+<td class="text-right"><p>0.039 / 0.053 s</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>47.8</p></td>
+<td class="text-right"><p>131.0</p></td>
+<td class="text-right"><p>2.74×</p></td>
+<td class="text-right"><p>0.167 / 0.238 s</p></td>
+<td class="text-right"><p>0.061 / 0.083 s</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>68.4</p></td>
+<td class="text-right"><p>186.5</p></td>
+<td class="text-right"><p>2.73×</p></td>
+<td class="text-right"><p>0.233 / 0.324 s</p></td>
+<td class="text-right"><p>0.085 / 0.117 s</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>86.6</p></td>
+<td class="text-right"><p>245.5</p></td>
+<td class="text-right"><p>2.83×</p></td>
+<td class="text-right"><p>0.368 / 0.522 s</p></td>
+<td class="text-right"><p>0.129 / 0.164 s</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>64</p></td>
+<td class="text-right"><p>82.1</p></td>
+<td class="text-right"><p>265.7</p></td>
+<td class="text-right"><p>3.24×</p></td>
+<td class="text-right"><p>0.772 / 1.017 s</p></td>
+<td class="text-right"><p>0.238 / 0.339 s</p></td>
+<td class="text-right"><p>5961/6060</p></td>
+<td class="text-right"><p>6060/6060</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Corpus CER stayed 0.0061–0.0063 (current) and 0.0064–0.0066 (baseline) at
+every level.</p>
+</section>
+<section id="bottleneck-decomposition-profiled-passes-en">
+<h2>Bottleneck decomposition (profiled passes, EN)<a class="headerlink" href="#bottleneck-decomposition-profiled-passes-en" title="Link to this heading">#</a></h2>
+<p>Per-request stage averages from the request-event profiler; encoder work runs
+inside the first LM forward on this path, so “first forward” is encoder +
+prefill:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>conc</p></th>
+<th class="head text-right"><p>build</p></th>
+<th class="head text-right"><p>build→queued</p></th>
+<th class="head text-right"><p>queued→scheduled</p></th>
+<th class="head text-right"><p>first forward</p></th>
+<th class="head text-right"><p>decode tail</p></th>
+<th class="head text-right"><p>total</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p>5.6 ms</p></td>
+<td class="text-right"><p>0.7 ms</p></td>
+<td class="text-right"><p>1.1 ms</p></td>
+<td class="text-right"><p>28.0 ms</p></td>
+<td class="text-right"><p>55.3 ms</p></td>
+<td class="text-right"><p>91 ms</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p>6.0 ms</p></td>
+<td class="text-right"><p>16.5 ms</p></td>
+<td class="text-right"><p>2.0 ms</p></td>
+<td class="text-right"><p>29.5 ms</p></td>
+<td class="text-right"><p>131.8 ms</p></td>
+<td class="text-right"><p>196 ms</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p>6.1 ms</p></td>
+<td class="text-right"><p>20.0 ms</p></td>
+<td class="text-right"><p>1.9 ms</p></td>
+<td class="text-right"><p>30.1 ms</p></td>
+<td class="text-right"><p>185.6 ms</p></td>
+<td class="text-right"><p>259 ms</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>32</p></td>
+<td class="text-right"><p>6.5 ms</p></td>
+<td class="text-right"><p>23.1 ms</p></td>
+<td class="text-right"><p>5.9 ms</p></td>
+<td class="text-right"><p>46.2 ms</p></td>
+<td class="text-right"><p>357.7 ms</p></td>
+<td class="text-right"><p>472 ms</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>64</p></td>
+<td class="text-right"><p>6.3 ms</p></td>
+<td class="text-right"><p>30.1 ms</p></td>
+<td class="text-right"><p>412.8 ms</p></td>
+<td class="text-right"><p>33.3 ms</p></td>
+<td class="text-right"><p>392.6 ms</p></td>
+<td class="text-right"><p>910 ms</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>GPU utilization stays between 33 % and 54 % (mean) at every level; the GPU is
+never the constraint.</p>
+<p>Dominant costs, in order:</p>
+<ol class="arabic simple">
+<li><p><strong>Admission queueing at concurrency 64.</strong> The queued→scheduled wait jumps
+from ~6 ms to ~413 ms — the entire knee. Requests beyond
+<code class="docutils literal notranslate"><span class="pre">max_running_requests=32</span></code> wait; requests beyond the build backlog are
+rejected. This is the Q-PR5 target.</p></li>
+<li><p><strong>Decode-step host dispatch.</strong> The decode tail grows from 55 ms to
+~360 ms per request as concurrency rises while GPU utilization falls —
+decode wall-clock is dominated by host-side per-step work shared across
+the running batch, consistent with the #907 causal profiling
+(GPU-idle-94 %, CPU-sensitivity-0.69). Q-PR5’s knob sweep and any further
+host-side batching improvements attack this.</p></li>
+<li><p><strong>First-forward stalls.</strong> Encoder + prefill costs 28–46 ms per admitted
+request and executes on the scheduler thread and default stream, so every
+admission stalls the whole running decode batch for that long (and forces
+an async-decode drain). This is the Q-PR4 target: move the encoder ahead
+of LM admission onto its own thread/stream and batch it.</p></li>
+<li><p><strong>Build-to-queued gap.</strong> 16–30 ms at concurrency ≥ 8 from the FIFO
+build-result drain and admission-lock path; small but visible, also in
+Q-PR5 scope.</p></li>
+</ol>
+</section>
+<section id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Link to this heading">#</a></h2>
+<p>Fingerprints are embedded in each result JSON produced by
+<code class="docutils literal notranslate"><span class="pre">--fingerprint</span></code>: a client block (git SHA, dependency freeze hash, driver,
+GPU, cached model revision — describing the benchmark process) and a server
+block (what the target server reports about itself). In the runs above,
+client and server shared one host and checkout, so the client git state also
+identifies the server code. Raw per-request records and profiler event JSONL
+live beside the result files on the measurement host.</p>
+<p>Summary for the runs above: NVIDIA H100 80GB HBM3, driver 580.126.20,
+torch 2.11.0+cu130, sglang 0.5.16, transformers 5.12.1, model snapshot
+<code class="docutils literal notranslate"><span class="pre">7278e1e70fe206f11671096ffdd38061171dd6e5</span></code>, dependency freeze
+<code class="docutils literal notranslate"><span class="pre">49652ce3ea5a7720…</span></code>. The current-side numbers were produced at this
+branch’s commit; note the fingerprint’s <code class="docutils literal notranslate"><span class="pre">git.dirty</span></code> flag also counts
+untracked run-output directories.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="profiler.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Request-level profiler</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="rl_admin_control.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">RL Admin Control</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce">Reproduce</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-host-variance">Shared-host variance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-current-quiet-host">Results — current (quiet host)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-current-vs-baseline-back-to-back-same-host-window">Results — current vs baseline (back-to-back, same host window)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bottleneck-decomposition-profiled-passes-en">Bottleneck decomposition (profiled passes, EN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">Environment</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

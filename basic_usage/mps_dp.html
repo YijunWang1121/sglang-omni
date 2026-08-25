@@ -1,0 +1,1023 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Same-GPU Data Parallelism with CUDA MPS &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'basic_usage/mps_dp';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Benchmark Relay" href="../benchmarks/relay.html" />
+    <link rel="prev" title="Omni Router Usage" href="omni_router.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/basic_usage/mps_dp.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/basic_usage/mps_dp.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fbasic_usage/mps_dp.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/basic_usage/mps_dp.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Same-GPU Data Parallelism with CUDA MPS</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy">Deploy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-weights-across-replicas-opt-in-default-off">Shared weights across replicas (opt-in, default off)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-we-found-this">How We Found This</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-questions">Common questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce-the-results">Reproduce the results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-the-baseline">Prepare the baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-on-h100-with-higgs-tts-model">Case Study on H100 with Higgs TTS Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limits-and-next-steps">Limits and next steps</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="same-gpu-data-parallelism-with-cuda-mps">
+<h1>Same-GPU Data Parallelism with CUDA MPS<a class="headerlink" href="#same-gpu-data-parallelism-with-cuda-mps" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>TL;DR: Same-GPU DP with CUDA MPS can substantially increase throughput. In the pinned TTS tests below, saturated DP2 and DP3 configurations reached 1.4 to 2.1x the tuned single-replica throughput.</p>
+</div></blockquote>
+<p>A common data-parallel deployment assigns one GPU to each replica. When a tuned replica still leaves substantial GPU headroom, colocating multiple replicas on the same GPU can improve per-GPU throughput.</p>
+<p>Same-GPU data parallelism runs several complete serving replicas on one GPU and lets <a class="reference external" href="https://docs.nvidia.com/deploy/mps/index.html">CUDA MPS</a> share the GPU between them. This is a conditional and ongoing optimization. We are excited to share it and call for the community to join the exploration.</p>
+<p><img alt="Multiple host chains plus CUDA MPS filling the idle GPU" src="../_images/same-gpu-dp-mps.svg" /></p>
+<section id="deploy">
+<h2>Deploy<a class="headerlink" href="#deploy" title="Link to this heading">#</a></h2>
+<p>The steps below are one continuous flow. We provide <code class="docutils literal notranslate"><span class="pre">examples/mps_dp/launch.sh</span></code> to manage the private MPS daemon and serving replicas for one run. It records replica processes, ports, and logs, starts replicas sequentially, verifies their KV capacity and MPS attachment, and tears down only the run it recorded. Detailed instructions are as follows:</p>
+<ol class="arabic simple">
+<li><p><strong>Choose the GPU and NUMA node.</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>index,utilization.gpu,memory.used<span class="w"> </span>--format<span class="o">=</span>csv,noheader
+<span class="nb">export</span><span class="w"> </span><span class="nv">GPU_ID</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">BUS</span><span class="o">=</span><span class="k">$(</span>nvidia-smi<span class="w"> </span>--query-gpu<span class="o">=</span>pci.bus_id<span class="w"> </span>--format<span class="o">=</span>csv,noheader<span class="w"> </span>-i<span class="w"> </span><span class="nv">$GPU_ID</span><span class="k">)</span>
+<span class="nv">BUS</span><span class="o">=</span><span class="si">${</span><span class="nv">BUS</span><span class="p">,,</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="nv">BUS</span><span class="o">=</span><span class="si">${</span><span class="nv">BUS</span><span class="p">:</span><span class="nv">4</span><span class="si">}</span>
+<span class="nv">NODE</span><span class="o">=</span><span class="k">$(</span>cat<span class="w"> </span>/sys/bus/pci/devices/<span class="nv">$BUS</span>/numa_node<span class="k">)</span><span class="w">   </span><span class="c1"># if -1, set the node explicitly</span>
+numactl<span class="w"> </span>-H<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">"node </span><span class="nv">$NODE</span><span class="s2"> cpus"</span>
+</pre></div>
+</div>
+<p>Pick a GPU that is idle, then find its NUMA node from the PCI bus id (drm card ordinals do not always match nvidia-smi ordinals). Choose non-overlapping physical CPU-core blocks from that node, one block per replica.</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>Launch the replicas.</strong></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONFIG</span><span class="o">=</span>examples/mps_dp/configs/higgs_h100_dp3.yaml<span class="w"> </span><span class="nv">N</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="nv">CORE_BLOCKS</span><span class="o">=</span><span class="s2">"0-9 10-19 20-29"</span><span class="w"> </span>bash<span class="w"> </span>examples/mps_dp/launch.sh<span class="w"> </span>up
+</pre></div>
+</div>
+<p>The command above is the validated H100 Higgs DP3 recipe. For the validated H200 Higgs DP8 recipe, use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONFIG</span><span class="o">=</span>examples/mps_dp/configs/higgs_h200_dp8.yaml<span class="w"> </span><span class="nv">N</span><span class="o">=</span><span class="m">8</span><span class="w"> </span><span class="nv">CORE_BLOCKS</span><span class="o">=</span><span class="s2">"0-3 4-7 8-11 12-15 16-19 20-23 24-27 28-31"</span><span class="w"> </span>bash<span class="w"> </span>examples/mps_dp/launch.sh<span class="w"> </span>up
+</pre></div>
+</div>
+<p>The pipeline config supplies the model and per-replica runtime settings. The launcher environment supplies host-local placement, including the GPU, replica count, and CPU blocks. The launcher resolves the GPU’s NUMA node, assigns local ports automatically, starts a private MPS daemon, waits for each replica’s health check before starting the next, and verifies MPS attachment. The CPU blocks above are specific to the tested hosts; derive the correct non-overlapping blocks for your own CPU topology.</p>
+<p>Both profiles set <code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code> to <code class="docutils literal notranslate"><span class="pre">0.85</span></code>; <code class="docutils literal notranslate"><span class="pre">MF</span></code> can override it. When <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> is unset, the existing <code class="docutils literal notranslate"><span class="pre">MODEL</span></code> and <code class="docutils literal notranslate"><span class="pre">MAX_TOTAL_TOKENS</span></code> interface remains available. Launching replicas sequentially avoids overlapping memory profiling and CUDA-graph capture during startup.</p>
+<p>Identical <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> flags do <strong>not</strong> mean identical KV capacity. <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> budgets model weights and the KV pool against the GPU memory available when each replica starts. Roughly, the profiled KV memory is the requested fraction of free memory measured before model loading, minus model and fixed runtime allocations. It is a per-replica budget, not an additive share of the card. Because replicas start sequentially, earlier ones have already reserved memory, so later ones see a smaller free pool and allocate fewer KV tokens even when every flag is the same (in one run, three sequential <code class="docutils literal notranslate"><span class="pre">mf=0.27</span></code> replicas received 97,503 / 53,149 / 20,961 KV tokens).</p>
+<p><img alt="What same-GPU DP spends in VRAM and what it reclaims" src="../_images/same-gpu-dp-vram.svg" /></p>
+<p>Memory profiling does not coordinate KV allocation across independent replica processes. For <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>, the launcher therefore requires one common <code class="docutils literal notranslate"><span class="pre">max_total_tokens</span></code> value, either from the pipeline config or from <code class="docutils literal notranslate"><span class="pre">MAX_TOTAL_TOKENS</span></code>. SGLang treats this value as an upper bound; the launcher rejects startup unless every replica resolves exactly that capacity. The cap applies independently to each replica; it is not divided across the pool. It is also independent of the request-level <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> limit and does not distribute requests between replicas.</p>
+<p>The H100 Higgs DP3 profile uses <code class="docutils literal notranslate"><span class="pre">100000</span></code> tokens per replica. The H200 Higgs DP8 profile uses <code class="docutils literal notranslate"><span class="pre">30000</span></code> tokens per replica, preserving GPU memory headroom for non-KV runtime allocations, including the colocated audio encoder and vocoder. These values are specific to their configurations, not universal hardware defaults. Recalculate the cap after changing the model, GPU, runtime, replica count, memory settings, or CUDA-graph settings. If a replica cannot allocate the common cap, lower it or reduce the replica count.</p>
+<p>The H200 profile’s <code class="docutils literal notranslate"><span class="pre">30000</span></code>-token KV pool is smaller than the worst-case demand from 64 requests each generating up to 2048 new tokens, even before accounting for input tokens. Therefore, <code class="docutils literal notranslate"><span class="pre">max_running_requests=64</span></code> is an admission ceiling rather than a guarantee that 64 long requests can decode concurrently. If the pool fills, SGLang retracts requests and returns them to the waiting queue until KV capacity becomes available.</p>
+<ol class="arabic simple" start="3">
+<li><p><strong>Drive every replica to saturation.</strong></p></li>
+</ol>
+<p>The case study used one dedicated client per replica and drove all replicas in parallel. The measured goal is to keep every replica saturated. With equivalent replicas, random or round-robin routing can distribute a shared ingress across the pool; fill-one-then-next is another possible strategy, but the study did not compare them. Equal KV capacity makes the replicas comparable, but it does not by itself balance their queues. Validate the routing policy and per-replica saturation under your workload.</p>
+<ol class="arabic simple" start="4">
+<li><p><strong>Verify MPS attachment.</strong></p></li>
+</ol>
+<p>MPS should be verified carefully. Four things are easy to conflate: environment variables set, daemon running, an MPS server exists, and the replica processes you launched are actually attached as clients. Only the last makes the comparison valid, and a replica that missed the pipe directory falls back to time-slicing without any error. The launcher verifies every replica against the MPS client list, writes the server-to-client PID mapping to <code class="docutils literal notranslate"><span class="pre">mps_attach.txt</span></code>, and fails startup if any replica is not attached.</p>
+<ol class="arabic simple" start="5">
+<li><p><strong>Route traffic.</strong></p></li>
+</ol>
+<p>For easy deployment, you can register each replica endpoint with the <a class="reference internal" href="omni_router.html"><span class="std std-doc">Omni Router</span></a>. Keep the router’s <code class="docutils literal notranslate"><span class="pre">--max-connections</span></code> at least as large as the total offered concurrency. The case study did not benchmark router scheduling policies, so confirm that the selected policy keeps every replica driven and meets your workload’s latency and throughput requirements.</p>
+<ol class="arabic simple" start="6">
+<li><p><strong>Tear down safely.</strong></p></li>
+</ol>
+<p>Stop new traffic, then run the teardown command printed by the launcher:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>examples/mps_dp/launch.sh<span class="w"> </span>down<span class="w"> </span>&lt;RUN_ID&gt;
+</pre></div>
+</div>
+<p>On a shared host, only touch processes you launched, and never treat “the GPU is empty” as the success condition. The launcher stops only the replica processes recorded for the selected run, waits for their MPS clients to detach, and then stops the private MPS daemon. It keeps the run state whenever cleanup cannot be confirmed.</p>
+<p>Setting up and tearing down MPS is more involved than running a single replica, but in the pinned H100 Higgs tests the throughput gain was substantial. The table below shows the nominal completed-run ranges; the full accounting, including the failed and degraded runs, is in the case study.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head text-right"><p>Nominal throughput</p></th>
+<th class="head text-right"><p>Relative to single</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single c96</p></td>
+<td class="text-right"><p>21.7 to 22.1 qps</p></td>
+<td class="text-right"><p>1.0x</p></td>
+</tr>
+<tr class="row-odd"><td><p>DP2 + MPS, 2 x c64</p></td>
+<td class="text-right"><p>31.5 to 37.7 qps</p></td>
+<td class="text-right"><p>1.4 to 1.7x</p></td>
+</tr>
+<tr class="row-even"><td><p>DP3 + MPS, 3 x c64</p></td>
+<td class="text-right"><p>39.9 to 46.9 qps</p></td>
+<td class="text-right"><p>1.8 to 2.1x</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The throughput results in the table and H100 case study are from an 80 GB H100 with Higgs. The H200 DP8 profile was validated separately on the full SeedTTS English dataset at concurrency 64 per replica. Re-evaluate replica count, CPU allocation, token capacity, and saturation concurrency before applying either profile to different hardware or workloads.</p>
+</section>
+<section id="shared-weights-across-replicas-opt-in-default-off">
+<h2>Shared weights across replicas (opt-in, default off)<a class="headerlink" href="#shared-weights-across-replicas-opt-in-default-off" title="Link to this heading">#</a></h2>
+<p>By default every replica loads its own full copy of the AR backbone (7.60 GiB for Higgs 3-4B — about a third of a DP3 footprint). Since all replicas run the same read-only weights on the same GPU, the launcher can instead share <strong>one</strong> copy over CUDA IPC:</p>
+<p><strong>Scope and contract.</strong> This is opt-in (<code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code>, default off) and gated to <strong>validated architectures with tp=pp=1</strong>; anything else is rejected before any resource is created, because a model that writes per-request state into a shared parameter would corrupt co-located replicas. An architecture audit alone does not enable sharing: a model is supported only after the documented launcher command passed end-to-end validation (shared N=2 boot under MPS, health, attach verification, concurrent-request correctness, clean teardown) at the current revision. <code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code> requires <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code>, so the supported-config check runs in preflight, before the MPS daemon, state directory, or any replica exists. Each supported architecture carries a share policy: registered tensors the model writes at serving time (per-step decode staging scratch) are classified <strong>replica-private</strong> — every replica keeps its own storage for them and only the immutable weights alias one storage. Leader and follower derive the classification from the same policy and fail closed on any disagreement (it is part of the manifest). Sharing is a whole-group lifecycle: the leader must outlive followers, restart the whole run together (never a single replica), online weight updates are refused while sharing is active, and each follower requires an explicit <code class="docutils literal notranslate"><span class="pre">--max-total-tokens</span></code> (its dummy weights are freed before KV profiling, so KV sizing must be pinned). <code class="docutils literal notranslate"><span class="pre">autodp.sh</span></code> sizes a <strong>maximum <em>estimated</em></strong> DP (boot-validated), not an absolute safe maximum; because its sizing assumes sharing, it defaults <code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code>, while <code class="docutils literal notranslate"><span class="pre">launch.sh</span></code> itself defaults off.</p>
+<p>A model is either <strong>supported</strong> or <strong>not supported</strong>; there is no intermediate tier. Supported means all of the following passed at the current revision, with commands and logs recorded in the PR: the documented <code class="docutils literal notranslate"><span class="pre">launch.sh</span></code> command boots <code class="docutils literal notranslate"><span class="pre">N=2</span></code> with <code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code> under a private MPS daemon, every replica passes its health check and MPS attach verification, the follower attaches the leader’s weights over CUDA IPC and holds no second resident copy of the shared weights after boot, concurrent requests across replicas return correct outputs (byte-identical audio to the single-replica baseline for TTS; word-identical transcripts for ASR, where timestamp fields may jitter under batching), and teardown leaves no replica process or MPS client behind. This is one-H100 end-to-end smoke validation — executable support evidence at the current revision, not a long-term stability or CI claim.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Architecture</p></th>
+<th class="head"><p>Status</p></th>
+<th class="head"><p>Config</p></th>
+<th class="head"><p>Replica-private</p></th>
+<th class="head"><p>Shared weight mass</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MOSS TTS delay (<code class="docutils literal notranslate"><span class="pre">MossTTSDelaySGLangModel</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">moss_delay_h100_dp2.yaml</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">_decode_input_embedding.weight</span></code> (per-step decode staging)</p></td>
+<td><p>Qwen3-8B backbone, embeddings, heads (17.05 GiB)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Higgs TTS (<code class="docutils literal notranslate"><span class="pre">HiggsMultimodalQwen3ForConditionalGeneration</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">higgs_h100_dp3.yaml</span></code></p></td>
+<td><p>none identified</p></td>
+<td><p>all registered parameters/buffers (7.55 GiB)</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSS TTS local (<code class="docutils literal notranslate"><span class="pre">MossTTSLocalSGLangModel</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">moss_local_h100_dp2.yaml</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">_decode_input_embedding.weight</span></code> (per-step decode staging)</p></td>
+<td><p>AR backbone, embeddings, local transformer, rope buffers (8.44 GiB)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Whisper (<code class="docutils literal notranslate"><span class="pre">WhisperForConditionalGeneration</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">whisper_h100_dp2.yaml</span></code></p></td>
+<td><p>none identified</p></td>
+<td><p>all registered tensors (1.51 GiB)</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSS Transcribe-Diarize (<code class="docutils literal notranslate"><span class="pre">MossTranscribeDiarizeForConditionalGeneration</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">moss_td_h100_dp2.yaml</span></code></p></td>
+<td><p>none identified</p></td>
+<td><p>all registered tensors (1.75 GiB)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-ASR (<code class="docutils literal notranslate"><span class="pre">Qwen3ASRForConditionalGeneration</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">qwen3_asr_h100_dp2.yaml</span></code></p></td>
+<td><p>none identified</p></td>
+<td><p>all registered tensors (3.83 GiB)</p></td>
+</tr>
+<tr class="row-even"><td><p>FunASR Nano (<code class="docutils literal notranslate"><span class="pre">FunAsrNanoForConditionalGeneration</span></code>)</p></td>
+<td><p>Supported</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fun_asr_h100_dp2.yaml</span></code></p></td>
+<td><p>none identified</p></td>
+<td><p>all registered tensors (1.57 GiB)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Validation update for #1401 Part 1: at code revision <a class="reference external" href="https://github.com/sgl-project/sglang-omni/pull/1557/commits/5e7a8c717b9ec85b1f72aa7d3444f9f5ff7ec72e"><code class="docutils literal notranslate"><span class="pre">5e7a8c7</span></code></a>, MOSS TTS local and MOSS TTS delay passed <code class="docutils literal notranslate"><span class="pre">N=2</span></code>, <code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code> health, MPS attachment, leader/follower byte-identity, request completion, and clean teardown on H200. Other Supported rows were not revalidated.</p>
+<p>Each supported model launches with its config from <code class="docutils literal notranslate"><span class="pre">examples/mps_dp/configs/</span></code> and the same command shape, for example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CONFIG</span><span class="o">=</span>examples/mps_dp/configs/moss_delay_h100_dp2.yaml<span class="w"> </span><span class="nv">N</span><span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="nv">WEIGHT_SHARE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">CORE_BLOCKS</span><span class="o">=</span><span class="s2">"0-7 8-15"</span><span class="w"> </span>bash<span class="w"> </span>examples/mps_dp/launch.sh<span class="w"> </span>up
+</pre></div>
+</div>
+<p>Everything else is <strong>not supported</strong> and is rejected in preflight, before the MPS daemon, state directory, handle file, or any replica process exists. For these, a completed architecture audit is recorded where one exists, but support is still in progress:</p>
+<ul class="simple">
+<li><p>Ming TTS (<code class="docutils literal notranslate"><span class="pre">MingTTSSGLangModel</span></code>): audit complete; blocked on VRAM (the 16.8B leader alone reaches the 80 GB card edge), pending an H200 pass.</p></li>
+<li><p>Voxtral TTS (<code class="docutils literal notranslate"><span class="pre">VoxtralSGLangTTSModel</span></code>), Fish S2-Pro (<code class="docutils literal notranslate"><span class="pre">S2ProSGLangTextModel</span></code>): audit complete; shared boots were observed in exploratory runs, but concurrent-request correctness needs each model’s own client, which this validation does not have yet.</p></li>
+<li><p>Qwen3-TTS (<code class="docutils literal notranslate"><span class="pre">Qwen3TTSTalker</span></code>): audit complete. At code revision <a class="reference external" href="https://github.com/sgl-project/sglang-omni/commit/cd45a47a1838017c89fb2178f167aac0cd7412a3"><code class="docutils literal notranslate"><span class="pre">cd45a47</span></code></a>, deterministic inference passed the <code class="docutils literal notranslate"><span class="pre">N=2</span></code>, <code class="docutils literal notranslate"><span class="pre">WEIGHT_SHARE=1</span></code> concurrent byte-identity qualification on H200 with a 30,000-token cap. It remains not supported because that result requires <code class="docutils literal notranslate"><span class="pre">enable_deterministic_inference:</span> <span class="pre">true</span></code>, which serializes preprocessing and vocoder decoding and disables Talker compilation and the initial vocoder CUDA graph, materially reducing throughput. Default-mode inference has not passed the byte-identity contract, so the launcher continues to reject weight sharing for this pipeline.</p></li>
+<li><p>LLaDA2 (<code class="docutils literal notranslate"><span class="pre">LLaDA2MoeModelLM</span></code>): audit complete; its pipeline declares no generation SGLang stage, so the launcher cannot drive it at any <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p></li>
+<li><p>Qwen3-Omni (<code class="docutils literal notranslate"><span class="pre">Qwen3OmniThinkerForCausalLM</span></code>, <code class="docutils literal notranslate"><span class="pre">Qwen3OmniTalker</span></code>): audit of both engines complete; the speech pipeline runs two SGLang engines and the text pipeline declares no generation stage, so the launcher cannot drive either.</p></li>
+<li><p>Ming-Omni thinker (<code class="docutils literal notranslate"><span class="pre">BailingMoeV2ForCausalLM</span></code>) and every other architecture: no completed audit; adding one requires a post-load mutation audit, a policy entry, and the full launcher validation above.</p></li>
+</ul>
+<p>For MOSS, sharing covers the SGLang AR engine only: the preprocessing and vocoder codec instances keep loading per replica by design (they hold streaming state), so they are outside both the share and its memory savings.</p>
+<p>The measurements below are performance context from this PR’s validation campaign (one 80 GB H100, post-boot VRAM, one measurement pass per cell unless noted); the support decision above rests on the current-revision end-to-end runs, not on these cells. Only supported models are shown.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Validated DP, IPC off</p></th>
+<th class="head"><p>Validated DP, IPC on</p></th>
+<th class="head text-right"><p>VRAM, off</p></th>
+<th class="head text-right"><p>VRAM, on</p></th>
+<th class="head text-right"><p>Saved per follower</p></th>
+<th class="head"><p>Throughput (aggregate across replicas), off vs on</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MOSS TTS delay</p></td>
+<td><p><strong>DP1</strong> (unshared DP2: replica 1 cannot fit its own weight copy in the remaining budget)</p></td>
+<td><p><strong>DP2</strong></p></td>
+<td class="text-right"><p>n/a</p></td>
+<td class="text-right"><p>42.4 GB</p></td>
+<td class="text-right"><p>17.05 GiB</p></td>
+<td><p>single 5.7 to shared DP2 agg 7.5 qps (+32%, per replica 3.8, single run); aligned-history outputs byte-identical; leader and follower processes 29.9 and 12.4 GB</p></td>
+</tr>
+<tr class="row-odd"><td><p>Higgs TTS 3-4B</p></td>
+<td><p>DP3 (100k cap; unshared DP4 needs 98 GB)</p></td>
+<td><p><strong>DP4</strong> (74.9 GB idle, 78.4 under load)</p></td>
+<td class="text-right"><p>73.7 GB at DP3</p></td>
+<td class="text-right"><p>58.1 GB at DP3</p></td>
+<td class="text-right"><p>7.55 GiB</p></td>
+<td><p>shared DP4 beats shared DP3 by +10% to +40% round-matched on this H100 driver; separately, the author’s H200 series showed parity at every N</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSS TTS local</p></td>
+<td><p>DP3 at the card edge, vocoder graphs partly eager</p></td>
+<td><p>DP3 with 13.3 GB headroom, full graphs</p></td>
+<td class="text-right"><p>78.0 GB</p></td>
+<td class="text-right"><p>61.8 GB</p></td>
+<td class="text-right"><p>8.44 GiB</p></td>
+<td><p>measured parity: DP2 agg 17.9 vs 18.2 (per replica 9.0 vs 9.1), DP3 agg 23.4 vs 23.4 (per replica 7.8) qps</p></td>
+</tr>
+<tr class="row-odd"><td><p>Whisper large-v3-turbo</p></td>
+<td><p>DP3 (40k cap)</p></td>
+<td><p><strong>DP6</strong> (19.7 GB)</p></td>
+<td class="text-right"><p>14.1 GB at DP3</p></td>
+<td class="text-right"><p>10.7 GB at DP3</p></td>
+<td class="text-right"><p>1.51 GiB</p></td>
+<td><p>parity at DP3 (agg 67.8 vs 68.0); shared DP6 reaches agg 95.3 cold qps, +40% over DP3</p></td>
+</tr>
+<tr class="row-even"><td><p>MOSS Transcribe-Diarize</p></td>
+<td><p>DP3 (40k cap)</p></td>
+<td><p>DP3</p></td>
+<td class="text-right"><p>23.9 GB</p></td>
+<td class="text-right"><p>20.2 GB</p></td>
+<td class="text-right"><p>1.75 GiB</p></td>
+<td><p>parity: agg 75.7 vs 70.9 cold qps (per replica 25.2 vs 23.6; 192 unique clips)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Qwen3-ASR 1.7B</p></td>
+<td><p>DP3 (40k cap)</p></td>
+<td><p>DP3</p></td>
+<td class="text-right"><p>28.2 GB</p></td>
+<td class="text-right"><p>20.2 GB</p></td>
+<td class="text-right"><p>3.83 GiB</p></td>
+<td><p>parity: agg 67.5 vs 64.5 (per replica 22.5 vs 21.5)</p></td>
+</tr>
+<tr class="row-even"><td><p>FunASR Nano</p></td>
+<td><p>DP2 (30k cap)</p></td>
+<td><p>DP2</p></td>
+<td class="text-right"><p>11.8 GB</p></td>
+<td class="text-right"><p>10.2 GB</p></td>
+<td class="text-right"><p>1.57 GiB</p></td>
+<td><p>parity: agg 40.6 vs 42.5 cold qps (per replica 20.3 vs 21.3)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The validated-DP columns show the highest configuration each mode booted and served in these runs, not proven ceilings: Whisper kept scaling to DP6 and its knee is still unfound, so treat the small models’ DP as CPU-core-limited, not VRAM-limited. For the ASR models the ceiling is host-bound, not VRAM-bound, so sharing does not move it; sharing moves the ceiling exactly where weights bind: MOSS delay (DP1 to DP2) and MOSS local (edge DP3 to operable DP3). Fixed-N parity is the mechanism-level expectation (same kernels over the same weight values either way); the single-run ASR pairs differ by under 7% with no consistent direction and MOSS local’s repeated rounds match, but treat single-pass cells as observations pending repetition. The throughput gains come from the extra replicas or KV the freed memory funds (delay DP2 +32% over its single replica, local DP3 +29% over DP2, Higgs DP4 +10% to +40% over DP3).</p>
+<p>Correctness scope for the smoke validation: TTS byte-identity holds for a replica serving the seeded sequence as its first traffic, for both leader and follower and with the peer under concurrent load; the MOSS samplers are additionally sensitive to their own serving history, at identical rates with sharing off and on (measured controls), so byte comparisons require aligned histories, and no evidence points at cross-replica sharing pollution. FunASR: 63/63 admissible clips exact; the 64th corpus clip exceeds the model’s own 30-second VAD limit and is rejected identically by the baseline and both shared replicas.</p>
+<p>VRAM saved per follower is the byte count the leader exports and each follower aliases instead of allocating; the off and on columns differ by roughly (N-1) times this value. ASR throughput used 64 unique synthesized clips per replica with the cold round reported (a warm rerun is cache-inflated). Sharing leaves throughput at parity at a fixed N everywhere it was paired; the wins are fit (MOSS delay DP2, previously impossible), margin (MOSS local DP3: 13.3 GB headroom and full graphs versus 0.33 GB and graph fallback), and follower memory.</p>
+</section>
+<section id="how-we-found-this">
+<h2>How We Found This<a class="headerlink" href="#how-we-found-this" title="Link to this heading">#</a></h2>
+<p>This recipe grew out of the serving profiling in <a class="reference external" href="https://github.com/sgl-project/sglang-omni/issues/907">#907</a>. Our profiling found substantial unused GPU capacity across several omni serving workloads, with strong host-dispatch-bound evidence in the tested ASR setup. From there we ran same-GPU DP experiments on <a class="reference external" href="https://sgl-project.github.io/sglang-omni/cookbook/higgs_tts.html">Higgs</a> and <a class="reference external" href="https://sgl-project.github.io/sglang-omni/cookbook/moss_tts_local.html">Moss</a> TTS models.</p>
+<p><img alt="The bottleneck is host-side dispatch, not GPU compute" src="../_images/same-gpu-dp-host-bound.svg" /></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Experiment</p></th>
+<th class="head"><p>GPU signal</p></th>
+<th class="head"><p>Controlled observation</p></th>
+<th class="head"><p>Result</p></th>
+<th class="head"><p>Interpretation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ASR single replica</p></td>
+<td><p>GPU timeline 94.3% idle</p></td>
+<td><p>throughput 0.90x at SM clock 0.455x; 0.31x at host CPU near 0.25x</p></td>
+<td><p>sensitive to CPU, not to GPU compute</p></td>
+<td><p>strong host-dispatch-bound causal evidence in this ASR setup</p></td>
+</tr>
+<tr class="row-odd"><td><p>Higgs tuned single</p></td>
+<td><p>SM Active about 29%, GPU idle about 71%</p></td>
+<td><p>throughput plateaued, worker fully driven</p></td>
+<td><p>1.00x normalized</p></td>
+<td><p>clear reclaimable GPU headroom, but not the full ASR causal closure</p></td>
+</tr>
+<tr class="row-even"><td><p>Higgs DP2 without MPS</p></td>
+<td><p>SM Active about 37 to 38%, GPU idle about 62 to 63%</p></td>
+<td><p>added a second same-card server process</p></td>
+<td><p>about 1.24x normalized</p></td>
+<td><p>the second process reclaims part of the idle gap; host scheduling and long-tail batching can both contribute</p></td>
+</tr>
+<tr class="row-odd"><td><p>Higgs DP with MPS</p></td>
+<td><p>see the pinned case study in Evaluate</p></td>
+<td><p>each replica saturated, MPS attachment confirmed</p></td>
+<td><p>1.4 to 2.1x nominal, repeated</p></td>
+<td><p>MPS-enabled saturated runs produced the largest gains observed in the later pinned tests.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ASR is the strongest host-bound evidence. Higgs started as a gray zone but clearly leaves GPU headroom at a tuned single replica. Running several replicas as separate processes changes host execution, scheduling, and long-tail behavior, and it is not the same as enlarging one replica’s batch. Without MPS the CUDA contexts mostly time-slice and recover only part of the idle; MPS lets kernels from different processes run concurrently when resources permit, and the later MPS-enabled saturated runs produced the largest gains observed in the pinned tests.</p>
+</section>
+<section id="common-questions">
+<h2>Common questions<a class="headerlink" href="#common-questions" title="Link to this heading">#</a></h2>
+<p><strong>Throughput has plateaued, so why is the GPU still idle?</strong></p>
+<p>Serving throughput depends on more than the GPU’s peak compute. It also depends on how much parallel work a single replica exposes per step, how fast the host side handles scheduling and stage handoffs, and the request-length and batching distribution. A single Higgs replica can have a full request queue and still sit at about 29% SM Active; adding a second independent replica improves GPU idle and throughput together. So one process’s serving path is not keeping the card fed, but the cause is not a single CPU function: multiple host execution paths, batching behavior, and a latency-bounded decode shape can all contribute.</p>
+<p><strong>Replicating the weights costs VRAM. What does that buy?</strong></p>
+<p>Same-GPU DP does not save VRAM; it spends more of it. It copies the weights per replica and gives each replica its own, smaller KV pool. What it buys is the otherwise idle compute, reclaimed. That trade pays off only when a tuned single replica leaves the GPU idle (so there are idle SMs to fill) and the model is small enough that its weights are a modest slice of the card, so two or three full replicas still fit. On a compute-bound model, or one too large to hold several weight copies, extra replicas buy little. (Weight sharing over CUDA IPC relaxes the fit constraint — followers attach the leader’s copy instead of loading their own — but not the idle-compute precondition.)</p>
+<p><strong>Why does this pay for TTS models and not for general LLM serving?</strong></p>
+<p>Memory fit is the enabling condition, not the cause. The cause is idle that a single engine cannot reclaim, and TTS-style AR audio models produce it on two axes at once:</p>
+<ul class="simple">
+<li><p><em>Latency-capped batch shapes.</em> Streaming first-chunk latency pins the per-replica batch small, and a 0.6–4B talker at that batch runs low-occupancy kernels. The usual LLM remedy — batch deeper in one engine — spends the latency budget the product is built around.</p></li>
+<li><p><em>Host-heavy serving path.</em> Sampler pools, vocoder scheduling, chunk assembly, and HTTP streaming do per-step host work that rivals the GPU step time, so a single process idles the card temporally between launches. N processes overlap one replica’s dispatch bubble with another’s kernels; this is also why same-GPU DP scaling is sensitive to the CPU cores allotted per replica.</p></li>
+</ul>
+<p>A large dense transformer inverts every part of this: its decode batch can grow until the GEMMs saturate the SM array (continuous batching in one engine already multiplexes requests over one weight copy), SM utilization is high at serving batch sizes so MPS has no idle to harvest — only contention to add — and at tens of GiB per weight copy, same-card replicas stop fitting at all. The scaling tools there are TP/PP/EP within one engine, not DP behind MPS. Rule of thumb: colocate replicas when a tuned single replica holds roughly ≤60% SM-active under its latency SLO and N× the footprint fits (weight sharing extends the fit); otherwise scale the batch, not the process count.</p>
+</section>
+<section id="reproduce-the-results">
+<h2>Reproduce the results<a class="headerlink" href="#reproduce-the-results" title="Link to this heading">#</a></h2>
+<p>We release our early results and the guidance to reproduce them below.</p>
+<section id="prepare-the-baseline">
+<h3>Prepare the baseline<a class="headerlink" href="#prepare-the-baseline" title="Link to this heading">#</a></h3>
+<p>The single-replica baseline decides whether same-GPU DP is worth it, and an under-driven baseline makes DP look better than it is. Tune and measure one replica first, then treat its throughput, latency, and GPU utilization as the number every DP configuration has to beat.</p>
+<ul class="simple">
+<li><p><strong>Sweep concurrency to the plateau.</strong> Raise client concurrency until throughput stops climbing, and read the scheduler log lines (<code class="docutils literal notranslate"><span class="pre">#running-req</span></code>, <code class="docutils literal notranslate"><span class="pre">#queue-req</span></code>) at each step rather than assuming a good operating point.</p></li>
+<li><p><strong>Know the admission limit.</strong> Higgs serves with <code class="docutils literal notranslate"><span class="pre">max_running_requests=64</span></code> and <code class="docutils literal notranslate"><span class="pre">cuda_graph_max_bs=64</span></code> by default; both can be raised via <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span> <span class="pre">--max_running_requests</span> <span class="pre">N</span> <span class="pre">--cuda_graph_max_bs</span> <span class="pre">N</span></code> (the CUDA-graph capture range must cover the admission limit, and raising it costs capture memory). Whether the default cap binds depends on the runtime, so check the queue, do not assume.</p></li>
+<li><p><strong>Separate client from server.</strong> Client concurrency is not the active generation batch: requests beyond the admission limit wait in the scheduler queue, and requests also spend time in the other pipeline stages.</p></li>
+<li><p><strong>Prerequisites.</strong> NVIDIA CUDA MPS available with GPU compute mode <code class="docutils literal notranslate"><span class="pre">Default</span></code>, so a per-user daemon needs no root; enough GPU memory for every replica’s common KV cap plus roughly fixed per-replica overhead (weights, codec, MPS context); non-overlapping CPU core blocks, one per replica, on the GPU’s NUMA node (on SMT machines logical CPUs <code class="docutils literal notranslate"><span class="pre">N</span></code> and <code class="docutils literal notranslate"><span class="pre">N</span> <span class="pre">+</span> <span class="pre">ncores</span></code> are often the same physical core, so check <code class="docutils literal notranslate"><span class="pre">lscpu</span> <span class="pre">-e=CPU,CORE,NODE</span></code>); and enough offered concurrency to saturate each replica, not just the pool.</p></li>
+</ul>
+</section>
+<section id="evaluate">
+<h3>Evaluate<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h3>
+<p>Whether same-GPU DP helps is easy to measure incorrectly, so hold the comparison to the same discipline for every configuration:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Control</p></th>
+<th class="head"><p>Why it matters</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>tune the single replica to its throughput plateau</p></td>
+<td><p>keeps the baseline from being artificially weak</p></td>
+</tr>
+<tr class="row-odd"><td><p>hold total GPU and CPU resources fixed</p></td>
+<td><p>separates replica splitting from simply adding resources</p></td>
+</tr>
+<tr class="row-even"><td><p>give each replica dedicated CPU cores</p></td>
+<td><p>keeps replicas from contending for host dispatch</p></td>
+</tr>
+<tr class="row-odd"><td><p>saturate each replica separately</p></td>
+<td><p>keeps the DP pool from being under-fed</p></td>
+</tr>
+<tr class="row-even"><td><p>pin software and runtime settings</p></td>
+<td><p>makes the comparison reproducible</p></td>
+</tr>
+<tr class="row-odd"><td><p>report latency and unsuccessful runs</p></td>
+<td><p>avoids showing only the best throughput</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="case-study-on-h100-with-higgs-tts-model">
+<h2>Case Study on H100 with Higgs TTS Model<a class="headerlink" href="#case-study-on-h100-with-higgs-tts-model" title="Link to this heading">#</a></h2>
+<p>One H100 80 GB (driver 580.126.20 / CUDA 13), sglang-omni <code class="docutils literal notranslate"><span class="pre">a78de4cb</span></code>, sglang <code class="docutils literal notranslate"><span class="pre">0.5.12.post1</span></code>, <code class="docutils literal notranslate"><span class="pre">bosonai/higgs-tts-3-4b</span></code> (snapshot <code class="docutils literal notranslate"><span class="pre">7556c17e</span></code>), <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code>, seed-tts-eval EN, 300 samples per client, default <code class="docutils literal notranslate"><span class="pre">max_running_requests=64</span></code> / <code class="docutils literal notranslate"><span class="pre">cuda_graph_max_bs=64</span></code>, 32 server cores of the GPU’s NUMA node split per replica, one client per replica on the SMT-sibling cores, fresh servers per run, interleaved on a shared host. Every attempted run is reported.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head text-right"><p>Nominal throughput</p></th>
+<th class="head text-right"><p>Relative to single</p></th>
+<th class="head"><p>Run outcome</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Single c96</p></td>
+<td class="text-right"><p>21.7 to 22.1 qps</p></td>
+<td class="text-right"><p>1.0x</p></td>
+<td><p>4/4 completed</p></td>
+</tr>
+<tr class="row-odd"><td><p>DP2 + MPS, 2 x c64</p></td>
+<td class="text-right"><p>31.5 to 37.7 qps</p></td>
+<td class="text-right"><p>1.4 to 1.7x</p></td>
+<td><p>3 nominal of 5 attempts</p></td>
+</tr>
+<tr class="row-even"><td><p>DP3 + MPS, 3 x c64</p></td>
+<td class="text-right"><p>39.9 to 46.9 qps</p></td>
+<td class="text-right"><p>1.8 to 2.1x</p></td>
+<td><p>2 nominal and 1 degraded of 4 attempts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The failures: one DP2 benchmark run hit <code class="docutils literal notranslate"><span class="pre">cudaErrorMpsRpcFailure</span></code>, and one DP2 and one DP3 replica failed to start, all coinciding with host-load spikes. One DP3 run completed every request but at 13.3 qps, so it is marked degraded rather than excluded. The core-pinned single stayed within a few percent across all runs, and DP3 was not clearly repeatably better than DP2.</p>
+<p>Note: the <code class="docutils literal notranslate"><span class="pre">--max-total-tokens</span></code> option makes per-replica KV sizing more explicit and comparable. It is not a direct fix for <code class="docutils literal notranslate"><span class="pre">cudaErrorMpsRpcFailure</span></code>, and the launch and runtime failure rate has not been re-measured with it in place; the failures in the table reflect the runs as recorded.</p>
+<p>The #907 profiling, this repeated case study, and the reviewer verification below are three separate measurement series. They ran on different dates and load, and in some cases different software, so they should not be compared by absolute QPS; the differences between roughly 61, 21, and 29.9 qps are not attributed to a single cause.</p>
+<blockquote>
+<div><p>A separate reviewer verification on the same pinned software revision measured 29.9, 59.7, and 64.5 qps for single, DP2, and DP3. Absolute throughput differed between the two runtime environments, including different observed admission behavior, so the two series should not be combined. Both nevertheless showed a clear DP gain once every configuration was saturated.</p>
+</div></blockquote>
+<p>To measure your own setup, check whether one tuned replica is below GPU saturation under your real workload before adopting DP:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-smi<span class="w"> </span>dmon<span class="w"> </span>-i<span class="w"> </span><span class="nv">$GPU_ID</span><span class="w"> </span>-s<span class="w"> </span>um<span class="w"> </span>-d<span class="w"> </span><span class="m">5</span><span class="w">                        </span><span class="c1"># coarse utilization</span>
+nsys<span class="w"> </span>profile<span class="w"> </span>--gpu-metrics-devices<span class="w"> </span><span class="nv">$GPU_ID</span><span class="w"> </span>--gpu-metrics-set<span class="w"> </span>gh100<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="m">60</span><span class="w"> </span>-o<span class="w"> </span>one_replica<span class="w"> </span>-f<span class="w"> </span><span class="nb">true</span><span class="w"> </span>sleep<span class="w"> </span><span class="m">63</span><span class="w">                      </span><span class="c1"># device-level SM-active</span>
+</pre></div>
+</div>
+<p>Low SM activity at the tuned single replica’s peak may indicate reclaimable headroom; confirm it with a controlled DP comparison before relying on it. If SM activity is already near the ceiling, stop here.</p>
+</section>
+<section id="limits-and-next-steps">
+<h2>Limits and next steps<a class="headerlink" href="#limits-and-next-steps" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Generality is not fully validated.</strong> Beyond the pinned H100 Higgs case study, we also ran related experiments on H200 and used SGLang to serve Qwen3-4B directly; both lines of work largely confirmed the same-GPU DP gains. Space and time limit how completely we can present those results here, and the measurements are not yet as polished as we would like. We believe same-GPU DP is a promising direction for smaller models on GPUs with ample memory and compute headroom, but the experimental coverage is still incomplete.</p></li>
+<li><p><strong>KV sizing is hardware- and workload-specific.</strong> The launcher enforces equal per-replica KV capacity through a common <code class="docutils literal notranslate"><span class="pre">--max-total-tokens</span></code>. A sizing procedure that generalizes across models, runtimes, and GPU configurations still requires further study.</p></li>
+<li><p><strong>Router and scheduler still need a deeper dive.</strong> Both the router and the SGLang Omni scheduler need further optimization. On the router side, better routing strategies for a colocated pool are clearly required. On the scheduler side, a more ambitious question is whether we can borrow the spirit of LLM prefill–decode (PD) disaggregation: keep one large shared KV cache and let multiple replicas share it. That direction is extremely challenging, and we believe the potential payoff is correspondingly large.</p></li>
+</ol>
+<p>Same-GPU DP with MPS can recover idle GPU time on host- or dispatch-bound serving today, but broader validation and the work above are still unfinished. If this direction interests you, or you have results from other models, GPUs, or workloads that confirm or challenge these findings, we would like to work with you.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="omni_router.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Omni Router Usage</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../benchmarks/relay.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Benchmark Relay</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy">Deploy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-weights-across-replicas-opt-in-default-off">Shared weights across replicas (opt-in, default off)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-we-found-this">How We Found This</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-questions">Common questions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reproduce-the-results">Reproduce the results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-the-baseline">Prepare the baseline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Evaluate</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#case-study-on-h100-with-higgs-tts-model">Case Study on H100 with Higgs TTS Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limits-and-next-steps">Limits and next steps</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

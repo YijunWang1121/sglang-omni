@@ -1,0 +1,1132 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>MiniMax Music 3 &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cookbook/minimax_music3';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ZONOS2" href="zonos2.html" />
+    <link rel="prev" title="dots.tts" href="dots_tts.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/minimax_music3.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/cookbook/minimax_music3.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fcookbook/minimax_music3.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/cookbook/minimax_music3.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MiniMax Music 3</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-music">Generating Music</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-first-song">A first song</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-the-caption">Writing the caption</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instrumental-and-short-clips">Instrumental and short clips</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibility-and-variations">Reproducibility and variations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-outputs">Reference outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guidance">Guidance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concurrency">Concurrency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-that-the-model-rejects">Parameters That The Model Rejects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="minimax-music-3">
+<h1>MiniMax Music 3<a class="headerlink" href="#minimax-music-3" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/MiniMaxAI/MiniMax-Music3">MiniMax Music 3</a> is a text-to-music model from MiniMax. Give it lyrics and a style description; it returns 32 kHz stereo song audio, vocals and instrumental together.</p>
+<p>It is not a TTS model with a music voice. Generation runs in two stages. A Qwen3 backbone predicts one audio frame per decode step, and each frame is eight RVQ codebooks deep: the backbone’s own <code class="docutils literal notranslate"><span class="pre">lm_head</span></code> emits <code class="docutils literal notranslate"><span class="pre">c0</span></code>, then a four-layer depth decoder walks <code class="docutils literal notranslate"><span class="pre">c1..c7</span></code>, each code conditioning the next. Every 200 frames are handed to a flow-matching DIT that solves a VAE latent, which a DAC-style decoder turns into waveform. So the knobs that shape a TTS request do nothing here — there is no reference speaker, no <code class="docutils literal notranslate"><span class="pre">voice</span></code>, no <code class="docutils literal notranslate"><span class="pre">temperature</span></code>. What you control is the lyrics, the caption, the seed, and the length.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Spec</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Backbone</p></td>
+<td><p>Qwen3 decoder (36 L, hidden=4096, GQA 32/8, vocab 200k)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Depth decoder</p></td>
+<td><p>4 L, hidden=4096, 16 heads; 7 residual codebooks of 1024</p></td>
+</tr>
+<tr class="row-even"><td><p>Frame</p></td>
+<td><p>8 codebooks; <code class="docutils literal notranslate"><span class="pre">c0</span></code> in the backbone vocabulary, <code class="docutils literal notranslate"><span class="pre">c1..c7</span></code> in the depth decoder</p></td>
+</tr>
+<tr class="row-odd"><td><p>AR guidance</p></td>
+<td><p>Classifier-free, scale 1.5, <code class="docutils literal notranslate"><span class="pre">c0</span></code> masked to the conditioned branch’s top 50</p></td>
+</tr>
+<tr class="row-even"><td><p>Acoustic stage</p></td>
+<td><p>Flow-matching DIT (36 L, dim=2048, 32 heads) + DAC decoder, 512x upsampling</p></td>
+</tr>
+<tr class="row-odd"><td><p>Solver</p></td>
+<td><p>Euler, 30 steps, acoustic CFG scale 1.7</p></td>
+</tr>
+<tr class="row-even"><td><p>Window</p></td>
+<td><p>200 frames per acoustic chunk, 100-frame hop</p></td>
+</tr>
+<tr class="row-odd"><td><p>Frame rate</p></td>
+<td><p>25 frames/second</p></td>
+</tr>
+<tr class="row-even"><td><p>Context length</p></td>
+<td><p>10,240 tokens</p></td>
+</tr>
+<tr class="row-odd"><td><p>Output</p></td>
+<td><p>32 kHz stereo WAV</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> from source as in <a class="reference internal" href="../get_started/installation.html"><span class="std std-doc">Installation</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:sgl-project/sglang-omni.git
+<span class="nb">cd</span><span class="w"> </span>sglang-omni
+
+uv<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span>-p<span class="w"> </span><span class="m">3</span>.12
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-v<span class="w"> </span>-e<span class="w"> </span>.<span class="w">   </span><span class="c1"># drop -e for a non-editable install</span>
+</pre></div>
+</div>
+<p><strong>Single GPU</strong> (colocate both stages):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>MiniMaxAI/MiniMax-Music3<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p><strong>Dual GPU</strong> (AR on the first device, DIT/DAV on the second):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span>,1<span class="w"> </span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>MiniMaxAI/MiniMax-Music3<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>Default optimizations that are on without further flags: backbone decode CUDA graph, RVQ depth CUDA graph, compiled DIT blocks, compiled DAV decoder, and batched seeded sampling.</p>
+<p>Classifier-free guidance is on in both stages and has no flag. See <a class="reference internal" href="#guidance"><span class="std std-ref">Guidance</span></a> for what it costs you, because the AR half changes how much a request occupies.</p>
+</section>
+<section id="generating-music">
+<h2>Generating Music<a class="headerlink" href="#generating-music" title="Link to this heading">#</a></h2>
+<p>Two fields carry the request. <code class="docutils literal notranslate"><span class="pre">input</span></code> is the lyrics; <code class="docutils literal notranslate"><span class="pre">instructions</span></code> is the caption that describes style, instrumentation, tempo and mood. Both are required, and both matter: the caption is what decides genre and arrangement, and the lyrics are what gets sung.</p>
+<p>Structure tags in the lyrics (<code class="docutils literal notranslate"><span class="pre">[Verse]</span></code>, <code class="docutils literal notranslate"><span class="pre">[Chorus]</span></code>, <code class="docutils literal notranslate"><span class="pre">[Bridge]</span></code>, <code class="docutils literal notranslate"><span class="pre">[Outro]</span></code>) steer the arrangement and are part of the prompt contract.</p>
+<p><strong>Put a tag on its own line.</strong> Normalization keeps only the tags on a line that starts with one and drops the rest of that line, so lyrics written next to a tag are silently lost:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>"[Verse]\nWalking down the street"   -&gt;   [start] [verse] Walking down the street
+"[Verse] Walking down the street"    -&gt;   [start] [verse]
+</pre></div>
+</div>
+<p>The second form generates a song with that line missing, and nothing warns you.</p>
+<section id="a-first-song">
+<h3>A first song<a class="headerlink" href="#a-first-song" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s1">    "input": "[Verse]\nSunday morning, quiet and slow\nSunlight through the half-drawn blinds\nCoffee cooling by the window\nNothing on my mind\n[Chorus]\nTake it easy, take it slow\nWe got nowhere else to go",</span>
+<span class="s1">    "instructions": "A melancholic lo-fi hip-hop track with a mellow piano riff, soft vinyl crackle, and a slow steady drum beat at 85 BPM",</span>
+<span class="s1">    "seed": 42,</span>
+<span class="s1">    "max_new_tokens": 750</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>song_1.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964122/song_1.wav" type="audio/wav">
+</audio>
+<p><code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> counts audio frames at 25 frames per second, so 750 frames is <strong>at most</strong> 30 seconds. It is a cap, not a target: the model ends the song itself when it emits the audio-end token. The request above typically fills the cap (~30 seconds). Raise the cap when you want room for an earlier natural ending; a response that stops short of the cap is the model finishing, not a truncation.</p>
+<p>The response body is a 32 kHz stereo WAV.</p>
+<p>In Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"MiniMaxAI/MiniMax-Music3"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">Sunday morning, quiet and slow</span><span class="se">\n</span><span class="s2">Sunlight through the half-drawn blinds</span><span class="se">\n</span><span class="s2">[Chorus]</span><span class="se">\n</span><span class="s2">Take it easy, take it slow</span><span class="se">\n</span><span class="s2">We got nowhere else to go"</span><span class="p">,</span>
+        <span class="s2">"instructions"</span><span class="p">:</span> <span class="s2">"A melancholic lo-fi hip-hop track with a mellow piano riff at 85 BPM"</span><span class="p">,</span>
+        <span class="s2">"seed"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span>
+        <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="mi">750</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"song_2.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964204/song_2.wav" type="audio/wav">
+</audio>
+<p>Or with the OpenAI client, since this is the standard speech endpoint:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenAI</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">base_url</span><span class="o">=</span><span class="s2">"http://localhost:8000/v1"</span><span class="p">,</span> <span class="n">api_key</span><span class="o">=</span><span class="s2">"EMPTY"</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">client</span><span class="o">.</span><span class="n">audio</span><span class="o">.</span><span class="n">speech</span><span class="o">.</span><span class="n">with_streaming_response</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"MiniMaxAI/MiniMax-Music3"</span><span class="p">,</span>
+    <span class="n">voice</span><span class="o">=</span><span class="s2">"default"</span><span class="p">,</span>
+    <span class="nb">input</span><span class="o">=</span><span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">Sunday morning, quiet and slow</span><span class="se">\n</span><span class="s2">Sunlight through the half-drawn blinds</span><span class="se">\n</span><span class="s2">[Chorus]</span><span class="se">\n</span><span class="s2">Take it easy, take it slow"</span><span class="p">,</span>
+    <span class="n">instructions</span><span class="o">=</span><span class="s2">"A melancholic lo-fi hip-hop track with a mellow piano riff at 85 BPM"</span><span class="p">,</span>
+    <span class="n">response_format</span><span class="o">=</span><span class="s2">"wav"</span><span class="p">,</span>
+    <span class="n">extra_body</span><span class="o">=</span><span class="p">{</span><span class="s2">"seed"</span><span class="p">:</span> <span class="mi">42</span><span class="p">,</span> <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="mi">750</span><span class="p">},</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">stream_to_file</span><span class="p">(</span><span class="s2">"song_3.wav"</span><span class="p">)</span>
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964231/song_3.wav" type="audio/wav">
+</audio>
+</section>
+<section id="writing-the-caption">
+<h3>Writing the caption<a class="headerlink" href="#writing-the-caption" title="Link to this heading">#</a></h3>
+<p>The caption is the strongest control you have. Vague captions give generic arrangements; naming instruments, tempo and production character gives you the track you asked for.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Genre, instrumentation, tempo, and a production note</span>
+curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s1">    "input": "[Chorus]\nWe are the fire that never dies\nBurning bright against the sky",</span>
+<span class="s1">    "instructions": "An energetic arena rock anthem with distorted electric guitars, punchy live drums and a soaring male vocal at 130 BPM, wide stereo image, lightly compressed",</span>
+<span class="s1">    "seed": 7,</span>
+<span class="s1">    "max_new_tokens": 750</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>rock_1.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964267/rock_1.wav" type="audio/wav">
+</audio>
+<p>Long structured captions work too. The model was trained on descriptions that cover global attributes, emotional progression, and vocal detail, and it uses all of it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">caption</span> <span class="o">=</span> <span class="s2">"""Basic Attributes: bpm is 92, key is E minor, Electric Blues / Blues Rock.</span>
+<span class="s2">Emotional Progression: confident and gritty from the outset, building tension through</span>
+<span class="s2">call-and-response verses before releasing into an extended lead guitar solo.</span>
+<span class="s2">Sonics: live and organic, warm mid-range, tube grit, relatively uncompressed so the</span>
+<span class="s2">drums keep their natural attack.</span>
+<span class="s2">Vocal: male baritone, gravelly and textured, conversational phrasing in the verses</span>
+<span class="s2">turning melodic in the refrain."""</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"MiniMaxAI/MiniMax-Music3"</span><span class="p">,</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">I came up on a dirt road, nothing but a name</span><span class="se">\n</span><span class="s2">[Chorus]</span><span class="se">\n</span><span class="s2">And the thunder rolls the same"</span><span class="p">,</span>
+        <span class="s2">"instructions"</span><span class="p">:</span> <span class="n">caption</span><span class="p">,</span>
+        <span class="s2">"seed"</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+        <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="mi">1500</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"blues_1.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964323/blues_1.wav" type="audio/wav">
+</audio>
+<p>The caption and lyrics are cleaned deterministically before tokenizing — Markdown residue is stripped and <code class="docutils literal notranslate"><span class="pre">&lt;|tag</span> <span class="pre">value|&gt;</span></code> forms are rewritten to <code class="docutils literal notranslate"><span class="pre">tag</span> <span class="pre">is</span> <span class="pre">value</span></code> — and the tokenized prompt is capped at 5,000 tokens.</p>
+</section>
+<section id="instrumental-and-short-clips">
+<h3>Instrumental and short clips<a class="headerlink" href="#instrumental-and-short-clips" title="Link to this heading">#</a></h3>
+<p>Lyrics are required and must be non-empty, so ask for an instrumental in the caption and keep the lyric line minimal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s1">    "input": "[Intro]\n(instrumental)",</span>
+<span class="s1">    "instructions": "An instrumental ambient piece, no vocals: warm analog pads, slow evolving texture, distant piano, 70 BPM",</span>
+<span class="s1">    "seed": 3,</span>
+<span class="s1">    "max_new_tokens": 250</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>ambient_1.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964363/ambient_1.wav" type="audio/wav">
+</audio>
+<p>250 frames caps the clip at 10 seconds, which is the fastest way to audition a caption before committing to a full-length render. Short caps are usually reached rather than ended early, so these come back at the full length.</p>
+</section>
+<section id="reproducibility-and-variations">
+<h3>Reproducibility and variations<a class="headerlink" href="#reproducibility-and-variations" title="Link to this heading">#</a></h3>
+<p>A request is deterministic in its seed: the same lyrics, caption, seed and length return byte-identical audio. Changing only the seed gives another take of the same song — the way to explore alternatives without touching the prompt.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"MiniMaxAI/MiniMax-Music3"</span><span class="p">,</span>
+            <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">City lights are calling out my name"</span><span class="p">,</span>
+            <span class="s2">"instructions"</span><span class="p">:</span> <span class="s2">"A dreamy synthwave track with analog pads and a driving bassline at 110 BPM"</span><span class="p">,</span>
+            <span class="s2">"seed"</span><span class="p">:</span> <span class="n">seed</span><span class="p">,</span>
+            <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">"take_</span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="s2">.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Omitting <code class="docutils literal notranslate"><span class="pre">seed</span></code> uses <code class="docutils literal notranslate"><span class="pre">0</span></code>, which is still deterministic — it is a fixed seed, not a random one.</p>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964419/take_3.wav" type="audio/wav">
+</audio>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964420/take_2.wav" type="audio/wav">
+</audio>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30964418/take_1.wav" type="audio/wav">
+</audio>
+</section>
+<section id="reference-outputs">
+<h3>Reference outputs<a class="headerlink" href="#reference-outputs" title="Link to this heading">#</a></h3>
+<p>Five captions across five genres, rendered on a single H200 with the defaults this page documents and nothing else set. Each request is given in full, so pasting one back reproduces its clip.</p>
+<p>Four of the five fill the 750-frame cap at 30.0 seconds. The J-pop one stops itself at 26.2 seconds, which is <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code> behaving as a cap rather than a target — the model ended the song.</p>
+<p><strong>Lo-fi hip-hop</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">{</span>
+<span class="s">  "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s">  "input": "[Verse]\nWalking down the empty street at midnight\nStreetlights flicker like a broken dream\nI've got nothing but the sound of my own heartbeat\nEchoing through the silent concrete stream\n[Chorus]\nAnd I keep on walking\nTill the morning finds me\nLeave the night behind me",</span>
+<span class="s">  "instructions": "A melancholic lo-fi hip-hop track at 85 BPM in F minor: mellow Rhodes piano riff, soft vinyl crackle, dusty boom-bap drums with a laid-back swing, warm upright bass. Intimate bedroom production, gentle tape saturation, no bright cymbals.",</span>
+<span class="s">  "seed": 1,</span>
+<span class="s">  "max_new_tokens": 750,</span>
+<span class="s">  "response_format": "wav",</span>
+<span class="s">  "stream": false</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>00_lofi_hiphop.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30963578/00_lofi_hiphop.wav" type="audio/wav">
+</audio>
+<p><strong>J-pop</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">{</span>
+<span class="s">  "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s">  "input": "[Verse]\nMorning light is spilling through the curtain\nEvery colour waking up with me\n[Chorus]\nRun into the day and never look back\nEverything we wanted is ahead of us",</span>
+<span class="s">  "instructions": "A cheerful J-pop song at 128 BPM in C major: bright acoustic piano, chiming electric guitar, punchy four-on-the-floor drums, and a clear female lead vocal. Polished modern pop production, wide stereo, energetic and uplifting.",</span>
+<span class="s">  "seed": 2,</span>
+<span class="s">  "max_new_tokens": 750,</span>
+<span class="s">  "response_format": "wav",</span>
+<span class="s">  "stream": false</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>01_jpop_bright.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30963575/01_jpop_bright.wav" type="audio/wav">
+</audio>
+<p><strong>Synthwave, instrumental</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">{</span>
+<span class="s">  "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s">  "input": "[Intro]\n(instrumental)\n[Outro]\n(instrumental)",</span>
+<span class="s">  "instructions": "A moody synthwave instrumental at 100 BPM in D minor: pulsing analog bass arpeggio, gated reverb drum machine, wide atmospheric pads, and a soaring lead synth melody. Retro 1980s production, heavy chorus effect, cinematic and nocturnal.",</span>
+<span class="s">  "seed": 3,</span>
+<span class="s">  "max_new_tokens": 750,</span>
+<span class="s">  "response_format": "wav",</span>
+<span class="s">  "stream": false</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>02_synthwave_moody.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30963577/02_synthwave_moody.wav" type="audio/wav">
+</audio>
+<p><strong>Acoustic folk</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">{</span>
+<span class="s">  "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s">  "input": "[Verse]\nI came up on a dirt road, nothing but a name\nCarried all my summers in a canvas bag\n[Chorus]\nAnd the river keeps on running\nLike it never learned to stay",</span>
+<span class="s">  "instructions": "A gentle acoustic folk ballad at 76 BPM in G major: fingerpicked steel-string guitar, soft brushed snare, subtle cello underneath, and a warm male vocal close to the microphone. Sparse and organic, natural room sound, very little compression.",</span>
+<span class="s">  "seed": 4,</span>
+<span class="s">  "max_new_tokens": 750,</span>
+<span class="s">  "response_format": "wav",</span>
+<span class="s">  "stream": false</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>03_acoustic_folk.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30963579/03_acoustic_folk.wav" type="audio/wav">
+</audio>
+<p><strong>Cinematic orchestral</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s2">"</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">{</span>
+<span class="s">  "model": "MiniMaxAI/MiniMax-Music3",</span>
+<span class="s">  "input": "[Intro]\n(instrumental)\n[Chorus]\nRise above the ashes of the fallen sky\nWe were never meant to say goodbye",</span>
+<span class="s">  "instructions": "An epic cinematic orchestral piece at 90 BPM in E minor: sweeping string ostinato, powerful brass swells, timpani and taiko percussion, and a distant choir. Wide concert-hall reverb, dynamic build from restrained to triumphant, no drum kit.",</span>
+<span class="s">  "seed": 5,</span>
+<span class="s">  "max_new_tokens": 750,</span>
+<span class="s">  "response_format": "wav",</span>
+<span class="s">  "stream": false</span>
+<span class="s">}</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>04_orchestral_epic.wav
+</pre></div>
+</div>
+<audio controls>
+  <source src="https://github.com/user-attachments/files/30963576/04_orchestral_epic.wav" type="audio/wav">
+</audio>
+</section>
+</section>
+<section id="guidance">
+<h2>Guidance<a class="headerlink" href="#guidance" title="Link to this heading">#</a></h2>
+<p>Both stages run classifier-free guidance, and neither is optional. There is no request field and no serve flag for it: the scale, the mask width and the solver’s own scale are fixed in the model, because this is how the reference implementation samples this checkpoint, and dropping guidance makes the model follow your caption and lyrics noticeably less closely.</p>
+<p>The two halves are separate mechanisms that happen to share a name:</p>
+<ul class="simple">
+<li><p><strong>The AR stage</strong> runs each request twice per decode step. One row sees your real prompt; the other sees the same prompt with the whole caption-and-lyrics span, delimiters included, overwritten by <code class="docutils literal notranslate"><span class="pre">&lt;|audio_cfg|&gt;</span></code> — only the chat markers and <code class="docutils literal notranslate"><span class="pre">&lt;|audio_start|&gt;</span></code> survive. Every code is then drawn from <code class="docutils literal notranslate"><span class="pre">uncond</span> <span class="pre">+</span> <span class="pre">(cond</span> <span class="pre">-</span> <span class="pre">uncond)</span> <span class="pre">*</span> <span class="pre">1.5</span></code>. For <code class="docutils literal notranslate"><span class="pre">c0</span></code> the candidate set is additionally masked to the conditioned row’s own top 50 before the ordinary top-k sampling runs, so the guided draw cannot wander outside what the conditioned branch already considered plausible.</p></li>
+<li><p><strong>The acoustic stage</strong> applies its own guidance at scale 1.7 inside every one of the 30 solver steps.</p></li>
+</ul>
+<p>The consequence you have to plan for is on the AR side: <strong>one request occupies two rows in the engine, not one.</strong> Both rows hold their own KV cache for the whole song, so a request costs twice the KV it would unguided. The visible follow-on is in <a class="reference internal" href="#concurrency"><span class="std std-ref">Concurrency</span></a>.</p>
+<p>What it does <em>not</em> change is the request contract or where the randomness comes from: the guided draw is still keyed by the same per-request seed and frame position, so seeding behaves as described above. Guidance does shift <em>which</em> codes get drawn, so audio from a build without it is not comparable take-for-take — expect a different arrangement and a different length from the same seed, not a cleaned-up version of the same song.</p>
+</section>
+<section id="concurrency">
+<h2>Concurrency<a class="headerlink" href="#concurrency" title="Link to this heading">#</a></h2>
+<p>The server batches continuously. Admission defaults to 16 concurrent requests (<code class="docutils literal notranslate"><span class="pre">max_running_requests=16</span></code>), which is <strong>32 decode rows</strong>, because guidance gives every request a second row. Raise admission at serve time with <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code>; the row count, the decode CUDA graph and the RVQ depth graph are all derived from it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">CUDA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span>,1<span class="w"> </span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>MiniMaxAI/MiniMax-Music3<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--max-running-requests<span class="w"> </span><span class="m">32</span>
+</pre></div>
+</div>
+<p>That serves 32 concurrent requests as 64 rows. Do not pass <code class="docutils literal notranslate"><span class="pre">--cuda-graph-max-bs</span></code> here: this model computes the cap itself so the graphs always cover the doubled batch, and a value you supply is discarded rather than honoured.</p>
+<p>Send clients in parallel rather than in sequence:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">concurrent.futures</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">PROMPTS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">Morning breaks over the harbour"</span><span class="p">,</span> <span class="s2">"A gentle acoustic folk song with fingerpicked guitar at 90 BPM"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"[Chorus]</span><span class="se">\n</span><span class="s2">Dance until the record stops"</span><span class="p">,</span> <span class="s2">"A disco house track with four-on-the-floor drums and funk guitar at 122 BPM"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"[Verse]</span><span class="se">\n</span><span class="s2">Snow falls quiet on the pines"</span><span class="p">,</span> <span class="s2">"A cinematic orchestral piece with strings and soft horns at 60 BPM"</span><span class="p">),</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">index_and_prompt</span><span class="p">):</span>
+    <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">lyrics</span><span class="p">,</span> <span class="n">caption</span><span class="p">)</span> <span class="o">=</span> <span class="n">index_and_prompt</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">"http://localhost:8000/v1/audio/speech"</span><span class="p">,</span>
+        <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"MiniMaxAI/MiniMax-Music3"</span><span class="p">,</span>
+            <span class="s2">"input"</span><span class="p">:</span> <span class="n">lyrics</span><span class="p">,</span>
+            <span class="s2">"instructions"</span><span class="p">:</span> <span class="n">caption</span><span class="p">,</span>
+            <span class="s2">"seed"</span><span class="p">:</span> <span class="n">index</span><span class="p">,</span>
+            <span class="s2">"max_new_tokens"</span><span class="p">:</span> <span class="mi">750</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">900</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">"track_</span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2">.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+
+<span class="k">with</span> <span class="n">ThreadPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span> <span class="k">as</span> <span class="n">pool</span><span class="p">:</span>
+    <span class="nb">list</span><span class="p">(</span><span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">render</span><span class="p">,</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">PROMPTS</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Concurrency is where this model is most efficient. The depth decoder costs the same per step whether one request or eight share the batch, so its per-request share falls as concurrency rises.</p>
+<p>That flatness is also why guidance is cheap in time and expensive in memory. The AR step is bound by reading the backbone’s weights rather than by arithmetic, so the second row rides along in the same pass with little extra wall time, while doubling the KV each request holds. Size the pool for the rows, not the requests.</p>
+</section>
+<section id="request-parameters">
+<h2>Request Parameters<a class="headerlink" href="#request-parameters" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p>string</p></td>
+<td><p>served model</p></td>
+<td><p>Served model identifier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">input</span></code></p></td>
+<td><p>string</p></td>
+<td><p>(required)</p></td>
+<td><p>Lyrics. Non-empty. Use <code class="docutils literal notranslate"><span class="pre">[Verse]</span></code> / <code class="docutils literal notranslate"><span class="pre">[Chorus]</span></code> / <code class="docutils literal notranslate"><span class="pre">[Bridge]</span></code> / <code class="docutils literal notranslate"><span class="pre">[Outro]</span></code> on their own lines</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">instructions</span></code></p></td>
+<td><p>string</p></td>
+<td><p>(required)</p></td>
+<td><p>Caption describing genre, instrumentation, tempo, mood and production. Non-empty</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Non-negative 64-bit integer. Fixes the output for a given request</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code></p></td>
+<td><p>int</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">9000</span></code></p></td>
+<td><p>Cap on audio frames, 25 per second. Maximum 9,000 (six minutes). The model may finish earlier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">response_format</span></code></p></td>
+<td><p>string</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;wav&quot;</span></code></p></td>
+<td><p>Output container</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
+<td><p>bool</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Must be <code class="docutils literal notranslate"><span class="pre">false</span></code>; this model’s external API is non-streaming</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Reaching the cap returns the audio generated so far. Ending on the audio-end token stops the song early.</p>
+</section>
+<section id="parameters-that-the-model-rejects">
+<h2>Parameters That The Model Rejects<a class="headerlink" href="#parameters-that-the-model-rejects" title="Link to this heading">#</a></h2>
+<p>The request is refused rather than silently ignored, so a mistake is visible immediately:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Reason</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code>, <code class="docutils literal notranslate"><span class="pre">top_p</span></code>, <code class="docutils literal notranslate"><span class="pre">top_k</span></code>, <code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code></p></td>
+<td><p>Sampling is fixed: guidance at scale 1.5, then top-k 50 with a per-request seeded draw. Rejected when set explicitly</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">voice</span></code></p></td>
+<td><p>There is no speaker to select; the vocal comes from the caption</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ref_audio</span></code>, <code class="docutils literal notranslate"><span class="pre">ref_text</span></code>, <code class="docutils literal notranslate"><span class="pre">language</span></code>, <code class="docutils literal notranslate"><span class="pre">task_type</span></code></p></td>
+<td><p>No reference-audio conditioning and no language tag in this contract</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">speed</span></code></p></td>
+<td><p>Only <code class="docutils literal notranslate"><span class="pre">1.0</span></code>. Tempo belongs in the caption, e.g. “at 92 BPM”</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">stream:</span> <span class="pre">true</span></code></p></td>
+<td><p>Not supported. This model’s external API is non-streaming</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h2>
+<p><strong>Length and cost.</strong> Generation time scales with <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>. A 10-second clip is the cheapest way to iterate on a caption; render the full song once the style is right.</p>
+<p><strong>Prompt sensitivity.</strong> The prompt’s token ids and the position of <code class="docutils literal notranslate"><span class="pre">&lt;|audio_start|&gt;</span></code> seed the backbone KV cache, so whitespace and tag rewrites are not cosmetic — they change the audio. If you need a result to be reproducible, keep the lyrics and caption byte-identical.</p>
+<p><strong>Memory.</strong> <code class="docutils literal notranslate"><span class="pre">mem_fraction_static</span></code> defaults to <code class="docutils literal notranslate"><span class="pre">0.50</span></code> and budgets the SGLang backbone KV cache only; the acoustic stage’s DIT and DAV weights sit outside that fraction. It is a share of total device memory, so the absolute KV pool shrinks on smaller cards automatically. Lowering it does not reliably help — measured at <code class="docutils literal notranslate"><span class="pre">0.35</span></code> the pipeline is about 6% slower. Budget against rows rather than requests: guidance means the pool has to hold two sequences per concurrent request, so raising <code class="docutils literal notranslate"><span class="pre">--max-running-requests</span></code> costs KV twice as fast as the number suggests.</p>
+<p><strong>Attention backends.</strong> The DIT accepts <code class="docutils literal notranslate"><span class="pre">auto</span></code>, <code class="docutils literal notranslate"><span class="pre">torch_sdpa</span></code>, <code class="docutils literal notranslate"><span class="pre">fa</span></code> and <code class="docutils literal notranslate"><span class="pre">sage_attn</span></code> through <code class="docutils literal notranslate"><span class="pre">runtime_overrides</span></code>; <code class="docutils literal notranslate"><span class="pre">torch_sdpa</span></code> is the default and measured the fastest of them for these shapes. <code class="docutils literal notranslate"><span class="pre">cache_dit</span></code> is an approximate, default-off option that trades audio quality for speed, and reducing the solver’s <code class="docutils literal notranslate"><span class="pre">dit_steps</span></code> below 30 is measurably a quality reduction rather than a free win.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="dots_tts.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">dots.tts</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="zonos2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ZONOS2</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-music">Generating Music</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-first-song">A first song</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-the-caption">Writing the caption</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instrumental-and-short-clips">Instrumental and short clips</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reproducibility-and-variations">Reproducibility and variations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-outputs">Reference outputs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#guidance">Guidance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concurrency">Concurrency</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters-that-the-model-rejects">Parameters That The Model Rejects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#notes">Notes</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

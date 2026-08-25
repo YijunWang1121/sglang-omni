@@ -1,0 +1,1710 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ming-Omni &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cookbook/ming_omni';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="LLaDA2.0-Uni" href="llada2_uni.html" />
+    <link rel="prev" title="Qwen3-Omni" href="qwen3_omni.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation.html">🚀 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../get_started/installation_xpu.html">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/cookbook/ming_omni.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/cookbook/ming_omni.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fcookbook/ming_omni.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/cookbook/ming_omni.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ming-Omni</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-encoder-tensor-parallelism">Vision Encoder Tensor Parallelism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-speech-client">Streaming Speech Client</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#placement-and-memory-notes">Placement and Memory Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-examples">Input and Output Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-input-text-output">Text Input, Text Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-and-text-input">Image and Text Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audio-and-image-input">Audio and Image Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#video-input">Video Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-input-text-audio-output">Text Input, Text + Audio Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-speech">Streaming Speech</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-results">Benchmark Results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-thinker-gsm8k">Text Thinker (GSM8K)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-text-mmmu">Image-Text (MMMU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-streaming-talker">Non-Streaming Talker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-talker">Streaming Talker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audio-equivalence">Audio Equivalence</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="ming-omni">
+<h1>Ming-Omni<a class="headerlink" href="#ming-omni" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://huggingface.co/inclusionAI/Ming-flash-omni-2.0">Ming-flash-omni-2.0</a> is a multimodal omni model that accepts text, image, audio, and video inputs and can return text or text + audio through SGLang-Omni’s OpenAI-compatible <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code> endpoint. In SGLang-Omni, Ming is served as a multi-stage pipeline: media preprocessing and encoders prepare multimodal embeddings, the thinker generates text, and the talker turns response text into 44.1 kHz speech.</p>
+<p>Start with <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span></code> for Ming. The generic OmniServe entry point now knows how to build the Ming text and speech pipelines from the model path, so the commands below are the customer-facing launch path. For general chat request fields that also apply to Qwen3-Omni, see <a class="reference internal" href="qwen3_omni.html"><span class="std std-doc">Qwen3-Omni</span></a>.</p>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<p>Install <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> by following <a class="reference internal" href="../get_started/installation.html"><span class="std std-doc">Installation</span></a>, then make sure the Ming checkpoint is available:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>inclusionAI/Ming-flash-omni-2.0
+</pre></div>
+</div>
+<p>The speech path expects the checkpoint to include the <code class="docutils literal notranslate"><span class="pre">talker/</span></code> assets, including <code class="docutils literal notranslate"><span class="pre">talker/data/voice_name.json</span></code> and <code class="docutils literal notranslate"><span class="pre">talker/vae/</span></code>. The default voice in the current Ming speech pipeline is <code class="docutils literal notranslate"><span class="pre">DB30</span></code>. <code class="docutils literal notranslate"><span class="pre">campplus.onnx</span></code> and <code class="docutils literal notranslate"><span class="pre">talker_tn</span></code> are optional runtime helpers: missing <code class="docutils literal notranslate"><span class="pre">campplus.onnx</span></code> disables speaker embedding extraction, and missing <code class="docutils literal notranslate"><span class="pre">talker_tn</span></code> falls back to identity text normalization.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Ming-flash-omni-2.0</span></code> on HF does not ship top-level thinker tokenizer files. <code class="docutils literal notranslate"><span class="pre">load_ming_tokenizer</span></code> falls back to <code class="docutils literal notranslate"><span class="pre">inclusionAI/Ming-flash-omni-Preview</span></code> (~12 MB) to copy <code class="docutils literal notranslate"><span class="pre">tokenizer.json</span></code>, <code class="docutils literal notranslate"><span class="pre">tokenizer_config.json</span></code>, and <code class="docutils literal notranslate"><span class="pre">special_tokens_map.json</span></code>. In offline environments, download those files too:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>hf<span class="w"> </span>download<span class="w"> </span>inclusionAI/Ming-flash-omni-Preview<span class="w"> </span>tokenizer.json<span class="w"> </span>tokenizer_config.json<span class="w"> </span>special_tokens_map.json
+</pre></div>
+</div>
+<p>Ming-flash-omni-2.0 is a large MoE model. For practical serving, use tensor parallelism for the thinker. The examples below use logical GPU ids inside <code class="docutils literal notranslate"><span class="pre">CUDA_VISIBLE_DEVICES</span></code>; with <code class="docutils literal notranslate"><span class="pre">CUDA_VISIBLE_DEVICES=0,1,2,3,4</span></code>, <code class="docutils literal notranslate"><span class="pre">--thinker-gpus</span> <span class="pre">0,1,2,3</span></code> means the thinker uses the first four visible GPUs and <code class="docutils literal notranslate"><span class="pre">--talker-gpu</span> <span class="pre">4</span></code> uses the fifth visible GPU.</p>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
+<pre  class="mermaid">
+        flowchart LR
+    IN[&quot;Inputs&lt;br/&gt;text · image · audio · video&quot;] --&gt; PRE[&quot;preprocessing&quot;]
+    PRE --&gt; AE[&quot;audio_encoder&quot;]
+    PRE --&gt; IE[&quot;image_encoder&quot;]
+    AE --&gt; AGG[&quot;mm_aggregate&quot;]
+    IE --&gt; AGG
+    AGG --&gt; THK[&quot;thinker&lt;br/&gt;text generation (TP)&quot;]
+    THK --&gt;|text| DEC[&quot;decode → text&quot;]
+    THK --&gt;|speech| TLK[&quot;talker → speech&quot;]
+    THK --&gt;|streaming speech| SEG[&quot;segmenter → talker_stream&lt;br/&gt;chunked audio over SSE&quot;]
+    </pre><p>Media preprocessing and the audio/image encoders prepare multimodal embeddings, <code class="docutils literal notranslate"><span class="pre">mm_aggregate</span></code> fuses them, the thinker generates response text, and the terminal stage decides the output: <code class="docutils literal notranslate"><span class="pre">decode</span></code> for text, <code class="docutils literal notranslate"><span class="pre">talker</span></code> for full-utterance speech, or <code class="docutils literal notranslate"><span class="pre">segmenter</span> <span class="pre">-&gt;</span> <span class="pre">talker_stream</span></code> for chunked streaming audio.</p>
+<p>Ming has three serving variants:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variant</p></th>
+<th class="head"><p>Pipeline</p></th>
+<th class="head"><p>Output</p></th>
+<th class="head"><p>Entry point</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">preprocessing</span> <span class="pre">-&gt;</span> <span class="pre">audio_encoder</span> <span class="pre">+</span> <span class="pre">image_encoder</span> <span class="pre">-&gt;</span> <span class="pre">mm_aggregate</span> <span class="pre">-&gt;</span> <span class="pre">thinker</span> <span class="pre">-&gt;</span> <span class="pre">decode</span></code></p></td>
+<td><p>Text</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span> <span class="pre">--text-only</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Speech</p></td>
+<td><p>Text pipeline plus <code class="docutils literal notranslate"><span class="pre">talker</span></code> terminal stage</p></td>
+<td><p>Text + audio</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Streaming speech</p></td>
+<td><p>Speech pipeline with <code class="docutils literal notranslate"><span class="pre">segmenter</span> <span class="pre">-&gt;</span> <span class="pre">talker_stream</span></code></p></td>
+<td><p>Text + chunked audio over SSE</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MingOmniStreamingSpeechPipelineConfig</span></code> pipeline config</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>When you pass only <code class="docutils literal notranslate"><span class="pre">--model-path</span></code>, OmniServe selects the default Ming speech pipeline. Add <code class="docutils literal notranslate"><span class="pre">--text-only</span></code> when you only need text output and want to avoid launching the talker. Streaming speech is a separate Ming pipeline variant; the benchmark section includes streaming evidence, but the ready copy-paste commands in this cookbook focus on the generic model-path text and speech paths.</p>
+<p>The router, when used, routes whole requests to complete Ming workers. It does not split one request across the thinker and talker of different workers.</p>
+</section>
+<section id="server-configuration">
+<h2>Server Configuration<a class="headerlink" href="#server-configuration" title="Link to this heading">#</a></h2>
+<p>Use the selector below to generate the exact launch command for your configuration. Pick the output <strong>Mode</strong> (text-only or text + audio), the <strong>Thinker TP</strong> degree, an optional <strong>Vision TP</strong> degree for the image encoder, and the <strong>Hardware</strong> tier. GPUs are allocated without overlap — thinker ranks first, then the talker (speech mode), then the vision-encoder ranks — and the <code class="docutils literal notranslate"><span class="pre">CUDA_VISIBLE_DEVICES</span></code> prefix is sized to match.</p>
+<div id="sgl-ming-server-gen-mount"></div><p><code class="docutils literal notranslate"><span class="pre">--text-only</span></code> selects the thinker-only pipeline (no talker, no audio). Omit it for the speech pipeline, which adds a dedicated <code class="docutils literal notranslate"><span class="pre">--talker-gpu</span></code>. The talker GPU must not overlap the thinker TP placement (the only placement Ming validates), so the generator always keeps it separate. The vision encoder defaults to GPU 0 alongside the thinker, so its TP ranks may either share the thinker GPUs (<strong>With thinker</strong>, the default) or take dedicated GPUs.</p>
+<p>The <strong>Hardware</strong> toggle sets <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tier</p></th>
+<th class="head"><p>VRAM</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code></p></th>
+<th class="head"><p>Why</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>H100</p></td>
+<td><p>80 GB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.80</span></code></p></td>
+<td><p>Baseline; weights plus a smaller KV pool fit at 0.80.</p></td>
+</tr>
+<tr class="row-odd"><td><p>H200</p></td>
+<td><p>141 GB</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.90</span></code></p></td>
+<td><p>The MoE weights occupy roughly the same absolute space but a larger share is free, so a higher fraction is needed for the static budget to cover weights and still leave room for the KV pool; <code class="docutils literal notranslate"><span class="pre">0.80</span></code> can OOM at TP=2 because the reserved pool lands too small.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Other large-memory parts (e.g. H20-3e 144 GB) behave like H200 — start at <code class="docutils literal notranslate"><span class="pre">0.9</span></code>. If your machine cannot fit the thinker without CPU offload, remove <code class="docutils literal notranslate"><span class="pre">--cpu-offload-gb</span> <span class="pre">0</span></code> and let the launcher use its default offload setting (improves fit, reduces throughput).</p>
+<p>For a smaller smoke run that uses OmniServe’s default placement:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-path<span class="w"> </span>inclusionAI/Ming-flash-omni-2.0<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model-name<span class="w"> </span>ming-omni<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--port<span class="w"> </span><span class="m">8000</span>
+</pre></div>
+</div>
+<p>This smoke command launches the default speech-capable Ming pipeline. Add <code class="docutils literal notranslate"><span class="pre">--text-only</span></code> if the smoke run should skip the talker.</p>
+<section id="vision-encoder-tensor-parallelism">
+<h3>Vision Encoder Tensor Parallelism<a class="headerlink" href="#vision-encoder-tensor-parallelism" title="Link to this heading">#</a></h3>
+<p>The Ming image (vision) encoder can be sharded across GPUs with the dedicated <code class="docutils literal notranslate"><span class="pre">--image-encoder-tp-size</span></code> and <code class="docutils literal notranslate"><span class="pre">--image-encoder-gpus</span></code> flags, which mirror <code class="docutils literal notranslate"><span class="pre">--thinker-tp-size</span></code> / <code class="docutils literal notranslate"><span class="pre">--thinker-gpus</span></code>. <code class="docutils literal notranslate"><span class="pre">--image-encoder-gpus</span></code> takes one GPU id per TP rank as a comma list (<code class="docutils literal notranslate"><span class="pre">4,5</span></code>) or a JSON list (<code class="docutils literal notranslate"><span class="pre">[4,</span> <span class="pre">5]</span></code>); the count must equal <code class="docutils literal notranslate"><span class="pre">--image-encoder-tp-size</span></code>. The encoder has 16 attention heads, so TP=2 and TP=4 both shard evenly. The selector above fills these in when you raise <strong>Vision TP</strong>. TP=1 (single GPU) is the default — sharding helps only when the vision encoder is a throughput bottleneck for image/video workloads.</p>
+<p>By default the encoder runs on GPU 0 alongside the thinker, so its TP ranks can reuse the thinker GPUs (<strong>Vision GPUs: With thinker</strong>) with no extra hardware, valid when Vision TP ≤ Thinker TP. Choose <strong>Dedicated</strong> to place the ranks on their own GPUs when the thinker GPUs are memory-bound.</p>
+</section>
+<section id="streaming-speech-client">
+<h3>Streaming Speech Client<a class="headerlink" href="#streaming-speech-client" title="Link to this heading">#</a></h3>
+<p>Use the streaming speech pipeline when first-audio latency matters more than maximum aggregate throughput. The request shape is the same OpenAI-compatible chat-completions shape as the speech path, with <code class="docutils literal notranslate"><span class="pre">&quot;stream&quot;:</span> <span class="pre">true</span></code>, and audio chunks arrive in <code class="docutils literal notranslate"><span class="pre">choices[0].delta.audio.data</span></code>.</p>
+<p>The generic <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span> <span class="pre">--model-path</span></code> command currently exposes the default speech pipeline and the <code class="docutils literal notranslate"><span class="pre">--text-only</span></code> variant directly. Streaming speech uses the <code class="docutils literal notranslate"><span class="pre">MingOmniStreamingSpeechPipelineConfig</span></code> pipeline config. Until a public Ming streaming config is provided alongside the cookbook, treat the streaming numbers below as PR/local-patch evidence and use the non-streaming speech command above as the supported copy-paste launch.</p>
+<p>The streaming pipeline is for audio chunks. The text-only <code class="docutils literal notranslate"><span class="pre">stream=true</span></code> path currently emits an aggregate text chunk instead of token-by-token text deltas.</p>
+</section>
+<section id="placement-and-memory-notes">
+<h3>Placement and Memory Notes<a class="headerlink" href="#placement-and-memory-notes" title="Link to this heading">#</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--thinker-tp-size</span></code> to set thinker tensor parallelism and <code class="docutils literal notranslate"><span class="pre">--thinker-gpus</span></code> to choose the logical GPU ids. <code class="docutils literal notranslate"><span class="pre">--cpu-offload-gb</span></code>, <code class="docutils literal notranslate"><span class="pre">--quantization</span></code>, and <code class="docutils literal notranslate"><span class="pre">--mem-fraction-static</span></code> are forwarded to the thinker server. Use <code class="docutils literal notranslate"><span class="pre">--talker-gpu</span></code> only for the speech pipeline, and keep it separate from the thinker GPUs. Use <code class="docutils literal notranslate"><span class="pre">--image-encoder-tp-size</span></code> / <code class="docutils literal notranslate"><span class="pre">--image-encoder-gpus</span></code> for image-encoder tensor parallelism. The selector above wires all of these placements consistently.</p>
+</section>
+</section>
+<section id="input-and-output-examples">
+<h2>Input and Output Examples<a class="headerlink" href="#input-and-output-examples" title="Link to this heading">#</a></h2>
+<section id="text-input-text-output">
+<h3>Text Input, Text Output<a class="headerlink" href="#text-input-text-output" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Explain what tensor parallelism is in one sentence."}],</span>
+<span class="s1">    "modalities": ["text"],</span>
+<span class="s1">    "max_tokens": 128,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Explain what tensor parallelism is in one sentence."</span><span class="p">}],</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output (text-only TP4 server, <code class="docutils literal notranslate"><span class="pre">temperature:</span> <span class="pre">0.0</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Tensor parallelism is a technique used in distributed computing to split large tensors across multiple devices, allowing for parallel computation and efficient processing of large-scale machine learning models.
+</pre></div>
+</div>
+</section>
+<section id="image-and-text-input">
+<h3>Image and Text Input<a class="headerlink" href="#image-and-text-input" title="Link to this heading">#</a></h3>
+<p>Top-level <code class="docutils literal notranslate"><span class="pre">images</span></code> are supported. The preprocessor injects them into the first user message and keeps media cache keys separate so multimodal placeholders do not alias in the prefix cache.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Describe this image in one sentence."}],</span>
+<span class="s1">    "images": ["https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg"],</span>
+<span class="s1">    "modalities": ["text"],</span>
+<span class="s1">    "max_tokens": 64,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Describe this image in one sentence."</span><span class="p">}],</span>
+        <span class="s2">"images"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg"</span><span class="p">],</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output (the woman-and-dog beach image, <code class="docutils literal notranslate"><span class="pre">temperature:</span> <span class="pre">0.0</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A woman and her dog are sitting on the beach, sharing a high-five as the sun sets in the background.
+</pre></div>
+</div>
+</section>
+<section id="audio-and-image-input">
+<h3>Audio and Image Input<a class="headerlink" href="#audio-and-image-input" title="Link to this heading">#</a></h3>
+<p>Provide both <code class="docutils literal notranslate"><span class="pre">images</span></code> and <code class="docutils literal notranslate"><span class="pre">audios</span></code>; a text prompt can direct the model to attend to each:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "What is said in the audio, and what is shown in the image?"}],</span>
+<span class="s1">    "images": ["https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg"],</span>
+<span class="s1">    "audios": ["https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav"],</span>
+<span class="s1">    "modalities": ["text"],</span>
+<span class="s1">    "max_tokens": 64,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"What is said in the audio, and what is shown in the image?"</span><span class="p">}],</span>
+        <span class="s2">"images"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen-VL/assets/demo.jpeg"</span><span class="p">],</span>
+        <span class="s2">"audios"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://huggingface.co/datasets/zhaochenyang20/seed-tts-eval-mini/resolve/main/en/prompt-wavs/common_voice_en_10119832.wav"</span><span class="p">],</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output (English speech sample plus the beach image; truncated at <code class="docutils literal notranslate"><span class="pre">max_tokens:</span> <span class="pre">64</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The audio clip features a woman's voice, while the image depicts a woman and a dog on a beach. The woman in the image is sitting on the sand, facing the dog, and appears to be interacting with it. The dog is sitting upright, looking at the woman, and seems to be engaged in the interaction
+</pre></div>
+</div>
+</section>
+<section id="video-input">
+<h3>Video Input<a class="headerlink" href="#video-input" title="Link to this heading">#</a></h3>
+<p>Video files use the same top-level request style. Limit frame count or pixel budget for predictable latency:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Describe the action in this video."}],</span>
+<span class="s1">    "videos": ["https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-VL/space_woaudio.mp4"],</span>
+<span class="s1">    "video_max_frames": 16,</span>
+<span class="s1">    "modalities": ["text"],</span>
+<span class="s1">    "max_tokens": 96,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Describe the action in this video."</span><span class="p">}],</span>
+        <span class="s2">"videos"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2-VL/space_woaudio.mp4"</span><span class="p">],</span>
+        <span class="s2">"video_max_frames"</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">],</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Output (short clip of two astronauts on a space station, <code class="docutils literal notranslate"><span class="pre">temperature:</span> <span class="pre">0.0</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The video shows two astronauts inside a space station. One astronaut is holding a microphone and speaking, while the other is standing with his arms crossed. The background includes various equipment and a laptop.
+</pre></div>
+</div>
+</section>
+<section id="text-input-text-audio-output">
+<h3>Text Input, Text + Audio Output<a class="headerlink" href="#text-input-text-audio-output" title="Link to this heading">#</a></h3>
+<p>Launch the speech server first (the <code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">+</span> <span class="pre">Audio</span> <span class="pre">Output</span></code> command above), then request audio with <code class="docutils literal notranslate"><span class="pre">modalities:</span> <span class="pre">[&quot;text&quot;,</span> <span class="pre">&quot;audio&quot;]</span></code>. The speech reply comes back in <code class="docutils literal notranslate"><span class="pre">choices[0].message.audio.data</span></code> as base64 WAV.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Read this sentence aloud: This model understands text, images, audio, and video, and can reply with either text or speech."}],</span>
+<span class="s1">    "modalities": ["text", "audio"],</span>
+<span class="s1">    "audio": {"format": "wav"},</span>
+<span class="s1">    "max_tokens": 64,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import sys, json, base64; m = json.load(sys.stdin)["choices"][0]["message"]; print(m.get("content", "")); open("ming_output.wav", "wb").write(base64.b64decode(m["audio"]["data"]))'</span>
+</pre></div>
+</div>
+<p>Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Read this sentence aloud: This model understands text, images, audio, and video, and can reply with either text or speech."</span><span class="p">}],</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"audio"</span><span class="p">],</span>
+        <span class="s2">"audio"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"wav"</span><span class="p">},</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+<span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<span class="n">message</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+
+<span class="n">audio</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="s2">"audio"</span><span class="p">][</span><span class="s2">"data"</span><span class="p">])</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"ming_output.wav"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">audio</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output (speech server, <code class="docutils literal notranslate"><span class="pre">temperature:</span> <span class="pre">0.0</span></code>):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>This model understands text, images, audio, and video, and can reply with either text or speech.
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ming_output.wav</span></code> is a mono WAV carrying the talker’s 44.1 kHz speech (~700 KB for this ~8 s reply).</p>
+<p>Reference output:</p>
+<audio controls>
+  <source src="../_static/audio/ming-omni-intro.wav" type="audio/wav">
+</audio>
+</section>
+<section id="streaming-speech">
+<h3>Streaming Speech<a class="headerlink" href="#streaming-speech" title="Link to this heading">#</a></h3>
+<p>With a streaming speech server, set <code class="docutils literal notranslate"><span class="pre">&quot;stream&quot;:</span> <span class="pre">true</span></code> and consume Server-Sent Events. Audio chunks arrive in <code class="docutils literal notranslate"><span class="pre">choices[0].delta.audio.data</span></code>. To inspect the raw SSE stream with curl (use <code class="docutils literal notranslate"><span class="pre">-N</span></code> to disable buffering):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-N<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{</span>
+<span class="s1">    "model": "ming-omni",</span>
+<span class="s1">    "messages": [{"role": "user", "content": "Say one friendly sentence."}],</span>
+<span class="s1">    "modalities": ["text", "audio"],</span>
+<span class="s1">    "audio": {"format": "wav"},</span>
+<span class="s1">    "stream": true,</span>
+<span class="s1">    "max_tokens": 64,</span>
+<span class="s1">    "temperature": 0.0</span>
+<span class="s1">  }'</span>
+</pre></div>
+</div>
+<p>Python (decodes and writes each audio chunk):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+
+<span class="n">chunk_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">with</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+    <span class="s2">"http://localhost:8000/v1/chat/completions"</span><span class="p">,</span>
+    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"ming-omni"</span><span class="p">,</span>
+        <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Say one friendly sentence."</span><span class="p">}],</span>
+        <span class="s2">"modalities"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"audio"</span><span class="p">],</span>
+        <span class="s2">"audio"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"format"</span><span class="p">:</span> <span class="s2">"wav"</span><span class="p">},</span>
+        <span class="s2">"stream"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="s2">"temperature"</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">resp</span><span class="p">:</span>
+    <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">iter_lines</span><span class="p">(</span><span class="n">decode_unicode</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"data: "</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">removeprefix</span><span class="p">(</span><span class="s2">"data: "</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s2">"[DONE]"</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"delta"</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">delta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="s2">"content"</span><span class="p">],</span> <span class="n">end</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">audio</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"audio"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">audio</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"data"</span><span class="p">):</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">audio</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+            <span class="n">chunk_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ming_stream_chunk_</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">chunk_paths</span><span class="p">)</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">.wav"</span><span class="p">)</span>
+            <span class="n">chunk_path</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">chunk_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The example writes each audio chunk as a separate WAV file. If you want one playback file, parse each WAV chunk and concatenate PCM frames with a standard audio library.</p>
+<p>Output: with the streaming speech pipeline the audio arrives as multiple <code class="docutils literal notranslate"><span class="pre">delta.audio.data</span></code> chunks. Against the <strong>non-streaming</strong> speech server (the <code class="docutils literal notranslate"><span class="pre">Text</span> <span class="pre">+</span> <span class="pre">Audio</span> <span class="pre">Output</span></code> command), <code class="docutils literal notranslate"><span class="pre">stream:</span> <span class="pre">true</span></code> still returns valid SSE but the audio comes back as a single aggregate chunk after generation — for example one text delta carrying <code class="docutils literal notranslate"><span class="pre">Hello!</span> <span class="pre">How</span> <span class="pre">can</span> <span class="pre">I</span> <span class="pre">assist</span> <span class="pre">you</span> <span class="pre">today?</span></code>, one ~276 KB aggregate WAV chunk, and a final <code class="docutils literal notranslate"><span class="pre">finish_reason:</span> <span class="pre">stop</span></code> event before <code class="docutils literal notranslate"><span class="pre">[DONE]</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Hello! How can I assist you today?
+</pre></div>
+</div>
+<p>The streamed WAV chunks carry the same 44.1 kHz speech as the non-streaming reply.</p>
+</section>
+</section>
+<section id="request-parameters">
+<h2>Request Parameters<a class="headerlink" href="#request-parameters" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Use the <code class="docutils literal notranslate"><span class="pre">--model-name</span></code> value from launch, usually <code class="docutils literal notranslate"><span class="pre">ming-omni</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">messages</span></code></p></td>
+<td><p>required</p></td>
+<td><p>OpenAI-style chat messages. Content can be a string or a list of typed media parts.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">modalities</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[&quot;text&quot;]</span></code></p></td>
+<td><p>Use <code class="docutils literal notranslate"><span class="pre">[&quot;text&quot;]</span></code> for text output and <code class="docutils literal notranslate"><span class="pre">[&quot;text&quot;,</span> <span class="pre">&quot;audio&quot;]</span></code> for speech output.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">images</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>List of local paths or URLs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">audios</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>List of local paths or URLs. Audio is loaded at 16 kHz for the Whisper-style audio encoder.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">videos</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>List of local paths or URLs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">video_fps</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Optional frame sampling rate.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">video_max_frames</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Optional cap on sampled frames.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">video_min_pixels</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Minimum per-frame pixel budget passed to video preprocessing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">video_max_pixels</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Maximum per-frame pixel budget passed to video preprocessing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">video_total_pixels</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Total pixel budget across sampled frames.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">2048</span></code></p></td>
+<td><p>Forwarded to Ming as <code class="docutils literal notranslate"><span class="pre">max_new_tokens</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">temperature</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Chat-completions default. Set 0.0 for greedy deterministic examples.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">top_p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Thinker sampling.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">top_k</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p></td>
+<td><p>Thinker sampling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">min_p</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.0</span></code></p></td>
+<td><p>Thinker sampling.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">repetition_penalty</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>Thinker sampling.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stop</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+<td><p>Stop string or list of stop strings.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">seed</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Forwarded as <code class="docutils literal notranslate"><span class="pre">sampling_seed</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stream</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Use with the streaming speech pipeline for audio chunks.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">audio.format</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">wav</span></code></p></td>
+<td><p>Chat-completions audio format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stage_params</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">null</span></code></p></td>
+<td><p>Advanced per-stage parameters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="benchmark-results">
+<h2>Benchmark Results<a class="headerlink" href="#benchmark-results" title="Link to this heading">#</a></h2>
+<p>The numbers below are directional H100-class serving evidence for SGLang-Omni serving Ming-flash-omni-2.0 under matched prompts, sampling settings, and decode parameters. They are useful for setting expectations, not universal guarantees; keep the caveats with the numbers when quoting them.</p>
+<section id="text-thinker-gsm8k">
+<h3>Text Thinker (GSM8K)<a class="headerlink" href="#text-thinker-gsm8k" title="Link to this heading">#</a></h3>
+<p>Pure text thinker path, text-only output, 100 samples from the GSM8K <code class="docutils literal notranslate"><span class="pre">main</span></code> test split (first 100 of 1319 problems, deterministic file order), greedy (T=0), TP=4 thinker.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Concurrency</p></th>
+<th class="head text-right"><p>Throughput</p></th>
+<th class="head text-right"><p>Mean latency</p></th>
+<th class="head text-right"><p>Accuracy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.615</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.63</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>94%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>4</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.938</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.06</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>95%</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">4.608</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.26</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>95%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Throughput scales roughly linearly from c=1 to c=16 (~7.5×) at stable accuracy.</p>
+</section>
+<section id="image-text-mmmu">
+<h3>Image-Text (MMMU)<a class="headerlink" href="#image-text-mmmu" title="Link to this heading">#</a></h3>
+<p>Image-text input, text output, 50 samples from the full <code class="docutils literal notranslate"><span class="pre">MMMU/MMMU</span></code> <code class="docutils literal notranslate"><span class="pre">validation</span></code> split (all 30 subjects, sorted by sample id, first 50 with images — not the <code class="docutils literal notranslate"><span class="pre">zhaochenyang20/mmmu-ci-50</span></code> CI subset), greedy (T=0), TP=4 thinker.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Concurrency</p></th>
+<th class="head text-right"><p>Throughput</p></th>
+<th class="head text-right"><p>Mean latency</p></th>
+<th class="head text-right"><p>Median latency</p></th>
+<th class="head text-right"><p>Accuracy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.144</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">6.70</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.48</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>60%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>2</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.251</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">7.69</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">4.35</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>64%</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.454</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">8.47</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">4.89</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>66%</p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.720</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">10.47</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">6.25</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>64%</p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.996</span> <span class="pre">qps</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">14.16</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">8.92</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p>62%</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Throughput scales ~6.9× from c=1 to c=16; accuracy stays within MMMU sample noise.</p>
+</section>
+<section id="non-streaming-talker">
+<h3>Non-Streaming Talker<a class="headerlink" href="#non-streaming-talker" title="Link to this heading">#</a></h3>
+<p>Speech output (<code class="docutils literal notranslate"><span class="pre">modalities=[&quot;text&quot;,&quot;audio&quot;]</span></code>), voice <code class="docutils literal notranslate"><span class="pre">DB30</span></code>, uniform prompt, TP=4 thinker + dedicated talker GPU. Measured against the 7-stage non-streaming <code class="docutils literal notranslate"><span class="pre">MingOmniSpeechPipelineConfig</span></code> with <code class="docutils literal notranslate"><span class="pre">stream=false</span></code> (not the streaming pipeline); every request returned real 44.1 kHz audio (<code class="docutils literal notranslate"><span class="pre">n_fail=0</span></code>, mean ~6.3 s/clip).</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Concurrency</p></th>
+<th class="head text-right"><p>Throughput</p></th>
+<th class="head text-right"><p>Mean wall</p></th>
+<th class="head text-right"><p>p95 wall</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.02</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.493</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.522</span> <span class="pre">s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>2</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.87</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.68</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.74</span> <span class="pre">s</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.01</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.25</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.39</span> <span class="pre">s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.92</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.35</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.77</span> <span class="pre">s</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.03</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.70</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">5.01</span> <span class="pre">s</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The talker is single-stream (<code class="docutils literal notranslate"><span class="pre">SimpleScheduler.max_concurrency=1</span></code>), which enables the CFM CUDA-graph capture and keeps c=1 latency low. Throughput plateaus near <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">req/s</span></code> at high concurrency.</p>
+</section>
+<section id="streaming-talker">
+<h3>Streaming Talker<a class="headerlink" href="#streaming-talker" title="Link to this heading">#</a></h3>
+<p>Streaming speech is a low-concurrency UX path: it trades some throughput for much earlier first audio. Same backend, same voice <code class="docutils literal notranslate"><span class="pre">DB30</span></code>. First audio is time-to-first-audio-chunk (TTFA) for streaming and full-response wall time for non-streaming.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-right"><p>Concurrency</p></th>
+<th class="head text-right"><p>Streaming TTFA</p></th>
+<th class="head text-right"><p>Non-streaming first audio</p></th>
+<th class="head text-right"><p>Streaming throughput</p></th>
+<th class="head text-right"><p>Non-streaming throughput</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-right"><p>1</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.236</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.509</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.206</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.956</span> <span class="pre">req/s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>2</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.593</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">0.653</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.288</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.989</span> <span class="pre">req/s</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>4</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.269</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.260</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.368</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.990</span> <span class="pre">req/s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td class="text-right"><p>8</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.675</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">2.280</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.410</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.006</span> <span class="pre">req/s</span></code></p></td>
+</tr>
+<tr class="row-even"><td class="text-right"><p>16</p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">4.474</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.697</span> <span class="pre">s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">1.448</span> <span class="pre">req/s</span></code></p></td>
+<td class="text-right"><p><code class="docutils literal notranslate"><span class="pre">3.011</span> <span class="pre">req/s</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>At c=1 streaming delivers first audio ~2.2× sooner at a ~38% throughput cost. The crossover is around c≈4; past it, single-stream queuing makes streaming’s first chunk arrive later than the non-streaming full response. Each streaming request emits ~20 chunks at ~19 ms intervals. The streaming measurements are from PR/local-patch evidence, not a release-wide guarantee; cite streaming as a low-concurrency first-audio win rather than a universal throughput win.</p>
+</section>
+<section id="audio-equivalence">
+<h3>Audio Equivalence<a class="headerlink" href="#audio-equivalence" title="Link to this heading">#</a></h3>
+<p>A small c=1 audit (single prompt, single voice, n=4 WAVs per mode) checks that the streaming path preserves audio content versus non-streaming on the same backend.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Comparison</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Streaming vs non-streaming</p></td>
+<td><p>Intelligible-equivalent: CER 0/0 on both, mel-L2 cross-mode ~1.5× within-mode baseline, duration delta &lt;3%.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Intelligibility is fully preserved; streaming and non-streaming are close but not bit-identical (expected from chunked-decode windowing).</p>
+</section>
+</section>
+<section id="known-limitations">
+<h2>Known Limitations<a class="headerlink" href="#known-limitations" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Ming is large.</strong> Use thinker TP and plan GPU placement deliberately. On 80 GB H100-class GPUs the MoE thinker does not fit on a single GPU, so bare default placement (no <code class="docutils literal notranslate"><span class="pre">--thinker-tp-size</span></code>) out-of-memories during startup — TP=4 is the smallest placement that loads (TP=1 and TP=2 both OOM). CPU offload can make the model fit on fewer GPUs but slows inference.</p></li>
+<li><p><strong>Speech is 44.1 kHz; the chat-completions WAV header is currently mislabeled.</strong> The talker produces 44.1 kHz audio, but the non-streaming and streaming completion paths stamp the returned WAV header at 24000 Hz — <code class="docutils literal notranslate"><span class="pre">completion()</span></code> / <code class="docutils literal notranslate"><span class="pre">completion_stream()</span></code> do not forward <code class="docutils literal notranslate"><span class="pre">chunk.sample_rate</span></code>, so <code class="docutils literal notranslate"><span class="pre">encode_audio</span></code> falls back to <code class="docutils literal notranslate"><span class="pre">DEFAULT_SAMPLE_RATE</span> <span class="pre">=</span> <span class="pre">24000</span></code> (<code class="docutils literal notranslate"><span class="pre">sglang_omni/client/audio.py</span></code>). The samples are not resampled, so the audio is genuine 44.1 kHz — set the WAV header to <code class="docutils literal notranslate"><span class="pre">44100</span></code> when saving if your player honors it. The <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code> path already forwards the rate.</p></li>
+<li><p><strong>Image-encoder TP is set with dedicated flags.</strong> Use <code class="docutils literal notranslate"><span class="pre">--image-encoder-tp-size</span></code> and <code class="docutils literal notranslate"><span class="pre">--image-encoder-gpus</span></code> (see <a class="reference internal" href="#vision-encoder-tensor-parallelism"><span class="std std-ref">Vision Encoder Tensor Parallelism</span></a>). The generic dotted <code class="docutils literal notranslate"><span class="pre">--stages.&lt;i&gt;.gpu</span></code> CLI override only accepts a single integer GPU id, so it cannot express a per-rank GPU list — use the dedicated flags instead.</p></li>
+<li><p><strong>Speech output uses <code class="docutils literal notranslate"><span class="pre">/v1/chat/completions</span></code>.</strong> Ming’s omni speech path is chat-completions text + audio, not the <code class="docutils literal notranslate"><span class="pre">/v1/audio/speech</span></code> TTS endpoint used by S2-Pro, Higgs, Voxtral, and Qwen3-TTS.</p></li>
+<li><p><strong>Streaming speech launch needs a pipeline config today.</strong> Generic <code class="docutils literal notranslate"><span class="pre">sgl-omni</span> <span class="pre">serve</span> <span class="pre">--model-path</span></code> exposes default speech and <code class="docutils literal notranslate"><span class="pre">--text-only</span></code> directly. Streaming speech uses <code class="docutils literal notranslate"><span class="pre">MingOmniStreamingSpeechPipelineConfig</span></code>.</p></li>
+<li><p><strong>Text streaming is not token-by-token today.</strong> In the current Ming path, text-only <code class="docutils literal notranslate"><span class="pre">stream=true</span></code> currently emits an aggregate text chunk. Use streaming speech when you need audio chunks.</p></li>
+<li><p><strong>Streaming speech is optimized for low client concurrency.</strong> It improves first-audio latency at c=1 but can be slower than non-streaming for multi-client workloads.</p></li>
+<li><p><strong>Long-form speech can drift.</strong> For long narration, split text into smaller turns or run a voice/drift audit for your target voice and language.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="qwen3_omni.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Qwen3-Omni</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="llada2_uni.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">LLaDA2.0-Uni</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">Architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#server-configuration">Server Configuration</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vision-encoder-tensor-parallelism">Vision Encoder Tensor Parallelism</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-speech-client">Streaming Speech Client</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#placement-and-memory-notes">Placement and Memory Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-and-output-examples">Input and Output Examples</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-input-text-output">Text Input, Text Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-and-text-input">Image and Text Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audio-and-image-input">Audio and Image Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#video-input">Video Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-input-text-audio-output">Text Input, Text + Audio Output</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-speech">Streaming Speech</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#request-parameters">Request Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-results">Benchmark Results</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#text-thinker-gsm8k">Text Thinker (GSM8K)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#image-text-mmmu">Image-Text (MMMU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-streaming-talker">Non-Streaming Talker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#streaming-talker">Streaming Talker</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#audio-equivalence">Audio Equivalence</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

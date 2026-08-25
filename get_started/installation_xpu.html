@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>🚀 Installation — Intel XPU &#8212; SGLang</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom_log.css?v=a64801f4" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=b617ff6d"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=ccdb6887"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'get_started/installation_xpu';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="../_static/js/qwen3_omni_server_generator.js?v=66f6ff63"></script>
+    <script src="../_static/js/ming_omni_server_generator.js?v=694b1473"></script>
+    <link rel="icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Higgs TTS" href="../cookbook/higgs_tts.html" />
+    <link rel="prev" title="🚀 Installation" href="installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.3" />
+    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-light" alt="SGLang - Home"/>
+    <img src="../_static/sgl-omni-logo.svg" class="logo__image only-dark pst-js-only" alt="SGLang - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Get Started</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">🚀 Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">🚀 Installation — Intel XPU</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Cookbook</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/higgs_tts.html">Higgs TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/voxtral_tts.html">Voxtral TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fishaudio_s2_pro.html">Fish Audio S2-Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_tts.html">Qwen3 TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_tts.html">Ming-Omni-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts.html">MOSS-TTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_tts_local.html">MOSS-TTS-Local</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/dots_tts.html">dots.tts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/minimax_music3.html">MiniMax Music 3</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/zonos2.html">ZONOS2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_asr.html">Qwen3-ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/fun_asr.html">Fun-ASR-Nano</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/arkasr.html">ARK-ASR-3B</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/moss_transcribe_diarize.html">MOSS-Transcribe-Diarize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/whisper_asr.html">Whisper ASR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/qwen3_omni.html">Qwen3-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/ming_omni.html">Ming-Omni</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cookbook/llada2_uni.html">LLaDA2.0-Uni</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">General Usage</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/qwen3_omni.html">Omni Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/audio_translations.html">Audio Translations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts.html">TTS Model Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/tts_process_topology.html">TTS Process Topology</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/process_topology_migration.html">Process Topology Migration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/omni_router.html">Omni Router Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic_usage/mps_dp.html">Same-GPU Data Parallelism with CUDA MPS</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Benchmarks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/relay.html">Benchmark Relay</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Developer Reference</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/main.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/apiserver_design.html">API Server Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/pipeline.html">Pipeline Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/config.html">Config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/communication.html">Communication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/reference_encode_service.html">Reference Encode Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/profiler.html">Request-level profiler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/qwen3_asr_concurrency_profile.html">Qwen3-ASR High-Concurrency Benchmark and Bottleneck Profile</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer_reference/rl_admin_control.html">RL Admin Control</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/blob/main/docs/get_started/installation_xpu.md?plain=1" target="_blank"
+   class="btn btn-sm btn-source-file-button dropdown-item"
+   title="Show source"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">Show source</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/edit/main/docs/get_started/installation_xpu.md" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/sgl-project/sglang-omni/issues/new?title=Issue%20on%20page%20%2Fget_started/installation_xpu.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/get_started/installation_xpu.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🚀 Installation — Intel XPU</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-a-separate-pyproject">Why a separate pyproject</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#option-a-docker">🐳 Option A: Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#option-b-install-into-an-existing-xpu-env-recommended-here">🛠️ Option B: Install into an existing XPU env (recommended here)</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sglang-installed-separately">SGLang (installed separately)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify">Verify</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serve">Serve</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-environment-important">Runtime environment (important)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-asr-speech-to-text-single-xpu">Qwen3-ASR (speech-to-text, single XPU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-tts-text-to-speech-single-xpu">Qwen3-TTS (text-to-speech, single XPU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-omni-30b-a3b-moe-multi-xpu-tensor-parallel">Qwen3-Omni (30B-A3B MoE, multi-XPU tensor parallel)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="installation-intel-xpu">
+<h1>🚀 Installation — Intel XPU<a class="headerlink" href="#installation-intel-xpu" title="Link to this heading">#</a></h1>
+<p>Installs <code class="docutils literal notranslate"><span class="pre">sglang-omni</span></code> for <strong>Intel GPUs (XPU)</strong>. The default
+<a class="reference internal" href="installation.html"><span class="std std-doc">installation</span></a> pins CUDA-only wheels and would clobber a <code class="docutils literal notranslate"><span class="pre">torch+xpu</span></code> stack.
+Mirroring upstream SGLang (<a class="reference external" href="https://docs.sglang.io/docs/hardware-platforms/xpu">Intel XPU docs</a>,
+<code class="docutils literal notranslate"><span class="pre">docker/xpu.Dockerfile</span></code>), the XPU path uses a <strong>separate <code class="docutils literal notranslate"><span class="pre">pyproject_xpu.toml</span></code></strong> plus the PyTorch
+XPU wheel index.</p>
+<section id="why-a-separate-pyproject">
+<h2>Why a separate pyproject<a class="headerlink" href="#why-a-separate-pyproject" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> resolves the CUDA <a class="reference download internal" download="" href="../_downloads/079962c730e6e61f3f9971f670e9cf70/pyproject.toml"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></span></a>, whose torch
+family and CUDA-only wheels would replace the <code class="docutils literal notranslate"><span class="pre">+xpu</span></code> stack.
+<a class="reference download internal" download="" href="../_downloads/e6282636738987ea324fd398b24bcb06/pyproject_xpu.toml"><span class="xref download myst"><code class="docutils literal notranslate"><span class="pre">pyproject_xpu.toml</span></code></span></a> encodes the XPU replacements.</p>
+<p>Core deps cover the supported models (Qwen3-ASR / TTS / Omni) plus the API server;
+<code class="docutils literal notranslate"><span class="pre">[eval]</span></code> adds SeedTTS/WER tooling and <code class="docutils literal notranslate"><span class="pre">[all]</span></code> aliases it. Other model families
+(S2-Pro, Ming-Omni, Voxtral-TTS) are CUDA-only and are not offered here.</p>
+<blockquote>
+<div><p><strong><code class="docutils literal notranslate"><span class="pre">--no-build-isolation</span></code> is required</strong> — without it pip emits a legacy in-tree
+<code class="docutils literal notranslate"><span class="pre">egg-info</span></code> instead of a PEP 660 editable install. The installer always passes it.
+Because of that pip does not install build requirements either, so this
+environment’s own <code class="docutils literal notranslate"><span class="pre">setuptools</span></code> must be <strong>≥ 77.0.0</strong>: older releases reject the
+PEP 639 license metadata with <code class="docutils literal notranslate"><span class="pre">invalid</span> <span class="pre">pyproject.toml</span> <span class="pre">config:</span> <span class="pre">`project.license`</span> </code>.
+The installer checks this before building; upgrade with
+<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">'setuptools&gt;=77.0.0'</span></code>.</p>
+</div></blockquote>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Python ≥ 3.10, and an Intel GPU driver (<code class="docutils literal notranslate"><span class="pre">/dev/dri/renderD*</span></code> present).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> ≥ 77.0.0 in the target environment (see the note above).</p></li>
+<li><p>The <strong>PyTorch XPU stack</strong> and an <strong>XPU SGLang build</strong> — reuse an existing working
+<code class="docutils literal notranslate"><span class="pre">torch+xpu</span></code> env if you have one. See <a class="reference internal" href="#runtime-environment-important"><span class="std std-ref">Runtime environment</span></a>
+for the oneAPI caveat.</p></li>
+</ul>
+</section>
+<section id="option-a-docker">
+<h2>🐳 Option A: Docker<a class="headerlink" href="#option-a-docker" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docker/xpu.Dockerfile<span class="w"> </span>-t<span class="w"> </span>sglang-omni:xpu<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--device<span class="w"> </span>/dev/dri<span class="w"> </span>--shm-size<span class="w"> </span>32g<span class="w"> </span>--ipc<span class="w"> </span>host<span class="w"> </span>--network<span class="w"> </span>host<span class="w"> </span>sglang-omni:xpu
+</pre></div>
+</div>
+<p>Built on Intel Deep Learning Essentials with the <code class="docutils literal notranslate"><span class="pre">+xpu</span></code> torch wheels. It deliberately does <strong>not</strong>
+source oneAPI — see <a class="reference internal" href="#runtime-environment-important"><span class="std std-ref">Runtime environment</span></a>.</p>
+<p>Pinning SGLang does not pin the SYCL kernels: its XPU manifest requires <code class="docutils literal notranslate"><span class="pre">sgl-kernel-xpu</span></code>
+from git with no revision. The Dockerfile therefore pins that commit itself, so rebuilds
+are reproducible by default. Override it only to move deliberately:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-f<span class="w"> </span>docker/xpu.Dockerfile<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--build-arg<span class="w"> </span><span class="nv">SGL_KERNEL_XPU_REF</span><span class="o">=</span>&lt;sgl-kernel-xpu<span class="w"> </span>commit<span class="w"> </span>sha&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-t<span class="w"> </span>sglang-omni:xpu<span class="w"> </span>.
+</pre></div>
+</div>
+</section>
+<section id="option-b-install-into-an-existing-xpu-env-recommended-here">
+<h2>🛠️ Option B: Install into an existing XPU env (recommended here)<a class="headerlink" href="#option-b-install-into-an-existing-xpu-env-recommended-here" title="Link to this heading">#</a></h2>
+<p>The helper swaps in <code class="docutils literal notranslate"><span class="pre">pyproject_xpu.toml</span></code>, installs with the XPU index, then restores the CUDA one:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:sgl-project/sglang-omni.git
+<span class="nb">cd</span><span class="w"> </span>sglang-omni
+
+<span class="c1"># dry-run first — shows the commands, installs nothing</span>
+<span class="nv">PYTHON</span><span class="o">=</span><span class="k">$(</span>which<span class="w"> </span>python<span class="k">)</span><span class="w"> </span>scripts/xpu/install_xpu.sh<span class="w"> </span>--check
+
+<span class="c1"># editable install against the PyTorch XPU index</span>
+<span class="nv">PYTHON</span><span class="o">=</span><span class="k">$(</span>which<span class="w"> </span>python<span class="k">)</span><span class="w"> </span>scripts/xpu/install_xpu.sh
+</pre></div>
+</div>
+<p>Pick extras with <code class="docutils literal notranslate"><span class="pre">--extras</span></code> (comma-separated):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>scripts/xpu/install_xpu.sh<span class="w"> </span>--extras<span class="w"> </span><span class="nb">eval</span><span class="w">           </span><span class="c1"># core + SeedTTS/WER eval + tests</span>
+scripts/xpu/install_xpu.sh<span class="w"> </span>--extras<span class="w"> </span>all<span class="w">            </span><span class="c1"># alias for eval</span>
+</pre></div>
+</div>
+<p>Or do it manually (the same steps the script automates):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>pyproject.toml<span class="w"> </span>.pyproject.cuda.bak
+cp<span class="w"> </span>pyproject_xpu.toml<span class="w"> </span>pyproject.toml
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-build-isolation<span class="w"> </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/xpu
+cp<span class="w"> </span>-f<span class="w"> </span>.pyproject.cuda.bak<span class="w"> </span>pyproject.toml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>.pyproject.cuda.bak<span class="w">   </span><span class="c1"># restore CUDA pyproject</span>
+</pre></div>
+</div>
+<section id="sglang-installed-separately">
+<h3>SGLang (installed separately)<a class="headerlink" href="#sglang-installed-separately" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">sglang</span></code> is intentionally <strong>not</strong> pinned, so the install above leaves an existing XPU build alone.
+It cannot be pinned even as a range: every published wheel requires <code class="docutils literal notranslate"><span class="pre">flashinfer_python[cu13]</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">nvidia-*</span></code> runtime, so <strong>any</strong> specifier pulls the CUDA stack over <code class="docutils literal notranslate"><span class="pre">torch+xpu</span></code>. Build from source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sgl-project/sglang<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sglang
+git<span class="w"> </span>checkout<span class="w"> </span>v0.5.16<span class="w">   </span><span class="c1"># the pinned release</span>
+<span class="nb">cd</span><span class="w"> </span>python<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cp<span class="w"> </span>pyproject_xpu.toml<span class="w"> </span>pyproject.toml
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="w"> </span>--no-build-isolation<span class="w"> </span>--extra-index-url<span class="w"> </span>https://download.pytorch.org/whl/xpu
+</pre></div>
+</div>
+<p>Use that commit: the XPU port targets this SGLang revision’s APIs and does not carry
+version-compatibility shims. A VCS requirement (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;sglang</span> <span class="pre">&#64;</span> <span class="pre">git+…&quot;</span></code>) does <strong>not</strong> work:
+pip reads the checkout’s <code class="docutils literal notranslate"><span class="pre">python/pyproject.toml</span></code>, which pins CUDA torch; only the swap above
+selects <code class="docutils literal notranslate"><span class="pre">+xpu</span></code>.</p>
+</section>
+</section>
+<section id="verify">
+<h2>Verify<a class="headerlink" href="#verify" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import works from anywhere now (package installed, not just cwd-on-path)</span>
+python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import sglang_omni, torch; print(sglang_omni.__file__, torch.__version__)"</span>
+which<span class="w"> </span>sgl-omni
+
+<span class="c1"># device-layer unit tests (CPU, no GPU) — needs pytest, which ships in the</span>
+<span class="c1"># `[eval]` extra (install with `.[eval]`, or `pip install pytest` first)</span>
+pytest<span class="w"> </span>tests/unit_test/xpu/test_device_layer.py<span class="w"> </span>-v
+</pre></div>
+</div>
+</section>
+<section id="serve">
+<h2>Serve<a class="headerlink" href="#serve" title="Link to this heading">#</a></h2>
+<section id="runtime-environment-important">
+<h3>Runtime environment (important)<a class="headerlink" href="#runtime-environment-important" title="Link to this heading">#</a></h3>
+<p>Run in the <strong>PyTorch-XPU environment as-is</strong> — do <strong>not</strong> <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">/opt/intel/oneapi/setvars.sh</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">+xpu</span></code> wheels ship their own oneCCL/SYCL/Level-Zero; a system oneAPI puts a different oneCCL/UCX
+on the library path, conflicting with the bundled <code class="docutils literal notranslate"><span class="pre">libccl</span></code> and crashing multi-XPU <code class="docutils literal notranslate"><span class="pre">xccl</span></code> collectives.</p>
+<p>No extra environment variables are needed — the XPU backend is auto-detected. If a Triton JIT
+build reports <code class="docutils literal notranslate"><span class="pre">fatal</span> <span class="pre">error:</span> <span class="pre">sycl/sycl.hpp:</span> <span class="pre">No</span> <span class="pre">such</span> <span class="pre">file</span> <span class="pre">or</span> <span class="pre">directory</span></code>, point the compiler at the
+<code class="docutils literal notranslate"><span class="pre">intel-sycl-rt</span></code> wheel’s headers:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CPATH</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import sysconfig; print(sysconfig.get_paths()["include"])'</span><span class="k">)</span><span class="s2">"</span>
+</pre></div>
+</div>
+</section>
+<section id="qwen3-asr-speech-to-text-single-xpu">
+<h3>Qwen3-ASR (speech-to-text, single XPU)<a class="headerlink" href="#qwen3-asr-speech-to-text-single-xpu" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>/path/to/Qwen3-ASR-1.7B<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+<span class="c1"># transcribe:</span>
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/transcriptions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-F<span class="w"> </span><span class="s2">"file=@sample.wav"</span><span class="w"> </span>-F<span class="w"> </span><span class="s2">"model=/path/to/Qwen3-ASR-1.7B"</span>
+</pre></div>
+</div>
+</section>
+<section id="qwen3-tts-text-to-speech-single-xpu">
+<h3>Qwen3-TTS (text-to-speech, single XPU)<a class="headerlink" href="#qwen3-tts-text-to-speech-single-xpu" title="Link to this heading">#</a></h3>
+<p>Qwen3-TTS needs the upstream <code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> package. Option A already includes it; for
+Option B install it here, because <code class="docutils literal notranslate"><span class="pre">pyproject_xpu.toml</span></code> deliberately does not pin it.
+<code class="docutils literal notranslate"><span class="pre">--no-deps</span></code> is required on both lines: <code class="docutils literal notranslate"><span class="pre">qwen-tts</span></code> pins Transformers 4.57.3, which
+would replace this project’s 5.12.1, and resolving <code class="docutils literal notranslate"><span class="pre">sox</span></code> lifts <code class="docutils literal notranslate"><span class="pre">numpy</span></code> past the
+<code class="docutils literal notranslate"><span class="pre">numba==0.65.1</span></code> ceiling. See
+<a class="reference internal" href="../cookbook/qwen3_tts.html"><span class="std std-doc">docs/cookbook/qwen3_tts.md</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>apt-get<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>sox<span class="w">   </span><span class="c1"># the Python sox package shells out to it</span>
+pip<span class="w"> </span>install<span class="w"> </span>--no-deps<span class="w"> </span>sox<span class="w"> </span>einops
+pip<span class="w"> </span>install<span class="w"> </span>--no-deps<span class="w"> </span>qwen-tts<span class="o">==</span><span class="m">0</span>.1.1
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>/path/to/Qwen3-TTS-12Hz-1.7B-Base<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+<span class="c1"># Base checkpoint clones a reference voice — pass ref_audio (+ ref_text):</span>
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/audio/speech<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"model":"/path/to/Qwen3-TTS-12Hz-1.7B-Base","input":"Hello from Intel XPU.",</span>
+<span class="s1">       "voice":"default","ref_audio":"/path/to/ref.wav","ref_text":"reference transcript",</span>
+<span class="s1">       "response_format":"wav"}'</span><span class="w"> </span>-o<span class="w"> </span>out.wav
+</pre></div>
+</div>
+</section>
+<section id="qwen3-omni-30b-a3b-moe-multi-xpu-tensor-parallel">
+<h3>Qwen3-Omni (30B-A3B MoE, multi-XPU tensor parallel)<a class="headerlink" href="#qwen3-omni-30b-a3b-moe-multi-xpu-tensor-parallel" title="Link to this heading">#</a></h3>
+<p>The 30B MoE does not fit one 24 GB card; shard the thinker across GPUs with tensor parallelism.
+<code class="docutils literal notranslate"><span class="pre">--text-only</span></code> serves the thinker (chat) without the talker/speech stages. The text-only config normally puts every stage in the <code class="docutils literal notranslate"><span class="pre">pipeline</span></code> process, so give the TP thinker an otherwise-unused process name before enabling TP:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># thinker across 8 cards (TP=8). Large shards over shared storage load slowly, so give</span>
+<span class="c1"># startup more headroom than the default 600 s.</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">SGLANG_OMNI_STARTUP_TIMEOUT</span><span class="o">=</span><span class="m">1800</span>
+sgl-omni<span class="w"> </span>serve<span class="w"> </span>--model-path<span class="w"> </span>/path/to/Qwen3-Omni-30B-A3B-Instruct<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--text-only<span class="w"> </span>--stages.thinker.process<span class="w"> </span>thinker<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--thinker-tp-size<span class="w"> </span><span class="m">8</span><span class="w"> </span>--thinker-gpus<span class="w"> </span><span class="m">0</span>,1,2,3,4,5,6,7<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+<span class="c1"># chat:</span>
+curl<span class="w"> </span>-s<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/v1/chat/completions<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-H<span class="w"> </span><span class="s2">"Content-Type: application/json"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"model":"/path/to/Qwen3-Omni-30B-A3B-Instruct",</span>
+<span class="s1">       "messages":[{"role":"user","content":"What is Intel XPU?"}],"max_tokens":64}'</span>
+</pre></div>
+</div>
+<p>Health check for any of the above: <code class="docutils literal notranslate"><span class="pre">curl</span> <span class="pre">http://localhost:8000/v1/models</span></code>.</p>
+<blockquote>
+<div><p><strong>Expected on XPU:</strong> <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">import</span> <span class="pre">mooncake</span></code> / <code class="docutils literal notranslate"><span class="pre">Failed</span> <span class="pre">to</span> <span class="pre">import</span> <span class="pre">nixl</span></code> warnings are harmless
+— those CUDA-only transfer backends are omitted; tensors move through the <code class="docutils literal notranslate"><span class="pre">shm</span></code> relay instead.</p>
+</div></blockquote>
+<blockquote>
+<div><p>✅ Support status: <strong>Qwen3-ASR, Qwen3-TTS, and Qwen3-Omni all serve end-to-end on Intel XPU</strong>
+(ASR single-card, TTS single-card, Qwen3-Omni thinker across 8 cards with tensor parallelism).</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🚀 Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../cookbook/higgs_tts.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Higgs TTS</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-a-separate-pyproject">Why a separate pyproject</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#option-a-docker">🐳 Option A: Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#option-b-install-into-an-existing-xpu-env-recommended-here">🛠️ Option B: Install into an existing XPU env (recommended here)</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sglang-installed-separately">SGLang (installed separately)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify">Verify</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#serve">Serve</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#runtime-environment-important">Runtime environment (important)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-asr-speech-to-text-single-xpu">Qwen3-ASR (speech-to-text, single XPU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-tts-text-to-speech-single-xpu">Qwen3-TTS (text-to-speech, single XPU)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qwen3-omni-30b-a3b-moe-multi-xpu-tensor-parallel">Qwen3-Omni (30B-A3B MoE, multi-XPU tensor parallel)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By SGLang-Omni Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025-2026, SGLang-Omni.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="last-updated">
+  Last updated on Aug 25, 2026.
+  <br/>
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
