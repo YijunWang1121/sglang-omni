@@ -250,11 +250,15 @@ def apply_dit_perf_patches(enable_adaln_fusion: bool | None = None) -> None:
     ODE step. Call once, after `cosyvoice` has been imported.
 
     `enable_adaln_fusion` gates the separate AdaLN-modulate/gated-residual
-    torch.compile fusion (Item 2b) so it can be A/B'd in isolation from the
-    RoPE/mask caching (Item 2a); defaults to the
-    SGLANG_OMNI_COSYVOICE3_ADALN_FUSION env var (default: enabled) so
-    profiling scripts run as separate processes can toggle it without
-    editing this file.
+    torch.compile fusion (Item 2b). Measured under the real bf16-autocast
+    production path (not just plain FP32), Item 2b is a net *regression* --
+    flow+hift went from 1.053x (Item 2a alone) to 1.012x with 2b layered on
+    top, i.e. torch.compile's Inductor kernels here cost more than the
+    fusion saves once bf16 autocast is already making the surrounding
+    matmuls fast. Left in and toggleable (via this arg or the
+    SGLANG_OMNI_COSYVOICE3_ADALN_FUSION env var) for further tuning, but
+    defaults to OFF -- only Item 2a (RoPE/mask caching, a clean win in both
+    FP32 and bf16) is applied unless explicitly requested.
     """
     global _applied
     if _applied:
@@ -264,7 +268,7 @@ def apply_dit_perf_patches(enable_adaln_fusion: bool | None = None) -> None:
         import os
 
         enable_adaln_fusion = os.environ.get(
-            "SGLANG_OMNI_COSYVOICE3_ADALN_FUSION", "1"
+            "SGLANG_OMNI_COSYVOICE3_ADALN_FUSION", "0"
         ) not in ("0", "false", "False")
 
     from cosyvoice.flow.DiT import modules as dit_modules
