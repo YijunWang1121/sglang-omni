@@ -372,7 +372,7 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
         self,
         flow: Any,
         hift: Any,
-        autocast_dtype: torch.dtype | None = None,
+        compute_dtype: torch.dtype | None = None,
         flow_batch_bucket_frames: int = 50,
     ) -> None:
         if flow_batch_bucket_frames <= 0:
@@ -386,7 +386,7 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
             flow if isinstance(flow, FunCosyVoice3Flow) else FunCosyVoice3Flow(flow)
         )
         self._hift = hift
-        self._autocast_dtype = autocast_dtype
+        self._compute_dtype = compute_dtype
         self._flow_batch_bucket_frames = flow_batch_bucket_frames
 
     def prepare_item(
@@ -424,8 +424,8 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
             # cosyvoice/cli/model.py.
             with torch.autocast(
                 device_type=current_platform.device_type,
-                dtype=self._autocast_dtype or torch.float16,
-                enabled=self._autocast_dtype is not None,
+                dtype=self._compute_dtype or torch.float16,
+                enabled=self._compute_dtype is not None,
             ):
                 mel_list = self._flow.inference(
                     [request.flow_input for request in bucket]
@@ -539,7 +539,7 @@ def create_vocoder_executor(
         raise ValueError("flow_batch_admission_frames must be greater than zero")
     device = resolve_device_spec(device, gpu_id)
     checkpoint_dir = resolve_checkpoint(model_path)
-    autocast_dtype = _AUTOCAST_DTYPES.get(dtype)
+    compute_dtype = _AUTOCAST_DTYPES.get(dtype)
     flow, hift = _load_cosyvoice3_flow_hift(
         checkpoint_dir,
         device=device,
@@ -549,7 +549,7 @@ def create_vocoder_executor(
     vocoder = _CosyVoice3Vocoder(
         flow,
         hift,
-        autocast_dtype=autocast_dtype,
+        compute_dtype=compute_dtype,
         flow_batch_bucket_frames=flow_batch_bucket_frames,
     )
 
