@@ -56,6 +56,12 @@ def _load_cosyvoice3_flow_hift(
     except ImportError as exc:
         raise RuntimeError(_COSYVOICE_INSTALL_HINT) from exc
 
+    from sglang_omni.models.fun_cosyvoice3.dit_perf_patches import (
+        apply_dit_perf_patches,
+    )
+
+    apply_dit_perf_patches()
+
     cv = CosyVoice3(checkpoint_dir, fp16=fp16)
     flow = cv.model.flow
     hift = cv.model.hift
