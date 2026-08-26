@@ -31,7 +31,8 @@ from sglang_omni.utils.device import resolve_device_spec
 # batch and defers following requests to the next batch.
 _DEFAULT_FLOW_BATCH_ADMISSION_FRAMES = 2000
 
-_AUTOCAST_DTYPES: dict[str, torch.dtype] = {
+_AUTOCAST_DTYPES: dict[str, torch.dtype | None] = {
+    "float32": None,
     "float16": torch.float16,
     "bfloat16": torch.bfloat16,
 }
@@ -419,12 +420,9 @@ class _CosyVoice3Vocoder(BatchVocoderBase):
             buckets[self._flow_bucket_key(request.flow_input)].append(request)
 
         for bucket in buckets.values():
-            # Mirrors upstream CosyVoice3Model.token2wav, which wraps both the
-            # flow and hift calls in one autocast scope -- see
-            # cosyvoice/cli/model.py.
             with torch.autocast(
                 device_type=current_platform.device_type,
-                dtype=self._compute_dtype or torch.float16,
+                dtype=self._compute_dtype,
                 enabled=self._compute_dtype is not None,
             ):
                 mel_list = self._flow.inference(
@@ -539,7 +537,12 @@ def create_vocoder_executor(
         raise ValueError("flow_batch_admission_frames must be greater than zero")
     device = resolve_device_spec(device, gpu_id)
     checkpoint_dir = resolve_checkpoint(model_path)
-    compute_dtype = _AUTOCAST_DTYPES.get(dtype)
+    if dtype not in _AUTOCAST_DTYPES:
+        raise ValueError(
+            f"Unsupported Fun-CosyVoice3 vocoder dtype {dtype!r}; "
+            f"expected one of {sorted(_AUTOCAST_DTYPES)}"
+        )
+    compute_dtype = _AUTOCAST_DTYPES[dtype]
     flow, hift = _load_cosyvoice3_flow_hift(
         checkpoint_dir,
         device=device,
